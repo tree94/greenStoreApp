@@ -193,9 +193,6 @@ public class MainActivity extends AppCompatActivity
             recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
             adapter = new RecyclerAdapter(MainActivity.this,data);
             recyclerView.setAdapter(adapter);
-//            recyclerView.setLayoutManager();
-//            recyclerView.setAdapter(new RecyclerAdapter(getApplicationContext(), adapter, R.layout.activity_main));
-//            recyclerView.setAdapter(getApplicationContext(),adapter);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -234,7 +231,6 @@ public class MainActivity extends AppCompatActivity
                 if(getEdit.getBytes().length>0){
                     Intent intent = new Intent(this, SearchResultActivity.class);
                     startActivity(intent);
-
                 }
                 break;
         }

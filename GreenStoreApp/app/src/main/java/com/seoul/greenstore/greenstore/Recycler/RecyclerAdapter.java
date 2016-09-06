@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.seoul.greenstore.greenstore.R;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +34,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     List<Recycler_item> items = Collections.emptyList();
     int currentPos = 0;
     Recycler_item current;
-//    int item_layout;
 
     public RecyclerAdapter(Context context,List<Recycler_item> data) {
         this.context = context;
@@ -50,20 +50,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        current = items.get(position);
+        System.out.println("??"+position);
+        final Recycler_item item = items.get(position);
+        Recycler_item current = items.get(position);
         holder.name.setText(current.getName());
         holder.addr.setText(current.getAddr());
         holder.imageURL = current.getImage();
         new DownloadAsyncTask().execute(holder);
 
-//        Drawable drawable = context.getResources().getDrawable(item.getImage());
-//        holder.image.setBackground(drawable);
-//        holder.title.setText(item.getTitle());
-
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, current.getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, item.getName(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -73,13 +71,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return this.items.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
-        String imageURL;
-        Bitmap bitmap;
-        TextView name;
-        TextView addr;
-        CardView cardview;
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        private ImageView imageView;
+        private String imageURL;
+        private Bitmap bitmap;
+        private TextView name;
+        private TextView addr;
+        private CardView cardview;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -88,6 +86,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             addr = (TextView) itemView.findViewById(R.id.addr);
             cardview = (CardView) itemView.findViewById(R.id.cardview);
         }
+
     }
 
     public void addItem(int id,int like,String image,String name,String addr){
@@ -105,8 +104,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         protected ViewHolder doInBackground(ViewHolder...params){
             ViewHolder viewHolder = params[0];
             try{
-                URL imageURL = new URL(viewHolder.imageURL);
-                viewHolder.bitmap = BitmapFactory.decodeStream(imageURL.openStream());
+                InputStream in = new URL(viewHolder.imageURL).openStream();
+                viewHolder.bitmap = BitmapFactory.decodeStream(in);
             }catch (Exception e){
                 e.printStackTrace();
                 Log.e("error","Downloading Image Failed");

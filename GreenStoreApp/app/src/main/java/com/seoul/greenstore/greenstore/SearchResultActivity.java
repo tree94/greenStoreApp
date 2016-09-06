@@ -21,8 +21,8 @@ import com.seoul.greenstore.greenstore.Recycler.RecyclerAdapter;
 public class SearchResultActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    RecyclerAdapter adapter;
-    RecyclerView recyclerView;
+    private RecyclerAdapter adapter;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +64,33 @@ public class SearchResultActivity extends AppCompatActivity
 //        recyclerView.setAdapter(new RecyclerAdapter(getApplicationContext(), items, R.layout.activity_search_result));
 
 
-        recyclerView.setLayoutManager(layoutManager);
+//        recyclerView.setLayoutManager(layoutManager);
 
 
     }
+
+    // 서버 요청 결과 값을 adapter를 이용해 recyclerView와 연결
+//    public void addList(String result) {
+//        try {
+//            List<Recycler_item> data = new ArrayList<Recycler_item>();
+//            JSONArray jsonArray = new JSONArray(result);
+//            for (int i = 0; i < jsonArray.length(); i++) {
+//                Recycler_item store = new Recycler_item();
+//                JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                store.setId(Integer.parseInt(jsonObject.getString("sh_id")));
+//                store.setLike(Integer.parseInt(jsonObject.getString("sh_rcmn")));
+//                store.setName(jsonObject.getString("sh_name"));
+//                store.setAddr(jsonObject.getString("sh_addr"));
+//                store.setImage(jsonObject.getString("sh_photo"));
+//                data.add(store);
+//            }
+//            recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+//            adapter = new RecyclerAdapter(SearchResultActivity.this,data);
+//            recyclerView.setAdapter(adapter);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     public void onBackPressed() {

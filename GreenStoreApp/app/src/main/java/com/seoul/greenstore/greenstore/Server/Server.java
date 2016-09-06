@@ -38,11 +38,11 @@ public class Server extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String...values) {
         return request(values);
-
     }
 
     @Override
     protected void onPostExecute(String aResult) {
+        System.out.println(aResult +"//////////////////");
         if(waitDlg != null){
             waitDlg.dismiss();
             waitDlg = null;
