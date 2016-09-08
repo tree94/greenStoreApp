@@ -233,7 +233,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_share) {
-
+            Intent intent = new Intent(this, NoticeActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_send) {
 
         }
