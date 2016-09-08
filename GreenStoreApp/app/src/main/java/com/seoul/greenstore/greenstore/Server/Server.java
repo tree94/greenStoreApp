@@ -53,7 +53,7 @@ public class Server extends AsyncTask<String, Void, String> {
 
     protected String request(String...values) {
         final int TIME_OUT = 20;
-        final String SERVER_URL = "http://172.30.22.170:8080/greenStore/app";
+        final String SERVER_URL = "http://192.168.100.250:8080/greenStore/app";
         JSONArray jsonArray = null;
         StringBuffer sb= new StringBuffer();
 

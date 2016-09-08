@@ -13,7 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.seoul.greenstore.greenstore.Recycler.RecyclerAdapter;
 import com.seoul.greenstore.greenstore.Recycler.Recycler_item;
 import com.seoul.greenstore.greenstore.Server.Server;
+import com.seoul.greenstore.greenstore.Spinner.Spinners;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,11 +33,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-//    ListView listView;
-//    ListViewAdapter adapter;
-
     private RecyclerAdapter adapter;
     private RecyclerView recyclerView;
+    private boolean flag = false;
+    private List<Recycler_item> data = new ArrayList<Recycler_item>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
 
@@ -57,69 +57,45 @@ public class MainActivity extends AppCompatActivity
         Spinner typeSpinner2 = (Spinner) findViewById(R.id.typeSpinner2);
         Spinner likeSpinner = (Spinner) findViewById(R.id.likeSpinner);
 
-        //구와 관련된 스피너 등록
-        List<String> locList = new ArrayList<String>();
-        locList.add("강남구");
-        locList.add("강동구");
-        locList.add("강북구");
-        locList.add("강서구");
-        locList.add("관악구");
-        locList.add("광진구");
-        locList.add("구로구");
-        locList.add("금천구");
-        locList.add("노원구");
-        locList.add("도봉구");
-        locList.add("동대문구");
-        locList.add("동작구");
-        locList.add("마포구");
-        locList.add("서대문구");
-        locList.add("서초구");
-        locList.add("성동구");
-        locList.add("성북구");
-        locList.add("송파구");
-        locList.add("양천구");
-        locList.add("영등포구");
-        locList.add("용산구");
-        locList.add("은평구");
-        locList.add("종로구");
-        locList.add("중구");
-        locList.add("중랑구");
+        //구, 업종, 좋아요와 관련된 스피너 등록 시 필요한 파라미터 전송
+        Spinners spinner = new Spinners(MainActivity.this,locationSpinner,typeSpinner1,typeSpinner2,likeSpinner);
 
-        ArrayAdapter<String> locationSpinnerApater = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, locList);
-        locationSpinnerApater.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        locationSpinner.setAdapter(locationSpinnerApater);
+        //업종과 관련된 스피너 선택 시
+        typeSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(flag){
+                    System.out.println("??ididid > "+ id);
+                    sortCategory(id);
+                }
+            }
 
-        //업종과 관련된 스피너 등록
-        List<String> secList = new ArrayList<String>();
-        secList.add("한식");
-        secList.add("중식");
-        secList.add("경양식,일식");
-        secList.add("기타외식업");
-        secList.add("이,미용업");
-        secList.add("목욕업");
-        secList.add("세탁업");
-        secList.add("숙박업");
-        secList.add("기타서비스업종");
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Toast.makeText(MainActivity.this, "not selected", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
-        ArrayAdapter<String> typeSpinner1Adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, secList);
-        typeSpinner1Adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        typeSpinner1.setAdapter(typeSpinner1Adapter);
-        typeSpinner2.setAdapter(typeSpinner1Adapter); //스피너 Spinner 1,2 내용 똑같아서 그냥 같이붙임
 
+        //좋아요와 관련된 스피너 선택 시
+        likeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                System.out.print("??"+ flag);
+                if(flag){
+                    System.out.println("?!?!?!?!??!??!!!");
+                    RecyclerAdapter ra = new RecyclerAdapter();
+                    ra.sort();
+                    adapter.notifyDataSetChanged();
+                }
+            }
 
-        List<String> descList = new ArrayList<String>();
-        descList.add("서울시 추천 순 정렬");
-        descList.add("사용자 좋아요 순 정렬");
-
-
-        ArrayAdapter<String> likeSpinnerAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, descList);
-        likeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        likeSpinner.setAdapter(likeSpinnerAdapter);
-
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Toast.makeText(MainActivity.this, "not selected", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         recyclerView.setLayoutManager(layoutManager);
 
@@ -150,35 +126,11 @@ public class MainActivity extends AppCompatActivity
         Server server = new Server(this);
         server.execute(gets);
 
-//        adapter = new RecyclerAdapter();
-//        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-
-        //메인페이지 recyclerView에 나올 아이템 ArrayList에 추가
-        //클릭하면 하는 행동(현재는 Toast메시지출력)은 RecyclerAdapter.java에서
-
-//        String a = "미니언";
-//        List<Recycler_item> items = new ArrayList<>();
-//        Recycler_item[] item = new Recycler_item[10];
-//        item[0] = new Recycler_item(R.drawable.a, "망우찜쌈밥\n중랑구 용마산로 490");
-//        item[1] = new Recycler_item(R.drawable.b, "목우촌부추삼겹살\n관악구 남현1길 68-19");
-//        item[2] = new Recycler_item(R.drawable.c, "#3");
-//        item[3] = new Recycler_item(R.drawable.d, "#4");
-//        item[4] = new Recycler_item(R.drawable.e, "#5");
-//        item[5] = new Recycler_item(R.drawable.a, "#6");
-//        item[6] = new Recycler_item(R.drawable.b, "#7");
-//        item[7] = new Recycler_item(R.drawable.c, "#8");
-//        item[8] = new Recycler_item(R.drawable.d, "#9");
-//        item[9] = new Recycler_item(R.drawable.e, "#10");
-//
-//        for (int i = 0; i < 10; i++) items.add(item[i]);
-//
-//        recyclerView.setAdapter(new RecyclerAdapter(getApplicationContext(), items, R.layout.activity_main));
     }
 
     // 서버 요청 결과 값을 adapter를 이용해 recyclerView와 연결
     public void addList(String result) {
         try {
-            List<Recycler_item> data = new ArrayList<Recycler_item>();
             JSONArray jsonArray = new JSONArray(result);
             for (int i = 0; i < jsonArray.length(); i++) {
                 Recycler_item store = new Recycler_item();
@@ -188,15 +140,45 @@ public class MainActivity extends AppCompatActivity
                 store.setName(jsonObject.getString("sh_name"));
                 store.setAddr(jsonObject.getString("sh_addr"));
                 store.setImage(jsonObject.getString("sh_photo"));
+                store.setIndutyCode(Integer.parseInt(jsonObject.getString("induty_code_se")));
                 data.add(store);
             }
             recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
             adapter = new RecyclerAdapter(MainActivity.this,data);
             recyclerView.setAdapter(adapter);
+            flag=true;
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    // 선택된 카테고리에 해당하는 정보들만 추출하여 화면에 출력
+    public void sortCategory(long id){
+        List<Recycler_item> tempData = new ArrayList<Recycler_item>();
+
+        int check = (int)id + 1;
+        // 반복문을 돌면서 사용자가 선택한 카테고리(id)와 data에 들어있는 indutyCode가 같은것을 찾아서 tempData에 참조시킴.
+        // 만약 선택된 값이 9이면 9이상인 데이터를 모두 기타 서비스업으로 취급함
+        if(check==9){
+            for (int i = 0; i < data.size(); ++i) {
+                if (data.get(i).getIndutyCode() >= check) {
+                    System.out.println("match id!");
+                    tempData.add(data.get(i));
+                }
+            }
+        }else {
+            for (int i = 0; i < data.size(); ++i) {
+                if (check == data.get(i).getIndutyCode()) {
+                    System.out.println("match id!");
+                    tempData.add(data.get(i));
+                }
+            }
+        }
+        adapter = new RecyclerAdapter(MainActivity.this,tempData);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
 
     @Override
     public void onBackPressed() {

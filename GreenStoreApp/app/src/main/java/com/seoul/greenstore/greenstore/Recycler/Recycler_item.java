@@ -9,6 +9,7 @@ public class Recycler_item {
     private String addr;
     private String image;
     private String name;
+    private int indutyCode;
 
     public Recycler_item() {
     }
@@ -19,6 +20,14 @@ public class Recycler_item {
         this.addr = addr;
         this.image = image;
         this.name = name;
+    }
+
+    public int getIndutyCode() {
+        return indutyCode;
+    }
+
+    public void setIndutyCode(int indutyCode) {
+        this.indutyCode = indutyCode;
     }
 
     public int getId() {

@@ -25,6 +25,7 @@ import com.seoul.greenstore.greenstore.R;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -34,6 +35,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     List<Recycler_item> items = Collections.emptyList();
     int currentPos = 0;
     Recycler_item current;
+
+    public RecyclerAdapter(){}
 
     public RecyclerAdapter(Context context,List<Recycler_item> data) {
         this.context = context;
@@ -50,7 +53,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        System.out.println("??"+position);
         final Recycler_item item = items.get(position);
         Recycler_item current = items.get(position);
         holder.name.setText(current.getName());
@@ -86,17 +88,29 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             addr = (TextView) itemView.findViewById(R.id.addr);
             cardview = (CardView) itemView.findViewById(R.id.cardview);
         }
+    }
+//
+//    public void addItem(int id,int like,int indutyCode,String image,String name,String addr){
+//        Recycler_item store = new Recycler_item();
+//        store.setId(id);
+//        store.setLike(like);
+//        store.setImage(image);
+//        store.setName(name);
+//        store.setIndutyCode(indutyCode);
+//        items.add(store);
+//    }
 
+    public void sort(){
+        System.out.println("EEEEEEEEEEEEEEEEEEEEE");
+        Collections.sort(items, new Comparator<Recycler_item>() {
+            @Override
+            public int compare(Recycler_item lhs, Recycler_item rhs) {
+                return (lhs.getLike() > rhs.getLike())? -1:(lhs.getLike()>rhs.getLike())?1:0;
+            }
+
+        });
     }
 
-    public void addItem(int id,int like,String image,String name,String addr){
-        Recycler_item store = new Recycler_item();
-        store.setId(id);
-        store.setLike(like);
-        store.setImage(image);
-        store.setName(name);
-        items.add(store);
-    }
 
     private class DownloadAsyncTask extends AsyncTask<ViewHolder,Void,ViewHolder> {
 
