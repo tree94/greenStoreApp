@@ -5,7 +5,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.seoul.greenstore.greenstore.MainActivity;
+import com.seoul.greenstore.greenstore.Commons.Constants;
 
 import org.json.JSONArray;
 
@@ -23,8 +23,15 @@ public class Server extends AsyncTask<String, Void, String> {
     private ProgressDialog waitDlg = null;
     Activity activity;
 
-    public Server(Activity mActivit){
+    ILoadResult loadResult;
+
+    public Server(Activity mActivit, ILoadResult loadResult) {
         activity = mActivit;
+        this.loadResult = loadResult;
+    }
+
+    public void setOnLOadResultListener(ILoadResult loadResult){
+        this.loadResult=loadResult;
     }
 
     @Override
@@ -47,13 +54,15 @@ public class Server extends AsyncTask<String, Void, String> {
             waitDlg.dismiss();
             waitDlg = null;
         }
-        ((MainActivity)activity).addList(aResult);
+        loadResult.customAddList(aResult);
+//        ((MainActivity)activity).addList(aResult);
+
     }
 
 
     protected String request(String...values) {
         final int TIME_OUT = 20;
-        final String SERVER_URL = "http://192.168.100.250:8080/greenStore/app";
+        final String SERVER_URL = Constants.GREEN_STORE_URL_APP;
         JSONArray jsonArray = null;
         StringBuffer sb= new StringBuffer();
 
@@ -78,13 +87,17 @@ public class Server extends AsyncTask<String, Void, String> {
                 sb.append(json+"\n");
             }
 
-
-
         }catch (Exception e){
             e.printStackTrace();
         }
 
         return sb.toString().trim();
     }
+
+    public interface ILoadResult{
+        public void customAddList(String result);
+    }
+
+
 }
 

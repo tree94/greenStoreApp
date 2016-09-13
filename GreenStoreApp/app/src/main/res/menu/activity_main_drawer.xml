@@ -3,31 +3,34 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="함께 그린 스토어 홈" />
+            android:id="@+id/nav_first_fragment"
+            android:icon="@drawable/ic_one"
+            android:title="Home" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="로그인/로그아웃" />
+            android:id="@+id/nav_second_fragment"
+            android:icon="@drawable/ic_two"
+            android:title="Login" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="마이페이지" />
+            android:id="@+id/nav_third_fragment"
+            android:icon="@drawable/ic_three"
+            android:title="My Page" />
+
+
+        <item android:title="">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_fourth_fragment"
+                        android:icon="@drawable/ic_three"
+                        android:title="Notice" />
+
+                    <item
+                        android:id="@+id/nav_fifth_fragment"
+                        android:icon="@drawable/ic_three"
+                        android:title="Service" />
+                </group>
+            </menu>
+        </item>
 
     </group>
-
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="공지사항"/>
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="서비스소개" />
-        </menu>
-    </item>
-
 </menu>

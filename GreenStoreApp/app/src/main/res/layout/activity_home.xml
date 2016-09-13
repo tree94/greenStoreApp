@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="0dp"
+    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:background="@drawable/mybg2"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:orientation="vertical">
+
+
+        <Spinner
+            android:id="@+id/locationSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp" />
+
+
+        <Spinner
+            android:id="@+id/typeSpinner1"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="위 조건으로 검색"
+            android:id="@+id/search_main"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+      >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Spinner
+                android:id="@+id/likeSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="1" />
+
+            <Spinner
+                android:id="@+id/typeSpinner2"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+            <include layout="@layout/recyclerview" />
+        </LinearLayout>
+    </LinearLayout>

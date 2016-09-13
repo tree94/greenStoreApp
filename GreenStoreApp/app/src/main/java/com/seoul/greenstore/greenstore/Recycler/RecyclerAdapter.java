@@ -4,7 +4,7 @@ package com.seoul.greenstore.greenstore.Recycler;
  * Created by X on 2016-09-06.
  */
 
-import android.annotation.TargetApi;
+ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,15 +12,16 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.seoul.greenstore.greenstore.R;
+import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -35,6 +36,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     List<Recycler_item> items = Collections.emptyList();
     int currentPos = 0;
     Recycler_item current;
+    private ViewHolder holder;
+    private View v;
 
     public RecyclerAdapter(){}
 
@@ -44,35 +47,54 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         this.items = data;
     }
 
+    public void setRecyclerAdapter(List<Recycler_item> data){
+        items = data;
+        notifyDataSetChanged();
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview, null);
-        return new ViewHolder(v);
+        v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview,null);
+        holder = new ViewHolder(v);
+        holder.imageView = (ImageView) v.findViewById(R.id.image);
+        holder.name = (TextView) v.findViewById(R.id.name);
+        holder.addr = (TextView) v.findViewById(R.id.addr);
+        holder.cardview = (CardView) v.findViewById(R.id.cardview);
+        v.setTag(holder);
+        return holder;
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Recycler_item item = items.get(position);
-        Recycler_item current = items.get(position);
-        holder.name.setText(current.getName());
-        holder.addr.setText(current.getAddr());
-        holder.imageURL = current.getImage();
-        new DownloadAsyncTask().execute(holder);
+        holder = (ViewHolder) v.getTag();
+        Recycler_item store = items.get(position);
+        holder.name.setText(Html.fromHtml(store.getName()));
+        holder.addr.setText(Html.fromHtml(store.getAddr()));
+        Picasso.with(context).load(store.getImage()).into(holder.imageView);
+//        final Recycler_item item = items.get(position);
+//        Recycler_item current = items.get(position);
+//        holder.name.setText(current.getName());
+//        holder.addr.setText(current.getAddr());
+//        holder.imageURL = current.getImage();
 
-        holder.cardview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, item.getName(), Toast.LENGTH_SHORT).show();
-            }
-        });
+//        Picasso.with(context).load(current.getImage()).into(holder.imageView);
+
+
+//        new DownloadAsyncTask().execute(holder);
+
+//        holder.cardview.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(context, item.getName(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     @Override
     public int getItemCount() {
         return this.items.size();
     }
-
+//    extends RecyclerView.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder{
         private ImageView imageView;
         private String imageURL;
@@ -81,13 +103,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         private TextView addr;
         private CardView cardview;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView){
             super(itemView);
-            imageView = (ImageView) itemView.findViewById(R.id.image);
-            name = (TextView) itemView.findViewById(R.id.name);
-            addr = (TextView) itemView.findViewById(R.id.addr);
-            cardview = (CardView) itemView.findViewById(R.id.cardview);
         }
+//
+//        public ViewHolder(View itemView) {
+//            super(itemView);
+//            imageView = (ImageView) itemView.findViewById(R.id.image);
+//            name = (TextView) itemView.findViewById(R.id.name);
+//            addr = (TextView) itemView.findViewById(R.id.addr);
+//            cardview = (CardView) itemView.findViewById(R.id.cardview);
+//        }
     }
 //
 //    public void addItem(int id,int like,int indutyCode,String image,String name,String addr){
@@ -119,7 +145,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             ViewHolder viewHolder = params[0];
             try{
                 InputStream in = new URL(viewHolder.imageURL).openStream();
-                viewHolder.bitmap = BitmapFactory.decodeStream(in);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 4;
+                viewHolder.bitmap = BitmapFactory.decodeStream(in,null,options);
             }catch (Exception e){
                 e.printStackTrace();
                 Log.e("error","Downloading Image Failed");
@@ -127,7 +155,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             }
             return viewHolder;
         }
-
 
         @Override
         protected void onPostExecute(ViewHolder result){
