@@ -61,8 +61,6 @@ public class HomeFragment extends Fragment implements Server.ILoadResult,Adapter
         Log.i("ADAPTER", adapter.toString());
 
         recyclerView.setAdapter(adapter);
-
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -77,6 +75,7 @@ public class HomeFragment extends Fragment implements Server.ILoadResult,Adapter
 
 
         typeSpinner2.setOnItemSelectedListener(this);
+        likeSpinner.setOnItemSelectedListener(this);
 
         return view;
     }
@@ -84,8 +83,14 @@ public class HomeFragment extends Fragment implements Server.ILoadResult,Adapter
     //업종과 관련된 스피너 선택 시
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            System.out.println("??ididid > "+ id);
-            sortCategory(id);
+        switch (parent.getId()){
+            case R.id.typeSpinner2:
+                sortCategory(id);
+                break;
+            case R.id.likeSpinner:
+                sortLike(id);
+                break;
+        }
     }
 
     @Override
@@ -130,10 +135,6 @@ public class HomeFragment extends Fragment implements Server.ILoadResult,Adapter
         int check = (int)id;
         List<Recycler_item> tempData = new ArrayList<>();
 
-
-
-//        data.clear();
-
         // 반복문을 돌면서 사용자가 선택한 카테고리(id)와 data에 들어있는 indutyCode가 같은것을 찾아서 tempData에 참조시킴.
         // 만약 선택된 값이 8이면 8이상인 데이터를 모두 기타 서비스업으로 취급함
         if(check==0) {
@@ -157,6 +158,16 @@ public class HomeFragment extends Fragment implements Server.ILoadResult,Adapter
         adapter = new RecyclerAdapter(getActivity(),tempData);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
+
+    private void sortLike(long id){
+        switch ((int)id){
+            case 0:
+
+                break;
+            case 1:
+                break;
+        }
     }
 }
 

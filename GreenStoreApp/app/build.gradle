@@ -39,5 +39,5 @@ dependencies {
 
     // push sdk를 사용하기 위해 필요.
     compile group: 'com.kakao.sdk', name: 'push', version: project.KAKAO_SDK_VERSION
-
+    compile 'com.facebook.android:facebook-android-sdk:4.+'
 }
