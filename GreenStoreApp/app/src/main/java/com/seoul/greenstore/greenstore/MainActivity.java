@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity  {
     Fragment fragment = null;
     Class fragmentClass = HomeFragment.class;
     SearchView searchView = null;
+    FragmentManager fragmentManager;
 
     public static final Stack<Fragment> mStack = new Stack<>();
 
@@ -37,10 +40,26 @@ public class MainActivity extends AppCompatActivity  {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        searchView = (SearchView) toolbar.getMenu().findItem(R.id.action_search).getActionView();
+        searchView = (SearchView) toolbar.getMenu().findItem(R.id.action_search).getActionView();
         //searchView를 통해 검색할 때 행할 옵션 리스너
 
-//        searchView.setOnQueryTextListener(new SearchView().setOnQueryTextListener(){
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Fragment fragment = new Fragment();
+                fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.activity_search, fragment );
+                fragmentTransaction.commit();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+
+        });
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         naviView = (NavigationView) findViewById(R.id.nvView);
@@ -74,7 +93,7 @@ public class MainActivity extends AppCompatActivity  {
                 startActivity(intent);
                 break;
             case R.id.nav_third_fragment:
-                fragmentClass = ImageFragment.class;
+                fragmentClass = SearchResultFragment.class;
                 break;
             case R.id.nav_fourth_fragment:
                 fragmentClass = ImageFragment.class;
@@ -96,7 +115,7 @@ public class MainActivity extends AppCompatActivity  {
             }
         }
         // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size()-1);
 
         if(!nowFragment.getClass().equals(fragmentClass))
@@ -112,10 +131,17 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main,menu);
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+
+//        getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
+
     //툴바 메뉴에서 옵션 아이템 선택했을 때
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

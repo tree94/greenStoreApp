@@ -24,7 +24,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
+<<<<<<< HEAD
         <activity android:name=".NoticeActivity" />
+=======
+>>>>>>> 3cb2e0e31c18cbb563222a57eaceaa20b7110ca8
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
