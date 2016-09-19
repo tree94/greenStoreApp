@@ -34,10 +34,6 @@
             android:name=".GlobalApplication"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher" />
-
-        <activity
-            android:name=".SearchResultActivity"
-            android:label="@string/title_activity_search_result"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        
     </application>
 </manifest>
