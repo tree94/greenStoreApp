@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.seoul.greenstore.greenstore.Recycler.RecyclerAdapter;
 import com.seoul.greenstore.greenstore.Recycler.Recycler_item;
@@ -27,7 +28,7 @@ import java.util.List;
  * Created by X on 2016-09-08.
  */
 @SuppressLint("ValidFragment")
-public class HomeFragment extends Fragment implements Server.ILoadResult,AdapterView.OnItemSelectedListener{
+public class HomeFragment extends Fragment implements Server.ILoadResult, AdapterView.OnItemSelectedListener{
 
     private RecyclerAdapter adapter;
     private List<Recycler_item> data = new ArrayList<Recycler_item>();
@@ -77,15 +78,22 @@ public class HomeFragment extends Fragment implements Server.ILoadResult,Adapter
 
 
         typeSpinner2.setOnItemSelectedListener(this);
-
+        likeSpinner.setOnItemSelectedListener(this);
         return view;
     }
 
     //업종과 관련된 스피너 선택 시
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            System.out.println("??ididid > "+ id);
-            sortCategory(id);
+            switch (parent.getId()){
+                case R.id.typeSpinner2:
+                    sortCategory(id);
+                    break;
+                case R.id.likeSpinner:
+                    Toast.makeText(getActivity(),"kl",Toast.LENGTH_LONG).show();
+                    break;
+            }
+
     }
 
     @Override

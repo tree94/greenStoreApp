@@ -1,8 +1,11 @@
+/*
 package com.seoul.greenstore.greenstore;
 
+*/
 /**
  * Created by X on 2016-09-06.
- */
+ *//*
+
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -76,3 +79,4 @@ public class SearchResultActivity extends AppCompatActivity {
 
 
 }
+*/

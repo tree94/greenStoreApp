@@ -5,7 +5,7 @@ package com.seoul.greenstore.greenstore.Commons;
  */
 public class Constants {
 
-    public static final String BASIC_URL = "http://172.30.22.170:8080/";
+    public static final String BASIC_URL = "http://172.30.49.177:8080/";
 
     public static final String GREEN_STORE_URL_BASIC = BASIC_URL+"greenStore/";
 
