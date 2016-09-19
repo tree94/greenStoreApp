@@ -21,6 +21,7 @@
         android:layout_margin="5dp"
         android:layout_weight="1"
 
+
         >
 
         <LinearLayout
@@ -29,7 +30,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:background="@drawable/shape"
+                android:background="#ff0000"
                 android:id="@+id/image"
                 android:layout_margin="5dp"
                 android:scaleType="fitXY"
