@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.seoul.greenstore.greenstore.Recycler.RecyclerAdapter;
 import com.seoul.greenstore.greenstore.Recycler.Recycler_item;
@@ -77,17 +76,12 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
 
         typeSpinner2.setOnItemSelectedListener(this);
         likeSpinner.setOnItemSelectedListener(this);
-<<<<<<< HEAD
-
-=======
->>>>>>> 3cb2e0e31c18cbb563222a57eaceaa20b7110ca8
         return view;
     }
 
     //업종과 관련된 스피너 선택 시
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-<<<<<<< HEAD
         switch (parent.getId()){
             case R.id.typeSpinner2:
                 sortCategory(id);
@@ -96,17 +90,7 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
                 sortLike(id);
                 break;
         }
-=======
-            switch (parent.getId()){
-                case R.id.typeSpinner2:
-                    sortCategory(id);
-                    break;
-                case R.id.likeSpinner:
-                    Toast.makeText(getActivity(),"kl",Toast.LENGTH_LONG).show();
-                    break;
-            }
 
->>>>>>> 3cb2e0e31c18cbb563222a57eaceaa20b7110ca8
     }
 
     @Override

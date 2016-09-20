@@ -70,7 +70,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         Recycler_item store = items.get(position);
         holder.name.setText(Html.fromHtml(store.getName()));
         holder.addr.setText(Html.fromHtml(store.getAddr()));
-        Picasso.with(context).load(store.getImage()).into(holder.imageView);
+        Picasso.with(context).load(store.getImage()).fit().centerInside().into(holder.imageView);
 //        final Recycler_item item = items.get(position);
 //        Recycler_item current = items.get(position);
 //        holder.name.setText(current.getName());

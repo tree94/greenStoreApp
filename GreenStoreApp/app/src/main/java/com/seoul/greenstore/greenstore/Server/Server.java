@@ -18,7 +18,7 @@ import java.net.URL;
 /**
  * Created by user on 2016-08-31.
  */
-public class Server extends AsyncTask<String, Void, String> implements Server.ILoadResult{
+public class Server extends AsyncTask<String, Void, String>{
 
     private ProgressDialog waitDlg = null;
     Activity activity;
