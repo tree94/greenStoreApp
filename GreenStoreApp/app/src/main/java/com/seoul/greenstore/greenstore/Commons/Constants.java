@@ -9,6 +9,6 @@ public class Constants {
 
     public static final String GREEN_STORE_URL_BASIC = BASIC_URL+"greenStore/";
 
-    public static final String GREEN_STORE_URL_APP = GREEN_STORE_URL_BASIC +"app";
-
+    public static final String GREEN_STORE_URL_APP = GREEN_STORE_URL_BASIC +"app/";
+    public static final String GREEN_STORE_URL_APP_SEARCH = GREEN_STORE_URL_APP+"search/";
 }

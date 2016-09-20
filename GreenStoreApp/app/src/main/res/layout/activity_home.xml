@@ -10,7 +10,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
-        android:background="@drawable/mybg2"
+        android:background="@drawable/mybg3"
         android:layout_width="match_parent"
         android:layout_height="180dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -18,6 +18,7 @@
 
 
         <Spinner
+
             android:id="@+id/locationSpinner"
             android:layout_width="wrap_content"
             android:layout_height="50dp" />
@@ -32,6 +33,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="위 조건으로 검색"
+            android:background="@drawable/button"
+            android:layout_marginLeft="10dp"
+
             android:id="@+id/search_main"/>
     </LinearLayout>
 
