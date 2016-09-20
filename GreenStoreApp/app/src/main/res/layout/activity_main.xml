@@ -25,6 +25,7 @@
                 android:background="#00123456"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:layout_scrollFlags="scroll|enterAlways">
+
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>

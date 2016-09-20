@@ -8,11 +8,19 @@
     android:id="@+id/activity_search"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
     <TextView
+        android:id="@+id/searchTextView"
         android:layout_margin="10dp"
         android:textAlignment="center"
-        android:text="파티룸 검색 결과입니다."
+        android:text="검색결과"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
 
 
     <include layout="@layout/recyclerview" />
