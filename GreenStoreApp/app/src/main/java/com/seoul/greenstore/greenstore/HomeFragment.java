@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.seoul.greenstore.greenstore.Commons.Constants;
 import com.seoul.greenstore.greenstore.Recycler.RecyclerAdapter;
 import com.seoul.greenstore.greenstore.Recycler.Recycler_item;
 import com.seoul.greenstore.greenstore.Server.Server;
@@ -102,7 +103,7 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
     @Override
     public void onStart() {
         super.onStart();
-        String[] gets = {"/", "GET"};
+        String[] gets = {Constants.GREEN_STORE_URL_APP, "GET"};
         Server server = new Server(getActivity(),this);
         server.execute(gets);
     }

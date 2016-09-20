@@ -8,7 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.seoul.greenstore.greenstore.Commons.Constants;
 import com.seoul.greenstore.greenstore.Recycler.RecyclerAdapter;
 import com.seoul.greenstore.greenstore.Recycler.Recycler_item;
 import com.seoul.greenstore.greenstore.Server.Server;
@@ -27,8 +29,10 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
     private View view;
     private List<Recycler_item> data = new ArrayList<Recycler_item>();
     RecyclerView recyclerView = null;
+    private TextView textView;
 
-    public SearchResultFragment newInstance(){
+
+    public static SearchResultFragment newInstance(){
         SearchResultFragment fragment = new SearchResultFragment();
         return fragment;
     }
@@ -37,6 +41,8 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
 
 // Required empty public constructor
     }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +55,19 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
 
     }
 
+
+
     @Override
     public void onStart() {
         super.onStart();
-        String[] gets = {"/", "GET"};
+        Log.d("coffee","IN");
+        String[] gets = {Constants.GREEN_STORE_URL_APP_SEARCH+MainActivity.strCommon, "GET"};
+        Log.d("hot6","URL" + Constants.GREEN_STORE_URL_APP_SEARCH+MainActivity.strCommon);
         Server server = new Server(getActivity(),this);
         server.execute(gets);
+        // 보낼때 url encoding
+
+        // 받을때 url decoding
     }
 
     @Override
@@ -65,6 +78,7 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewSearch);
+        textView = (TextView) view.findViewById(R.id.searchTextView);
         adapter = new RecyclerAdapter(getActivity(), data);
 
         Log.i("ADAPTER", adapter.toString());

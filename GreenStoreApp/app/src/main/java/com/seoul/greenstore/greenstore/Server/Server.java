@@ -5,8 +5,6 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import com.seoul.greenstore.greenstore.Commons.Constants;
-
 import org.json.JSONArray;
 
 import java.io.BufferedReader;
@@ -62,12 +60,12 @@ public class Server extends AsyncTask<String, Void, String> {
 
     protected String request(String...values) {
         final int TIME_OUT = 20;
-        final String SERVER_URL = Constants.GREEN_STORE_URL_APP;
+        final String SERVER_URL = values[0];
         JSONArray jsonArray = null;
         StringBuffer sb= new StringBuffer();
 
         try{
-            URL url = new URL(SERVER_URL+values[0]);
+            URL url = new URL(SERVER_URL);
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
             httpURLConnection.setConnectTimeout(TIME_OUT * 10000);
             httpURLConnection.setReadTimeout(TIME_OUT * 10000);
