@@ -18,11 +18,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Stack;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawer;
     private Toolbar toolbar;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity  {
     FragmentManager fragmentManager;
     private SearchView searchView;
     public MenuItem searchItem;
+    private TextView searchTextView;
 
     public static final Stack<Fragment> mStack = new Stack<>();
     public static String strCommon;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity  {
         setSupportActionBar(toolbar);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         naviView = (NavigationView) findViewById(R.id.nvView);
+        searchTextView = (TextView) findViewById(R.id.searchTextView);
         setupDrawerContent(naviView);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.llContents, new HomeFragment()).commit();
@@ -126,15 +129,14 @@ public class MainActivity extends AppCompatActivity  {
 
         super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
-         // Inflate the menu; this adds items to the action bar if it is present.
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             searchItem = menu.findItem(R.id.action_search);
             searchView = (SearchView) searchItem.getActionView();
-            searchView.setQueryHint("망우찜쌈밥");
-            searchView.setOnQueryTextListener( queryTextListener);
+            searchView.setQueryHint("음식이나 지역을 입력하세요.");
+            searchView.setOnQueryTextListener(queryTextListener);
             SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-            if(null!=searchManager ) {
+            if (null != searchManager) {
                 searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
             }
             searchView.setIconifiedByDefault(true);
@@ -147,17 +149,17 @@ public class MainActivity extends AppCompatActivity  {
         @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
         @Override
         public boolean onQueryTextSubmit(String query) {
-//Log.d("coffee", query);
+
             strCommon = query;
 
             getSupportFragmentManager().beginTransaction().replace(R.id.llContents, new SearchResultFragment()).commit();
 //            getSupportFragmentManager().beginTransaction().replace(R.id.llContents, SearchResultFragment.newInstance(query)).commit();
-
+            setTitle("검색결과");
             searchView.setQuery("", false);
             searchView.setIconified(true);
-//            ⁄⁄Toast.makeText(LostActivity.con, "onQueryTextSubmit:["+count+"]", Toast.LENGTH_LONG).show();
             return false;
         }
+
         @Override
         public boolean onQueryTextChange(String newText) {
             // TODO Auto-generated method stub
@@ -181,15 +183,7 @@ public class MainActivity extends AppCompatActivity  {
                 break;
 
             case R.id.action_search:
-                   /*   fragmentClass = SearchResultFragment.class;
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
-
-                    if (!nowFragment.getClass().equals(fragmentClass))
-                        if (fragment != null)
-                            fragmentManager.beginTransaction().replace(R.id.llContents, fragment).commit();
-                      setTitle("검색결과");*/
-                    break;
+                break;
         }
 
 

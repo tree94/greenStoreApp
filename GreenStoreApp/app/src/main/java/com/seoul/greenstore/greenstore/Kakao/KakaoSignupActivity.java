@@ -3,6 +3,7 @@ package com.seoul.greenstore.greenstore.Kakao;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
 
 import com.kakao.auth.ErrorCode;
 import com.kakao.network.ErrorResult;
@@ -12,16 +13,20 @@ import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.helper.log.Logger;
 import com.seoul.greenstore.greenstore.LoginActivity;
 import com.seoul.greenstore.greenstore.MainActivity;
+import com.seoul.greenstore.greenstore.R;
 
 public class KakaoSignupActivity extends Activity{
     /**
+     *
      * Main으로 넘길지 가입 페이지를 그릴지 판단하기 위해 me를 호출한다.
      * @param savedInstanceState 기존 session 정보가 저장된 객체
      */
 
+    ImageButton kakaoProfileImage;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        kakaoProfileImage = (ImageButton) findViewById(R.id.profileImage);
         requestMe();
     }
 
@@ -54,6 +59,7 @@ public class KakaoSignupActivity extends Activity{
             @Override
             public void onSuccess(UserProfile userProfile) {  //성공 시 userProfile 형태로 반환
                 Logger.d("UserProfile : " + userProfile);
+//                kakaoProfileImage.setImageResource(userProfile); 에러나서 관둠..오빠가하세요 캬캬캬
                 redirectMainActivity(); // 로그인 성공시 MainActivity로
             }
         });
