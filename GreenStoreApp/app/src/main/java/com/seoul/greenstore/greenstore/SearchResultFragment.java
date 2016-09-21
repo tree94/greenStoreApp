@@ -18,6 +18,8 @@ import com.seoul.greenstore.greenstore.Server.Server;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
     private List<Recycler_item> data = new ArrayList<Recycler_item>();
     RecyclerView recyclerView = null;
     private TextView textView;
-
+    String encodeStr;
 
     public static SearchResultFragment newInstance(){
         SearchResultFragment fragment = new SearchResultFragment();
@@ -60,14 +62,21 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
     @Override
     public void onStart() {
         super.onStart();
-        Log.d("coffee","IN");
-        String[] gets = {Constants.GREEN_STORE_URL_APP_SEARCH+MainActivity.strCommon, "GET"};
-        Log.d("hot6","URL" + Constants.GREEN_STORE_URL_APP_SEARCH+MainActivity.strCommon);
-        Server server = new Server(getActivity(),this);
-        server.execute(gets);
-        // 보낼때 url encoding
+        Log.d("coffee", "IN");
 
-        // 받을때 url decoding
+
+        //서버에 보낼 query를 UTF-8로 인코딩
+        try {
+            encodeStr = URLEncoder.encode(MainActivity.strCommon, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        String[] gets = {Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr, "GET"};
+        Log.d("hot6", "URL" + Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr);
+        Server server = new Server(getActivity(), this);
+        server.execute(gets);
+
     }
 
     @Override
@@ -79,6 +88,8 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewSearch);
         textView = (TextView) view.findViewById(R.id.searchTextView);
+        textView.setText("'"+MainActivity.strCommon+"'"+" 로 검색한 결과입니다.");
+
         adapter = new RecyclerAdapter(getActivity(), data);
 
         Log.i("ADAPTER", adapter.toString());

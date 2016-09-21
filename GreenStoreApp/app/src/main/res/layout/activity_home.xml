@@ -1,67 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:minHeight="0dp"
-    app:layout_scrollFlags="scroll|exitUntilCollapsed"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:background="@drawable/mybg3"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_height="match_parent"
+        android:minHeight="0dp"
         android:orientation="vertical">
 
+        <LinearLayout
 
-        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:background="@drawable/mybg3"
+            android:orientation="vertical">
 
-            android:id="@+id/locationSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp" />
-
-
-        <Spinner
-            android:id="@+id/typeSpinner1"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="위 조건으로 검색"
-            android:background="@drawable/button"
-            android:layout_marginLeft="10dp"
-
-            android:id="@+id/search_main"/>
-    </LinearLayout>
+            <Spinner
+                android:id="@+id/locationSpinner"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp" />
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-      >
+            <Spinner
+                android:id="@+id/typeSpinner1"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp" />
+
+            <Button
+                android:layout_marginTop="5dp"
+                android:id="@+id/search_main"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/button"
+                android:text="검색" />
+        </LinearLayout>
+
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <Spinner
-                android:id="@+id/likeSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_weight="1" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <Spinner
-                android:id="@+id/typeSpinner2"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_weight="1" />
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/likeSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_weight="1" />
+
+                <Spinner
+                    android:id="@+id/typeSpinner2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
             <include layout="@layout/recyclerview" />
         </LinearLayout>
     </LinearLayout>
+</ScrollView>
