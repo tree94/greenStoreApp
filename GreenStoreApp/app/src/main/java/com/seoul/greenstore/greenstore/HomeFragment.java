@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.seoul.greenstore.greenstore.Commons.Constants;
 import com.seoul.greenstore.greenstore.Recycler.RecyclerAdapter;
@@ -158,6 +159,11 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
                 }
             }
         }
+
+        if(check!=0 && tempData.size()==0){
+            Toast.makeText(getActivity(),"데이터가 없습니다.",Toast.LENGTH_SHORT).show();
+        }
+
         adapter = new RecyclerAdapter(getActivity(),tempData);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -166,7 +172,6 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
     private void sortLike(long id){
         switch ((int)id){
             case 0:
-
                 break;
             case 1:
                 break;

@@ -7,14 +7,12 @@ package com.seoul.greenstore.greenstore.Recycler;
  import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
-import android.view.LayoutInflater;
+ import android.util.Log;
+ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,19 +21,16 @@ import android.widget.TextView;
 import com.seoul.greenstore.greenstore.R;
 import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private Context context;
     private LayoutInflater inflater;
-    List<Recycler_item> items = Collections.emptyList();
-    int currentPos = 0;
-    Recycler_item current;
+    private List<Recycler_item> items = Collections.emptyList();
+    private int currentPos = 0;
+    private Recycler_item current;
     private ViewHolder holder;
     private View v;
 
@@ -47,10 +42,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         this.items = data;
     }
 
-    public void setRecyclerAdapter(List<Recycler_item> data){
-        items = data;
-        notifyDataSetChanged();
-    }
+//    public void setRecyclerAdapter(List<Recycler_item> data){
+//        items = data;
+//        notifyDataSetChanged();
+//    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview,null);
@@ -60,6 +56,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.addr = (TextView) v.findViewById(R.id.addr);
         holder.cardview = (CardView) v.findViewById(R.id.cardview);
         v.setTag(holder);
+        Log.e("tes13","112");
         return holder;
     }
 
@@ -68,8 +65,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder = (ViewHolder) v.getTag();
         Recycler_item store = items.get(position);
+        Log.e("storename",store.getName());
         holder.name.setText(Html.fromHtml(store.getName()));
         holder.addr.setText(Html.fromHtml(store.getAddr()));
+        System.out.println(store.getImage()+" image~~");
         Picasso.with(context).load(store.getImage()).fit().centerInside().into(holder.imageView);
 //        final Recycler_item item = items.get(position);
 //        Recycler_item current = items.get(position);
@@ -126,44 +125,32 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 //        items.add(store);
 //    }
 
-    public void sort(){
-        System.out.println("EEEEEEEEEEEEEEEEEEEEE");
-        Collections.sort(items, new Comparator<Recycler_item>() {
-            @Override
-            public int compare(Recycler_item lhs, Recycler_item rhs) {
-                return (lhs.getLike() > rhs.getLike())? -1:(lhs.getLike()>rhs.getLike())?1:0;
-            }
-
-        });
-    }
-
-
-    private class DownloadAsyncTask extends AsyncTask<ViewHolder,Void,ViewHolder> {
-
-        @Override
-        protected ViewHolder doInBackground(ViewHolder...params){
-            ViewHolder viewHolder = params[0];
-            try{
-                InputStream in = new URL(viewHolder.imageURL).openStream();
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 4;
-                viewHolder.bitmap = BitmapFactory.decodeStream(in,null,options);
-            }catch (Exception e){
-                e.printStackTrace();
-                Log.e("error","Downloading Image Failed");
-                viewHolder.bitmap = null;
-            }
-            return viewHolder;
-        }
-
-        @Override
-        protected void onPostExecute(ViewHolder result){
-            if(result.bitmap == null){
-                Log.e("error","error");
-                result.imageView.setImageResource(R.drawable.loading);
-            }else {
-                result.imageView.setImageBitmap(result.bitmap);
-            }
-        }
-    }
+//    private class DownloadAsyncTask extends AsyncTask<ViewHolder,Void,ViewHolder> {
+//
+//        @Override
+//        protected ViewHolder doInBackground(ViewHolder...params){
+//            ViewHolder viewHolder = params[0];
+//            try{
+//                InputStream in = new URL(viewHolder.imageURL).openStream();
+//                BitmapFactory.Options options = new BitmapFactory.Options();
+//                options.inSampleSize = 4;
+//                viewHolder.bitmap = BitmapFactory.decodeStream(in,null,options);
+//            }catch (Exception e){
+//                e.printStackTrace();
+//                Log.e("error","Downloading Image Failed");
+//                viewHolder.bitmap = null;
+//            }
+//            return viewHolder;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(ViewHolder result){
+//            if(result.bitmap == null){
+//                Log.e("error","error");
+//                result.imageView.setImageResource(R.drawable.loading);
+//            }else {
+//                result.imageView.setImageBitmap(result.bitmap);
+//            }
+//        }
+//    }
 }

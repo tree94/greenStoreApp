@@ -142,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
-        // Inflate the menu; this adds items to the action bar if it is present.
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             searchItem = menu.findItem(R.id.action_search);

@@ -30,20 +30,15 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
     private RecyclerAdapter adapter;
     private View view;
     private List<Recycler_item> data = new ArrayList<Recycler_item>();
-    RecyclerView recyclerView = null;
+    private RecyclerView recyclerView = null;
     private TextView textView;
     String encodeStr;
+
 
     public static SearchResultFragment newInstance(){
         SearchResultFragment fragment = new SearchResultFragment();
         return fragment;
     }
-
-    public SearchResultFragment() {
-
-// Required empty public constructor
-    }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,8 +51,6 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
         super.onDestroyView();
 
     }
-
-
 
     @Override
     public void onStart() {
@@ -99,14 +92,12 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
-
 // Inflate the layout for this fragment
         return view;
     }
 
     @Override
     public void customAddList(String result) {
-
             data.clear();
             try {
                 JSONArray jsonArray = new JSONArray(result);
@@ -125,7 +116,6 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
     }
 
 }

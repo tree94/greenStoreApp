@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -28,20 +28,21 @@ import java.util.Arrays;
 /**
  * Created by X on 2016-09-06.
  */
-public class LoginActivity  extends Activity implements View.OnClickListener{
+public class LoginActivity  extends Activity implements View.OnClickListener {
 
     private SessionCallback callback;      //kakao 콜백 선언
     private CallbackManager callbackManager; // facebook 콜백 선언
     private LoginButton loginButton;
-    private String faceToken;
+    private AccessToken token;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
-
-        loginButton = (LoginButton)findViewById(R.id.facebook_login_button);
+        token = AccessToken.getCurrentAccessToken();
+        loginButton = (LoginButton) findViewById(R.id.facebook_login_button);
 
         callback = new SessionCallback();                  // 이 두개의 함수 중요함
         Session.getCurrentSession().addCallback(callback);
@@ -52,16 +53,15 @@ public class LoginActivity  extends Activity implements View.OnClickListener{
         loginButton.setOnClickListener(this);
     }
 
+
     @Override
-    public void onClick(View view){
-        if(view.getId() == R.id.facebook_login_button){
-            Toast.makeText(this,"face ", Toast.LENGTH_SHORT).show();
-            if(faceToken!=null){
+    public void onClick(View view) {
+        if (view.getId() == R.id.facebook_login_button) {
+            if (token != null) {
                 LoginManager.getInstance().logOut();
                 finish();
-            }
-            LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this,
-                    Arrays.asList("public_profile", "email"));
+            } else {
+            LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this,Arrays.asList("public_profile", "email"));
             LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
                 @Override
@@ -72,7 +72,6 @@ public class LoginActivity  extends Activity implements View.OnClickListener{
                         public void onCompleted(JSONObject user, GraphResponse response) {
                             if (response.getError() != null) {
                             } else {
-                                faceToken = result.getAccessToken().getToken();
                                 Log.i("TAG", "user: " + user.toString());
                                 Log.i("TAG", "AccessToken: " + result.getAccessToken().getToken());
                                 setResult(RESULT_OK);
@@ -96,14 +95,15 @@ public class LoginActivity  extends Activity implements View.OnClickListener{
                 public void onCancel() {
                     finish();
                 }
-
             });
         }
     }
+}
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
+
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             return;
         }
