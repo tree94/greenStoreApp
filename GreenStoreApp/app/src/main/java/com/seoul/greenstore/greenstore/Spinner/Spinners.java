@@ -23,6 +23,7 @@ public class Spinners{
     private Spinner typeSpinner2;
     private Spinner likeSpinner;
 
+
     public Spinners(Context context,Spinner locationSpinner,Spinner typeSpinner1,Spinner typeSpinner2,Spinner likeSpinner) {
         this.context = context;
         this.locationSpinner = locationSpinner;
@@ -44,9 +45,25 @@ public class Spinners{
                 "마포구","서대문구","서초구","성동구","성북구","송파구","양천구","영등포구","용산구","은평구","종로구","중구","중랑구");
 
         ArrayAdapter<String> locationSpinnerApater = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_item, locList);
-        locationSpinnerApater.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                android.R.layout.simple_spinner_dropdown_item, locList);
+        locationSpinnerApater.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         locationSpinner.setAdapter(locationSpinnerApater);
+
+
+
+    /*    try {
+            Field popup = Spinner.class.getDeclaredField("mPopup");
+            popup.setAccessible(true);
+
+            // Get private mPopup member variable and try cast to ListPopupWindow
+            android.widget.ListPopupWindow popupWindow = (android.widget.ListPopupWindow) popup.get(locationSpinner);
+
+            // Set popupWindow height to 100px
+            popupWindow.setHeight(100);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }*/
     }
 
     //업종 스피너 등록 메소드
@@ -101,5 +118,6 @@ public class Spinners{
         }
         return tempData;
     }
+
 
 }

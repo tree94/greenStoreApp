@@ -1,6 +1,5 @@
 package com.seoul.greenstore.greenstore;
 
-import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -31,10 +31,13 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     Fragment fragment = null;
     Class fragmentClass = HomeFragment.class;
-    FragmentManager fragmentManager;
+    FragmentManager fragmentManager = getSupportFragmentManager();
     private SearchView searchView;
     public MenuItem searchItem;
     private TextView searchTextView;
+
+    String backStateName = null;
+    private static BackPressCloseHandler backPressCloseHandler;
 
     public static final Stack<Fragment> mStack = new Stack<>();
     public static String strCommon;
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         naviView = (NavigationView) findViewById(R.id.nvView);
         searchTextView = (TextView) findViewById(R.id.searchTextView);
         setupDrawerContent(naviView);
+        backPressCloseHandler = new BackPressCloseHandler(this);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.llContents, new HomeFragment()).commit();
     }
@@ -79,10 +83,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.nav_Mypage:
-                fragmentClass = SearchResultFragment.class;
+                fragmentClass = ImageFragment.class;
                 break;
             case R.id.nav_Notice:
-                fragmentClass = ImageFragment.class;
+                fragmentClass = NoticeFragment.class;
                 break;
             case R.id.nav_Service:
                 fragmentClass = ImageFragment.class;
@@ -102,17 +106,26 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         // Insert the fragment by replacing any existing fragment
+
+
         fragmentManager = getSupportFragmentManager();
         Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
 
-        if (!nowFragment.getClass().equals(fragmentClass))
-            if (fragment != null)
-                fragmentManager.beginTransaction().replace(R.id.llContents, fragment).commit();
+        if(fragmentClass!=null)
+        backStateName = fragmentClass.getClass().getName();
+
+        if (!nowFragment.getClass().equals(fragmentClass) && fragmentClass!=null) { //fragment not in back stack, create it.
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.llContents, fragment);
+            transaction.addToBackStack(backStateName);
+            transaction.commit();
+        }
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
         // Set action bar title
-        setTitle(menuItem.getTitle());
+        if(menuItem.getTitle()!="Login")
+            setTitle(menuItem.getTitle());
         // Close the navigation drawer
         drawer.closeDrawers();
     }
@@ -147,14 +160,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private OnQueryTextListener queryTextListener = new OnQueryTextListener() {
-        @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
         @Override
         public boolean onQueryTextSubmit(String query) {
 
             strCommon = query;
+            if(fragmentClass!=null)
+            backStateName = fragmentClass.getClass().getName();
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.llContents, new SearchResultFragment()).commit();
-//            getSupportFragmentManager().beginTransaction().replace(R.id.llContents, SearchResultFragment.newInstance(query)).commit();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.llContents, SearchResultFragment.newInstance());
+            transaction.addToBackStack(backStateName);
+            transaction.commit();
+
+
             setTitle("검색결과");
             searchView.setQuery("", false);
             searchView.setIconified(true);
@@ -192,10 +210,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // `onPostCreate` called when activity start-up is complete after `onStart()`
-    // NOTE! Make sure to override the method with only a single `Bundle` argument
+    // NOTE! Make sure to
+    // override the method with only a single `Bundle` argument
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        backPressCloseHandler.onBackPressed();
     }
 
 
