@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     public MenuItem searchItem;
     private TextView searchTextView;
 
+    public static ImageButton profileImage;
     String backStateName = null;
     private static BackPressCloseHandler backPressCloseHandler;
 
@@ -53,17 +55,18 @@ public class MainActivity extends AppCompatActivity {
         naviView = (NavigationView) findViewById(R.id.nvView);
         searchTextView = (TextView) findViewById(R.id.searchTextView);
         setupDrawerContent(naviView);
+        profileImage = (ImageButton) naviView.findViewById(R.id.profileImage);
         backPressCloseHandler = new BackPressCloseHandler(this);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.llContents, new HomeFragment()).commit();
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
+                            navigationView.setNavigationItemSelectedListener(
+                                    new NavigationView.OnNavigationItemSelectedListener() {
+                                        @Override
+                                        public boolean onNavigationItemSelected(MenuItem menuItem) {
+                                            selectDrawerItem(menuItem);
                         return true;
                     }
                 });
