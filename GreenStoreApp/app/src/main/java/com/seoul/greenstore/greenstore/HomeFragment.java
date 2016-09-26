@@ -127,6 +127,8 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
         }
     }
 
+
+
     @Override
     public void customAddList(String result) {
         addList(result);
@@ -175,5 +177,8 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
                 break;
         }
     }
+
+
 }
+
 
