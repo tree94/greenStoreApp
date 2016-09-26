@@ -13,6 +13,7 @@ public class Notice  {
     private String ncontent;
     private Date ndate;
 
+
     public int getNkey() {
         return nkey;
     }

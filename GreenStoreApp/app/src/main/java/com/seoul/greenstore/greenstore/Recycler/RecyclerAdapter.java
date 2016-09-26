@@ -4,15 +4,13 @@ package com.seoul.greenstore.greenstore.Recycler;
  * Created by X on 2016-09-06.
  */
 
- import android.annotation.TargetApi;
-import android.content.Context;
+ import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
- import android.util.Log;
- import android.view.LayoutInflater;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -60,7 +58,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return holder;
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder = (ViewHolder) v.getTag();

@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = NoticeFragment.class;
                 break;
             case R.id.nav_Service:
-                fragmentClass = ImageFragment.class;
+                fragmentClass = ReviewFragment.class;
                 break;
 
             default:

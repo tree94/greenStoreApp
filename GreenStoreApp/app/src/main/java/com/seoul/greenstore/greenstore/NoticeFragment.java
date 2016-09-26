@@ -109,6 +109,7 @@ public class NoticeFragment extends Fragment implements Server.ILoadResult {
             });
 
             alertDlg.setMessage(items.get(position).getNkey()+") "+items.get(position).getNtitle()+"\n\n"+items.get(position).getNcontent());
+
             alertDlg.show();
         }
     }
