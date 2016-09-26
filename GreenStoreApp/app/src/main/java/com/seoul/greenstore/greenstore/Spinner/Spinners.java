@@ -39,6 +39,18 @@ public class Spinners{
         setLikeSpinner();
     }
 
+    //Review에 필요한 Spinner
+    public Spinners(Context context,Spinner locationSpinner,Spinner typeSpinner1) {
+        this.context = context;
+        this.locationSpinner = locationSpinner;
+        this.typeSpinner1 = typeSpinner1;
+
+        //구와 관련된 스피너 등록
+        setLocationSpinner();
+        //업종과 관련된 스피너 등록
+        setTypeSpinner();
+    }
+
     //지역구 스피너 등록 메소드
     public void setLocationSpinner(){
         List<String> locList = Arrays.asList("강남구","강동구","강북구","강서구","관악구","광진구","구로구","금천구","노원구","도봉구","동대문구","동작구",
@@ -80,6 +92,7 @@ public class Spinners{
                 android.R.layout.simple_spinner_item, list);
         typeSpinner1Adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         typeSpinner1.setAdapter(typeSpinner1Adapter);
+        if(typeSpinner2!=null)
         typeSpinner2.setAdapter(typeSpinner1Adapter); //스피너 Spinner 1,2 내용 똑같아서 그냥 같이붙임
         return spinnerMap;
     }

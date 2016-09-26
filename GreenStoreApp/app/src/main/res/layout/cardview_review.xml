@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardview_review"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/profileImage_review"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/circle" />
+
+                <TextView
+                    android:id="@+id/userId_review"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/profileImage_review"
+                    android:text="진소라"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/date_review"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/userId_review"
+                    android:text="2016.09.26 18:23"
+                    android:textSize="9dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="10dp"/>
+
+                <ImageButton
+                    android:id="@+id/like_image"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/like_number"
+                    android:background="@drawable/heart_false" />
+
+                <TextView
+                    android:id="@+id/like_number"
+                    android:layout_width="35dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/malpungsun"
+                    android:gravity="center"
+                    android:text="22"
+                    android:textAlignment="center" />
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/content_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/like_image"
+                android:layout_marginTop="10dp"
+                android:text="망우찜쌈밥 리뷰입니다\n맛있어용\nㅋㅋ" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/reviewImage1"
+                    android:layout_width="100dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/a" />
+
+                <ImageView
+                    android:id="@+id/reviewImage2"
+                    android:layout_width="100dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/b" />
+
+                <ImageView
+                    android:id="@+id/reviewImage3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/c" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>
