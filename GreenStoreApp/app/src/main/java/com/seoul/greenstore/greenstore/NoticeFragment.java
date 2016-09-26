@@ -80,10 +80,14 @@ public class NoticeFragment extends Fragment implements Server.ILoadResult {
                 notice.setNcontent(jsonObject.getString("ncontent"));
 
                 //String으로 받는 ndate를 Date로 바꾼 후 실행
-                String from = jsonObject.getString("ndate");
+                Date from = new Date(Long.valueOf(jsonObject.getString("ndate")));
                 SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date to = transFormat.parse(from);
+                String temp = transFormat.format(from);
+                Date to = transFormat.parse(temp);
                 notice.setNdate(to);
+                Log.e("dateformat",""+transFormat.format(from));
+//                Date to = transFormat.parse(String.valueOf(from));
+//                notice.setNdate(to);
 
                 items.add(notice);
             }

@@ -13,15 +13,19 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,19 +34,19 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private NavigationView naviView;
     private ActionBarDrawerToggle drawerToggle;
-    Fragment fragment = null;
-    Class fragmentClass = HomeFragment.class;
-    FragmentManager fragmentManager = getSupportFragmentManager();
+    private Fragment fragment = null;
     private SearchView searchView;
-    public MenuItem searchItem;
+    private MenuItem searchItem;
     private TextView searchTextView;
-
-    public static ImageButton profileImage;
-    String backStateName = null;
+    private String backStateName = null;
     private static BackPressCloseHandler backPressCloseHandler;
-
+    private static final int LOGIN_ACTIVITY = 0;
     public static final Stack<Fragment> mStack = new Stack<>();
     public static String strCommon;
+    public static ImageView profileImage;
+
+    Class fragmentClass = HomeFragment.class;
+    FragmentManager fragmentManager = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         naviView = (NavigationView) findViewById(R.id.nvView);
         searchTextView = (TextView) findViewById(R.id.searchTextView);
         setupDrawerContent(naviView);
-        profileImage = (ImageButton) naviView.findViewById(R.id.profileImage);
+        profileImage = (ImageView) naviView.findViewById(R.id.profileImage);
         backPressCloseHandler = new BackPressCloseHandler(this);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.llContents, new HomeFragment()).commit();
@@ -72,6 +76,21 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case LOGIN_ACTIVITY:
+                if(resultCode==RESULT_OK){
+                    ArrayList<String> userData = data.getStringArrayListExtra("userData");
+                    Log.v("userimage",""+userData.get(5));
+                    Log.v("profile",""+profileImage);
+                    Picasso.with(getApplicationContext()).load(userData.get(5)).into(profileImage);
+                }
+                break;
+        }
+    }
+
     //Drawer에서 항목을 선택했을 때 전환해줄 fragment 선택
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
@@ -83,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_Login:
                 fragmentClass = null;
                 Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,LOGIN_ACTIVITY);
                 break;
             case R.id.nav_Mypage:
                 fragmentClass = ImageFragment.class;
