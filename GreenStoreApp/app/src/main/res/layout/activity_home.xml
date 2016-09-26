@@ -38,7 +38,8 @@
                 android:layout_height="40dp"
                 android:layout_marginLeft="15dp"
                 android:background="@drawable/button"
-                android:text="검색" />
+                android:text="검색"
+                android:textSize="12dp"/>
         </LinearLayout>
 
 
@@ -67,5 +68,7 @@
 
             <include layout="@layout/recyclerview" />
         </LinearLayout>
+
+
     </LinearLayout>
 </ScrollView>
