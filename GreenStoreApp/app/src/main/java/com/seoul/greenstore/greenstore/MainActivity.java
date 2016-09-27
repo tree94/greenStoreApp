@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView searchTextView;
     private  ImageView profileImage;
     private TextView userIdView;
+    private ArrayList<String> facebookUserData;
+    private String kakaoUserData;
+    private MenuItem loginItem;
     private String backStateName = null;
     private static BackPressCloseHandler backPressCloseHandler;
     private static final int LOGIN_ACTIVITY = 0;
@@ -63,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
 
         backPressCloseHandler = new BackPressCloseHandler(this);
 
+//        Intent intent = getIntent();
+//        kakaoUserData = intent.getStringExtra("kakaoData");
+
         getSupportFragmentManager().beginTransaction().replace(R.id.llContents, new HomeFragment()).commit();
     }
 
@@ -83,11 +90,18 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode){
             case LOGIN_ACTIVITY:
                 if(resultCode==RESULT_OK){
-                    ArrayList<String> userData = data.getStringArrayListExtra("userData");
-                    profileImage = (ImageView) naviView.findViewById(R.id.profileImage);
-                    userIdView = (TextView) naviView.findViewById(R.id.userId);
-                    userIdView.setText(userData.get(1));
-                    Picasso.with(getApplicationContext()).load(userData.get(5)).fit().into(profileImage);
+                    if(data.getStringArrayListExtra("userData")!=null) {
+                        facebookUserData = data.getStringArrayListExtra("userData");
+                        profileImage = (ImageView) naviView.findViewById(R.id.profileImage);
+                        userIdView = (TextView) naviView.findViewById(R.id.userId);
+                        userIdView.setText(facebookUserData.get(1));
+                        Picasso.with(getApplicationContext()).load(facebookUserData.get(5)).fit().into(profileImage);
+                    }
+                    else{
+                        kakaoUserData = data.getStringExtra("kakaoData");
+                        Log.v("kakaoData!! ",kakaoUserData);
+                    }
+
                 }
                 break;
         }

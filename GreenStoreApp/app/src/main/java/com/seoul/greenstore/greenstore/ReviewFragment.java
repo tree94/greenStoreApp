@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.seoul.greenstore.greenstore.Commons.Constants;
 import com.seoul.greenstore.greenstore.Review.ReviewAdapter;
 import com.seoul.greenstore.greenstore.Review.Review_item;
 import com.seoul.greenstore.greenstore.Server.Server;
@@ -58,12 +57,10 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult{
         super.onStart();
         Log.d("coffee", "IN");
 
-
-
-        String[] gets = {Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr, "GET"};
-        Log.d("hot6", "URL" + Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr);
-        Server server = new Server(getActivity(), this);
-        server.execute(gets);
+//        String[] gets = {Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr, "GET"};
+//        Log.d("hot6", "URL" + Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr);
+//        Server server = new Server(getActivity(), this);
+//        server.execute(gets);
 
     }
 
