@@ -11,12 +11,18 @@ import android.view.ViewGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.seoul.greenstore.greenstore.Commons.Constants;
 import com.seoul.greenstore.greenstore.Review.ReviewAdapter;
 import com.seoul.greenstore.greenstore.Review.Review_item;
 import com.seoul.greenstore.greenstore.Server.Server;
 import com.seoul.greenstore.greenstore.Spinner.Spinners;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,10 +60,10 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult{
 
 
 
-//        String[] gets = {Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr, "GET"};
-//        Log.d("hot6", "URL" + Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr);
-//        Server server = new Server(getActivity(), this);
-//        server.execute(gets);
+        String[] gets = {Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr, "GET"};
+        Log.d("hot6", "URL" + Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr);
+        Server server = new Server(getActivity(), this);
+        server.execute(gets);
 
     }
 
@@ -85,7 +91,7 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult{
 
     @Override
     public void customAddList(String result) {
-       /* data.clear();
+        data.clear();
         try {
             JSONArray jsonArray = new JSONArray(result);
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -108,7 +114,7 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult{
             adapter.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
 }
