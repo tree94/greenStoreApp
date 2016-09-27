@@ -8,6 +8,16 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
     -->
 
+    <!--<com.facebook.login.widget.ProfilePictureView-->
+        <!--android:id="@+id/profileImage"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:background="#00ff0000"-->
+        <!--android:scaleType="centerInside"-->
+        <!--android:src="@drawable/circle"/>-->
+
     <ImageView
         android:id="@+id/profileImage"
         android:layout_width="wrap_content"

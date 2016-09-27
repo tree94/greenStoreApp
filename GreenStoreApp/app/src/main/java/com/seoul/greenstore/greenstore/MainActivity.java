@@ -13,7 +13,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -38,12 +37,14 @@ public class MainActivity extends AppCompatActivity {
     private SearchView searchView;
     private MenuItem searchItem;
     private TextView searchTextView;
+    private  ImageView profileImage;
+    private TextView userIdView;
     private String backStateName = null;
     private static BackPressCloseHandler backPressCloseHandler;
     private static final int LOGIN_ACTIVITY = 0;
     public static final Stack<Fragment> mStack = new Stack<>();
     public static String strCommon;
-    public static ImageView profileImage;
+
 
     Class fragmentClass = HomeFragment.class;
     FragmentManager fragmentManager = getSupportFragmentManager();
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         naviView = (NavigationView) findViewById(R.id.nvView);
         searchTextView = (TextView) findViewById(R.id.searchTextView);
         setupDrawerContent(naviView);
-        profileImage = (ImageView) naviView.findViewById(R.id.profileImage);
+
         backPressCloseHandler = new BackPressCloseHandler(this);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.llContents, new HomeFragment()).commit();
@@ -83,9 +84,10 @@ public class MainActivity extends AppCompatActivity {
             case LOGIN_ACTIVITY:
                 if(resultCode==RESULT_OK){
                     ArrayList<String> userData = data.getStringArrayListExtra("userData");
-                    Log.v("userimage",""+userData.get(5));
-                    Log.v("profile",""+profileImage);
-                    Picasso.with(getApplicationContext()).load(userData.get(5)).into(profileImage);
+                    profileImage = (ImageView) naviView.findViewById(R.id.profileImage);
+                    userIdView = (TextView) naviView.findViewById(R.id.userId);
+                    userIdView.setText(userData.get(1));
+                    Picasso.with(getApplicationContext()).load(userData.get(5)).fit().into(profileImage);
                 }
                 break;
         }
