@@ -33,6 +33,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -80,13 +81,19 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private LayoutInflater layoutInflater;
     private View naviLayout;
     private Target target;
-
+    private Intent intent;
+    private Bundle extra;
+    private String picUrl;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
+
+        intent = new Intent();
+
         token = AccessToken.getCurrentAccessToken();
         loginButton = (LoginButton) findViewById(R.id.facebook_login_button);
 
@@ -94,9 +101,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         layoutInflater = getLayoutInflater();
         naviLayout = layoutInflater.inflate(R.layout.nav_header_main, null);
 
-
-
-        profileImage = (ImageButton) naviLayout.findViewById(R.id.profileImage);
+//        profileImage = (ImageButton) naviLayout.findViewById(R.id.profileImage);
 
         Log.e("imageid", "" + profileImage);
         callback = new SessionCallback();                  // 이 두개의 함수 중요함
@@ -117,7 +122,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 LoginManager.getInstance().logOut();
                 finish();
             } else {
-                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile", "email"));
+//                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile", "email"));
                 LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
                     @Override
@@ -129,52 +134,31 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                 if (response.getError() != null) {
                                 } else {
                                     String userId = user.optString("id");
-                                    System.out.println(userId + " ~!!");
-                                    //프로필 이미지
-//                                    Target bitmapTarget = new BitmapTarget();
+                                    String userName = user.optString("name");
+                                    String userEmail = user.optString("email");
+                                    String gender = user.optString("gender");
+                                    String birth = user.optString("birthday");
+
                                     try {
-                                        String picUrl = user.getJSONObject("picture").getJSONObject("data").getString("url");
-
+                                        picUrl = user.getJSONObject("picture").getJSONObject("data").getString("url");
                                         Log.i("PICURL", picUrl);
-
+//                                        setResult(RESULT_OK,intent);
+//                                        finish();
                                        // Picasso.with(LoginActivity.this).load(picUrl).into(profileImage);
-                                        new AsyncProfileTask().execute(picUrl);
+//                                        new AsyncProfileTask().execute(picUrl);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-//                                    new GraphRequest(
-//                                            AccessToken.getCurrentAccessToken(),
-//                                            "/"+userId+"/picture",
-//                                            null,
-//                                            HttpMethod.GET,
-//                                            new GraphRequest.Callback() {
-//                                                public void onCompleted(GraphResponse response) {
-//            /* handle the result */                 JSONObject res = response.getJSONObject();
-//                                                    Log.i("res",""+res);
-//                                                }
-//                                            }
-//                                    ).executeAsync();
-                                   // new ProfileThread(userId).start();
-//                                    Picasso.with(getApplicationContext()).load("http://graph.facebook.com/" + userId + "/picture").into(new Target() {
-//                                        @Override
-//                                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-//                                            BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
-//                                            profileImage.setBackground(bitmapDrawable);
-//                                        }
-//
-//                                        @Override
-//                                        public void onBitmapFailed(Drawable errorDrawable) {
-//                                            Log.d("TAG", "FAILED");
-//                                        }
-//
-//                                        @Override
-//                                        public void onPrepareLoad(Drawable placeHolderDrawable) {
-//                                            Log.d("TAG", "Prepare Load");
-//                                        }
-//                                    });
                                     Log.i("TAG", "user: " + user.toString());
                                     Log.i("TAG", "AccessToken: " + result.getAccessToken().getToken());
-                                    setResult(RESULT_OK);
+
+                                    ArrayList<String> userData = new ArrayList<String>(
+                                            Arrays.asList(userId,userName,userEmail,gender,birth,picUrl)
+                                    );
+                                    extra = new Bundle();
+                                    extra.putStringArrayList("userData",userData);
+                                    intent.putExtras(extra);
+                                    setResult(RESULT_OK,intent);
                                     finish();
                                 }
                             }
@@ -262,8 +246,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         @Override
         protected void onPostExecute(Bitmap bitmap) {
             super.onPostExecute(bitmap);
-            if(MainActivity.profileImage != null)
-             MainActivity.profileImage.setImageBitmap(bitmap);
+            bitmap = bitmap;
+//            if(MainActivity.profileImage != null)
+//             MainActivity.profileImage.setImageBitmap(bitmap);
 
         }
     }
