@@ -23,25 +23,28 @@ import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
-
     private DrawerLayout drawer;
     private Toolbar toolbar;
+    private MenuItem menu;
     private NavigationView naviView;
     private ActionBarDrawerToggle drawerToggle;
     private Fragment fragment = null;
     private SearchView searchView;
     private MenuItem searchItem;
     private TextView searchTextView;
-    private  ImageView profileImage;
+    private ImageView profileImage;
     private TextView userIdView;
-    private ArrayList<String> facebookUserData;
-    private String kakaoUserData;
+    private ArrayList<String> facebookUserData = null;
+    private ArrayList<String> kakaoUserData = null;
     private MenuItem loginItem;
     private String backStateName = null;
     private static BackPressCloseHandler backPressCloseHandler;
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.v("startAcitivit","12312344");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -98,27 +102,52 @@ public class MainActivity extends AppCompatActivity {
                         Picasso.with(getApplicationContext()).load(facebookUserData.get(5)).fit().into(profileImage);
                     }
                     else{
-                        kakaoUserData = data.getStringExtra("kakaoData");
-                        Log.v("kakaoData!! ",kakaoUserData);
+                        kakaoUserData = data.getStringArrayListExtra("kakaoData");
+                        try{
+                            Log.v("kakaouserData",kakaoUserData.get(0));
+                        }catch (Exception e){}
+                        userIdView = (TextView) naviView.findViewById(R.id.userId);
+                        userIdView.setText(kakaoUserData.get(0));
                     }
-
-                }
-                break;
+                    Log.v("test123","!2345555");
+                    menu.setTitle("Logout");
+                }break;
         }
     }
 
     //Drawer에서 항목을 선택했을 때 전환해줄 fragment 선택
-    public void selectDrawerItem(MenuItem menuItem) {
+    public void selectDrawerItem(final MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
-
+        this.menu = menuItem;
         switch (menuItem.getItemId()) {
             case R.id.nav_Home:
                 fragmentClass = HomeFragment.class;
                 break;
             case R.id.nav_Login:
-                fragmentClass = null;
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivityForResult(intent,LOGIN_ACTIVITY);
+                if(facebookUserData==null && kakaoUserData==null) {
+                    fragmentClass = null;
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivityForResult(intent, LOGIN_ACTIVITY);
+                }
+                else{
+                    profileImage = (ImageView)findViewById(R.id.profileImage);
+                    if(facebookUserData!=null){
+                        LoginManager.getInstance().logOut();
+                        finish();
+                    }else{
+                        Log.v("kakaologout","logout");
+                        UserManagement.requestLogout(new LogoutResponseCallback() {
+                            @Override
+                            public void onCompleteLogout() {
+                                Log.v("loginCheck","checkechk");
+                            }
+                        });
+                    }
+                    profileImage.setImageResource(R.drawable.circle);
+                    userIdView.setText("로그인하세요");
+                    menuItem.setTitle("Login");
+                }
+
                 break;
             case R.id.nav_Mypage:
                 fragmentClass = ImageFragment.class;
@@ -129,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_Service:
                 fragmentClass = ReviewFragment.class;
                 break;
-
             default:
                 fragmentClass = ImageFragment.class;
         }

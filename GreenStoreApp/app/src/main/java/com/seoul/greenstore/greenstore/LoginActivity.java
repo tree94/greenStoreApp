@@ -22,8 +22,6 @@ import com.facebook.login.widget.LoginButton;
 import com.kakao.auth.ErrorCode;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
-import com.kakao.kakaotalk.KakaoTalkService;
-import com.kakao.kakaotalk.response.KakaoTalkProfile;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.MeResponseCallback;
@@ -182,12 +180,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 });
             }
         }
-        else if(view.getId() == R.id.com_kakao_login){
-            Log.v("kakak","12121");
-//            KakaoSDK.init(new KakaoSDKAdapter());
-
-//            requestMe();
-        }
     }
 
     protected void requestMe() { //유저의 정보를 받아오는 함수
@@ -215,26 +207,26 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
             @Override
             public void onSuccess(UserProfile userProfile) {  //성공 시 userProfile 형태로 반환
-                KakaoTalkService.requestProfile(new KakaoTalkResponseCallback<KakaoTalkProfile>() {
-                    @Override
-                    public void onSuccess(KakaoTalkProfile talkProfile) {
-                        final String nickName = talkProfile.getNickName();
-                        final String profileImageURL = talkProfile.getProfileImageURL();
-                        final String thumbnailURL = talkProfile.getThumbnailURL();
-                        final String countryISO = talkProfile.getCountryISO();
-                    }
-                });
 
                 Log.d("UserProfile" , userProfile.toString());
-//                kakaoProfileImage.setImageResource(userProfile); 에러나서 관둠..오빠가하세요 캬캬캬
                 redirectMainActivity(userProfile); // 로그인 성공시 MainActivity로
+//                kakaoProfileImage.setImageResource(userProfile); 에러나서 관둠..오빠가하세요 캬캬캬
+
             }
         });
     }
 
     private void redirectMainActivity(UserProfile userProfile) {
+        Log.v("userprofile","profile1");
+        String nickname = userProfile.getNickname();
+        String profile = userProfile.getProfileImagePath();
+        String thumnail = userProfile.getThumbnailImagePath();
+        ArrayList<String> userData = new ArrayList<String>(
+                Arrays.asList(nickname,profile,thumnail)
+        );
+
         extra = new Bundle();
-        extra.putString("kakaoData",userProfile.toString());
+        extra.putStringArrayList("kakaoData",userData);
         intent.putExtras(extra);
         setResult(RESULT_OK,intent);
         finish();
