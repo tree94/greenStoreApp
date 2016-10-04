@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.v("startAcitivit","12312344");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -72,9 +71,6 @@ public class MainActivity extends AppCompatActivity {
         setupDrawerContent(naviView);
 
         backPressCloseHandler = new BackPressCloseHandler(this);
-
-//        Intent intent = getIntent();
-//        kakaoUserData = intent.getStringExtra("kakaoData");
 
         getSupportFragmentManager().beginTransaction().replace(R.id.llContents, new HomeFragment()).commit();
     }
@@ -104,14 +100,9 @@ public class MainActivity extends AppCompatActivity {
                         Picasso.with(getApplicationContext()).load(facebookUserData.get(5)).fit().into(profileImage);
                     } else {
                         kakaoUserData = data.getStringArrayListExtra("kakaoData");
-                        try {
-                            Log.v("kakaouserData", kakaoUserData.get(0));
-                        } catch (Exception e) {
-                        }
                         userIdView = (TextView) naviView.findViewById(R.id.userId);
                         userIdView.setText(kakaoUserData.get(0));
                     }
-                    Log.v("test123", "!2345555");
                     menu.setTitle("Logout");
                 }break;
         }
@@ -148,6 +139,8 @@ public class MainActivity extends AppCompatActivity {
                     profileImage.setImageResource(R.drawable.circle);
                     userIdView.setText("로그인하세요");
                     menuItem.setTitle("Login");
+                    facebookUserData=null;
+                    kakaoUserData=null;
                 }
 
                 break;
