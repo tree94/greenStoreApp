@@ -62,6 +62,12 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult{
         String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW, "GET"};
         Server server = new Server(getActivity(), this);
         server.execute(gets);
+        Log.d("coffee", "IN");
+
+//        String[] gets = {Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr, "GET"};
+//        Log.d("hot6", "URL" + Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr);
+//        Server server = new Server(getActivity(), this);
+//        server.execute(gets);
 
     }
 

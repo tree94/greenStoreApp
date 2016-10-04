@@ -10,7 +10,14 @@
             android:id="@+id/nav_Login"
             android:icon="@drawable/ic_two"
             android:title="Login" />
+<<<<<<< HEAD
 
+=======
+        <!--<item-->
+            <!--android:id="@+id/nav_Logout"-->
+            <!--android:icon="@drawable/ic_two"-->
+            <!--android:title="Logout" />-->
+>>>>>>> 01c2a85bcbc7de8d119180b2e7aad9ba8e32a234
         <item
             android:id="@+id/nav_Mypage"
             android:icon="@drawable/ic_three"

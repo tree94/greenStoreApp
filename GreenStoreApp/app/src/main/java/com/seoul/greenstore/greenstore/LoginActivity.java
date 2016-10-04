@@ -19,10 +19,15 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.kakao.auth.ErrorCode;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
+import com.kakao.network.ErrorResult;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.MeResponseCallback;
+import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
-import com.seoul.greenstore.greenstore.Kakao.KakaoSignupActivity;
+import com.kakao.util.helper.log.Logger;
 import com.squareup.picasso.Target;
 
 import org.json.JSONException;
@@ -39,7 +44,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     private SessionCallback callback;      //kakao 콜백 선언
     private CallbackManager callbackManager; // facebook 콜백 선언
+<<<<<<< HEAD
     private LoginButton facebookLoginButton;
+=======
+    private LoginButton FacebookLoginButton;
+>>>>>>> 01c2a85bcbc7de8d119180b2e7aad9ba8e32a234
     private com.kakao.usermgmt.LoginButton kakaoLoginButton;
     private AccessToken token;
     private ImageButton profileImage;
@@ -55,21 +64,36 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
+
         setContentView(R.layout.activity_login);
 
         intent = new Intent();
 
         token = AccessToken.getCurrentAccessToken();
+<<<<<<< HEAD
         facebookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
         kakaoLoginButton = (com.kakao.usermgmt.LoginButton) findViewById(R.id.com_kakao_login);
 
         callback = new SessionCallback();                  // 이 두개의 함수 중요함
         Session.getCurrentSession().addCallback(callback);
+=======
+        FacebookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
+        kakaoLoginButton = (com.kakao.usermgmt.LoginButton) findViewById(R.id.com_kakao_login);
+>>>>>>> 01c2a85bcbc7de8d119180b2e7aad9ba8e32a234
 
         // facebook 매니저.
         callbackManager = CallbackManager.Factory.create();
 
+<<<<<<< HEAD
         facebookLoginButton.setOnClickListener(this);
+=======
+        // kakao 콜백
+        callback = new SessionCallback();                  // 이 두개의 함수 중요함
+        Session.getCurrentSession().addCallback(callback);
+//        Session.getCurrentSession().checkAndImplicitOpen();
+
+        FacebookLoginButton.setOnClickListener(this);
+>>>>>>> 01c2a85bcbc7de8d119180b2e7aad9ba8e32a234
         kakaoLoginButton.setOnClickListener(this);
     }
 
@@ -146,6 +170,63 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    protected void requestMe() { //유저의 정보를 받아오는 함수
+        UserManagement.requestMe(new MeResponseCallback() {
+            @Override
+            public void onFailure(ErrorResult errorResult) {
+                String message = "failed to get user info. msg=" + errorResult;
+                Logger.d(message);
+
+                ErrorCode result = ErrorCode.valueOf(errorResult.getErrorCode());
+                if (result == ErrorCode.CLIENT_ERROR_CODE) {
+                    finish();
+                } else {
+                    redirectLoginActivity();
+                }
+            }
+
+            @Override
+            public void onSessionClosed(ErrorResult errorResult) {
+                redirectLoginActivity();
+            }
+
+            @Override
+            public void onNotSignedUp() {} // 카카오톡 회원이 아닐 시 showSignup(); 호출해야함
+
+            @Override
+            public void onSuccess(UserProfile userProfile) {  //성공 시 userProfile 형태로 반환
+
+                Log.d("UserProfile" , userProfile.toString());
+                redirectMainActivity(userProfile); // 로그인 성공시 MainActivity로
+//                kakaoProfileImage.setImageResource(userProfile); 에러나서 관둠..오빠가하세요 캬캬캬
+
+            }
+        });
+    }
+
+    private void redirectMainActivity(UserProfile userProfile) {
+        Log.v("userprofile","profile1");
+        String nickname = userProfile.getNickname();
+        String profile = userProfile.getProfileImagePath();
+        String thumnail = userProfile.getThumbnailImagePath();
+        ArrayList<String> userData = new ArrayList<String>(
+                Arrays.asList(nickname,profile,thumnail)
+        );
+
+        extra = new Bundle();
+        extra.putStringArrayList("kakaoData",userData);
+        intent.putExtras(extra);
+        setResult(RESULT_OK,intent);
+        finish();
+    }
+
+    protected void redirectLoginActivity() {
+        final Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -181,6 +262,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
 
     protected void redirectSignupActivity() {       //세션 연결 성공 시 SignupActivity로 넘김
+<<<<<<< HEAD
         final Intent intent = new Intent(this, KakaoSignupActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
@@ -188,4 +270,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
 
+=======
+//        final Intent intent = new Intent(this, KakaoSignupActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//        startActivity(intent);
+//        finish();
+        requestMe();
+    }
+>>>>>>> 01c2a85bcbc7de8d119180b2e7aad9ba8e32a234
 }

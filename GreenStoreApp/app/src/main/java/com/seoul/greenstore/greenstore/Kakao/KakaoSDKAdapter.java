@@ -2,6 +2,7 @@ package com.seoul.greenstore.greenstore.Kakao;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.kakao.auth.ApprovalType;
 import com.kakao.auth.AuthType;
@@ -9,7 +10,7 @@ import com.kakao.auth.IApplicationConfig;
 import com.kakao.auth.ISessionConfig;
 import com.kakao.auth.KakaoAdapter;
 
-public class KakaoSDKAdapter extends KakaoAdapter {
+public class  KakaoSDKAdapter extends KakaoAdapter {
 
     /**
      * Session Config에 대해서는 default값들이 존재한다.
@@ -18,10 +19,11 @@ public class KakaoSDKAdapter extends KakaoAdapter {
      */
     @Override
     public ISessionConfig getSessionConfig() {
+        Log.v("ee123","123123");
         return new ISessionConfig() {
             @Override
             public AuthType[] getAuthTypes() {
-                return new AuthType[] {AuthType.KAKAO_LOGIN_ALL};
+                return new AuthType[] {AuthType.KAKAO_TALK};
             }
 
             @Override

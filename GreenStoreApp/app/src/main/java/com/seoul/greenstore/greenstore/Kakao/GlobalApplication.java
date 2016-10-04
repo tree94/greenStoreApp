@@ -2,6 +2,7 @@ package com.seoul.greenstore.greenstore.Kakao;
 
 import android.app.Activity;
 import android.app.Application;
+import android.util.Log;
 
 import com.kakao.auth.KakaoSDK;
 
@@ -14,6 +15,7 @@ public class GlobalApplication extends Application {
 
     @Override
     public void onCreate() {
+        Log.v("log123","!23123");
         super.onCreate();
         instance = this;
 
