@@ -3,8 +3,6 @@ package com.seoul.greenstore.greenstore;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,9 +28,6 @@ import com.squareup.picasso.Target;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -40,42 +35,12 @@ import java.util.Arrays;
  * Created by X on 2016-09-06.
  */
 
-//final class BitmapTarget implements Target {
-//    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-//    @Override
-//    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-//        BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
-//        LoginActivity.profileImage.setBackground(bitmapDrawable);
-//
-//        //imageViewTest
-////        ImageView image = new ImageView(this);
-////        image.setImageResource("");
-////        setContentView(image);
-////        ((ImageView) findViewById(R.id.imageView1))
-////        bmImage.setImageBitmap(result);
-////
-//
-//        //LoginActivity.imageViewTest.setImageBitmap(bitmap);
-//        //LoginActivity.textViewTest.setBackground(bitmapDrawable);
-//        Log.d("TAG", "onBitmapLoaded.");
-//
-//    }
-//
-//    @Override
-//    public void onBitmapFailed(Drawable errorDrawable) {
-//        Log.d("TAG", "FAILED");
-//    }
-//
-//    @Override
-//    public void onPrepareLoad(Drawable placeHolderDrawable) {
-//        Log.d("TAG", "Prepare Load");
-//    }
-//}
 public class LoginActivity extends Activity implements View.OnClickListener {
 
     private SessionCallback callback;      //kakao 콜백 선언
     private CallbackManager callbackManager; // facebook 콜백 선언
-    private LoginButton loginButton;
+    private LoginButton facebookLoginButton;
+    private com.kakao.usermgmt.LoginButton kakaoLoginButton;
     private AccessToken token;
     private ImageButton profileImage;
     private LayoutInflater layoutInflater;
@@ -95,23 +60,17 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         intent = new Intent();
 
         token = AccessToken.getCurrentAccessToken();
-        loginButton = (LoginButton) findViewById(R.id.facebook_login_button);
+        facebookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
+        kakaoLoginButton = (com.kakao.usermgmt.LoginButton) findViewById(R.id.com_kakao_login);
 
-        //profileImage아이디를 다른 레이아웃으로부터 가져옴
-        layoutInflater = getLayoutInflater();
-        naviLayout = layoutInflater.inflate(R.layout.nav_header_main, null);
-
-//        profileImage = (ImageButton) naviLayout.findViewById(R.id.profileImage);
-
-        Log.e("imageid", "" + profileImage);
         callback = new SessionCallback();                  // 이 두개의 함수 중요함
         Session.getCurrentSession().addCallback(callback);
 
         // facebook 매니저.
         callbackManager = CallbackManager.Factory.create();
 
-        loginButton.setOnClickListener(this);
-
+        facebookLoginButton.setOnClickListener(this);
+        kakaoLoginButton.setOnClickListener(this);
     }
 
     //    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -182,6 +141,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 });
             }
         }
+        else if(view.getId() == R.id.com_kakao_login){
+
+        }
     }
 
     @Override
@@ -217,43 +179,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         }                                            // 로그인화면을 다시 불러옴
     }
 
+
     protected void redirectSignupActivity() {       //세션 연결 성공 시 SignupActivity로 넘김
         final Intent intent = new Intent(this, KakaoSignupActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         finish();
     }
-
-
-
-    private class AsyncProfileTask extends AsyncTask<String, Void, Bitmap>{
-        @Override
-        protected Bitmap doInBackground(String... params) {
-
-            try {
-                URL url = new URL(params[0]);
-                Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                return bmp;
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
-            bitmap = bitmap;
-//            if(MainActivity.profileImage != null)
-//             MainActivity.profileImage.setImageBitmap(bitmap);
-
-        }
-    }
-
-
 
 
 }

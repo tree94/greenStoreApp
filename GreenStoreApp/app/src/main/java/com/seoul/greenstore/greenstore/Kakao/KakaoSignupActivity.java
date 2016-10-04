@@ -3,7 +3,9 @@ package com.seoul.greenstore.greenstore.Kakao;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageButton;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.kakao.auth.ErrorCode;
 import com.kakao.network.ErrorResult;
@@ -22,11 +24,11 @@ public class KakaoSignupActivity extends Activity{
      * @param savedInstanceState 기존 session 정보가 저장된 객체
      */
 
-    ImageButton kakaoProfileImage;
+    ImageView kakaoProfileImage;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        kakaoProfileImage = (ImageButton) findViewById(R.id.profileImage);
+        kakaoProfileImage = (ImageView) findViewById(R.id.profileImage);
         requestMe();
     }
 
@@ -58,8 +60,10 @@ public class KakaoSignupActivity extends Activity{
 
             @Override
             public void onSuccess(UserProfile userProfile) {  //성공 시 userProfile 형태로 반환
-                Logger.d("UserProfile : " + userProfile);
-//                kakaoProfileImage.setImageResource(userProfile); 에러나서 관둠..오빠가하세요 캬캬캬
+                Log.d("UserProfile", userProfile.toString());
+
+
+                Toast.makeText(KakaoSignupActivity.this, "로그인성공", Toast.LENGTH_SHORT).show();
                 redirectMainActivity(); // 로그인 성공시 MainActivity로
             }
         });
@@ -67,6 +71,8 @@ public class KakaoSignupActivity extends Activity{
 
     private void redirectMainActivity() {
         startActivity(new Intent(this, MainActivity.class));
+
+        setTitle("GreenStore");
         finish();
     }
     protected void redirectLoginActivity() {

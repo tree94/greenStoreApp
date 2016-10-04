@@ -3,6 +3,8 @@ package com.seoul.greenstore.greenstore;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -23,8 +25,11 @@ import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import com.seoul.greenstore.greenstore.Commons.BackPressCloseHandler;
 
+import java.io.BufferedInputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private String backStateName = null;
     private static BackPressCloseHandler backPressCloseHandler;
     private static final int LOGIN_ACTIVITY = 0;
+    private static final int MY_PAGE = 1;
     public static final Stack<Fragment> mStack = new Stack<>();
     public static String strCommon;
     public static ImageView profileImage;
@@ -83,10 +89,22 @@ public class MainActivity extends AppCompatActivity {
             case LOGIN_ACTIVITY:
                 if(resultCode==RESULT_OK){
                     ArrayList<String> userData = data.getStringArrayListExtra("userData");
-                    Log.v("userimage",""+userData.get(5));
-                    Log.v("profile",""+profileImage);
-                    Picasso.with(getApplicationContext()).load(userData.get(5)).into(profileImage);
+                    try{
+                        Log.v("userimage",""+userData.get(5));
+                        Log.v("profile",""+profileImage);
+                        URL url = new URL(userData.get(5));
+                        URLConnection conn = url.openConnection();
+                        conn.connect();
+                        BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
+                        Bitmap bm = BitmapFactory.decodeStream(bis);
+                        bis.close();
+                        profileImage.setImageBitmap(bm);
+                    }catch (Exception e){}
+
+//                    Picasso.with(getApplicationContext()).load(userData.get(5)).into(profileImage);
                 }
+            case MY_PAGE :
+
                 break;
         }
     }
@@ -105,7 +123,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent,LOGIN_ACTIVITY);
                 break;
             case R.id.nav_Mypage:
-                fragmentClass = ImageFragment.class;
+                fragmentClass = null;
+                Intent intent2 = new Intent(this, MypageFragment.class);
+//                startActivityForResult(intent2,MY_PAGE);
+                startActivity(intent2);
                 break;
             case R.id.nav_Notice:
                 fragmentClass = NoticeFragment.class;
