@@ -24,6 +24,7 @@ import java.util.List;
 public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context context;
     private LayoutInflater inflater;
+    private TextView storeName;
     private List<Review_item> items = Collections.emptyList();
     private int currentPos = 0;
     private Review_item current;
@@ -45,6 +46,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_review, null);
         holder = new ViewHolder(v);
 
+        holder.store = (TextView) v.findViewById(R.id.storeName_review);
         holder.profile = (ImageView) v.findViewById(R.id.profileImage_review);
         holder.userId = (TextView) v.findViewById(R.id.userId_review);
         holder.date_review = (TextView) v.findViewById(R.id.date_review);
@@ -92,7 +94,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
 /*
-    //@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
@@ -115,6 +116,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         private ImageView reviewImage2;
         private ImageView reviewImage3;
         private CardView cardview_review;
+        private TextView store;
 
         public ViewHolder(View itemView) {
             super(itemView);

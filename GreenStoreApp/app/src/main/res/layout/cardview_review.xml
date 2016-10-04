@@ -2,12 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp">
+    android:padding="5dp"
+    android:orientation="vertical"
+    >
 
+
+    <TextView
+
+        android:id="@+id/storeName_review"
+        android:textColor="#1abc9c"
+        android:text="망우찜쌈밥"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardview_review"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:layout_weight="1">
@@ -16,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="5dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -46,16 +56,16 @@
                     android:id="@+id/date_review"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_toRightOf="@+id/userId_review"
                     android:text="2016.09.26 18:23"
-                    android:textSize="9dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="10dp"/>
+                    android:textSize="9dp" />
 
                 <ImageButton
                     android:id="@+id/like_image"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/like_number"
                     android:background="@drawable/heart_false" />
@@ -75,14 +85,16 @@
             </RelativeLayout>
 
             <TextView
+
                 android:id="@+id/content_review"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:layout_below="@+id/like_image"
-                android:layout_marginTop="10dp"
-                android:text="망우찜쌈밥 리뷰입니다\n맛있어용\nㅋㅋ" />
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="5dp"
+                android:text="망우찜쌈밥 리뷰입니다\n맛있어용\nㅋㅋ"
+                android:textSize="15dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -104,8 +116,8 @@
 
                 <ImageView
                     android:id="@+id/reviewImage3"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="100dp"
+                    android:layout_height="80dp"
                     android:layout_marginLeft="10dp"
                     android:src="@drawable/c" />
 

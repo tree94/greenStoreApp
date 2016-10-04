@@ -1,4 +1,4 @@
-package com.seoul.greenstore.greenstore;
+package com.seoul.greenstore.greenstore.Commons;
 
 /**
  * Created by X on 2016-09-22.

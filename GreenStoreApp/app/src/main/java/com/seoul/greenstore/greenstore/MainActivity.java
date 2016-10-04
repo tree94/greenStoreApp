@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.facebook.login.LoginManager;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
+import com.seoul.greenstore.greenstore.Commons.BackPressCloseHandler;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private String backStateName = null;
     private static BackPressCloseHandler backPressCloseHandler;
     private static final int LOGIN_ACTIVITY = 0;
+    private static final int MY_PAGE = 1;
     public static final Stack<Fragment> mStack = new Stack<>();
     public static String strCommon;
 
@@ -87,17 +89,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             case LOGIN_ACTIVITY:
-                if(resultCode==RESULT_OK){
-                    if(data.getStringArrayListExtra("userData")!=null) {
+                if (resultCode == RESULT_OK) {
+                    if (data.getStringArrayListExtra("userData") != null) {
                         facebookUserData = data.getStringArrayListExtra("userData");
                         profileImage = (ImageView) naviView.findViewById(R.id.profileImage);
                         userIdView = (TextView) naviView.findViewById(R.id.userId);
                         userIdView.setText(facebookUserData.get(1));
                         Picasso.with(getApplicationContext()).load(facebookUserData.get(5)).fit().into(profileImage);
-                    }
-                    else{
+                    } else {
                         kakaoUserData = data.getStringArrayListExtra("kakaoData");
                         userIdView = (TextView) naviView.findViewById(R.id.userId);
                         userIdView.setText(kakaoUserData.get(0));
@@ -144,7 +145,10 @@ public class MainActivity extends AppCompatActivity {
 
                 break;
             case R.id.nav_Mypage:
-                fragmentClass = ImageFragment.class;
+                fragmentClass = null;
+                Intent intent2 = new Intent(this, MypageFragment.class);
+//                startActivityForResult(intent2,MY_PAGE);
+                startActivity(intent2);
                 break;
             case R.id.nav_Notice:
                 fragmentClass = NoticeFragment.class;

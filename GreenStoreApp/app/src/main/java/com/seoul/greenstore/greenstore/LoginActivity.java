@@ -44,7 +44,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     private SessionCallback callback;      //kakao 콜백 선언
     private CallbackManager callbackManager; // facebook 콜백 선언
+<<<<<<< HEAD
+    private LoginButton facebookLoginButton;
+=======
     private LoginButton FacebookLoginButton;
+>>>>>>> 01c2a85bcbc7de8d119180b2e7aad9ba8e32a234
     private com.kakao.usermgmt.LoginButton kakaoLoginButton;
     private AccessToken token;
     private ImageButton profileImage;
@@ -66,18 +70,30 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         intent = new Intent();
 
         token = AccessToken.getCurrentAccessToken();
+<<<<<<< HEAD
+        facebookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
+        kakaoLoginButton = (com.kakao.usermgmt.LoginButton) findViewById(R.id.com_kakao_login);
+
+        callback = new SessionCallback();                  // 이 두개의 함수 중요함
+        Session.getCurrentSession().addCallback(callback);
+=======
         FacebookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
         kakaoLoginButton = (com.kakao.usermgmt.LoginButton) findViewById(R.id.com_kakao_login);
+>>>>>>> 01c2a85bcbc7de8d119180b2e7aad9ba8e32a234
 
         // facebook 매니저.
         callbackManager = CallbackManager.Factory.create();
 
+<<<<<<< HEAD
+        facebookLoginButton.setOnClickListener(this);
+=======
         // kakao 콜백
         callback = new SessionCallback();                  // 이 두개의 함수 중요함
         Session.getCurrentSession().addCallback(callback);
 //        Session.getCurrentSession().checkAndImplicitOpen();
 
         FacebookLoginButton.setOnClickListener(this);
+>>>>>>> 01c2a85bcbc7de8d119180b2e7aad9ba8e32a234
         kakaoLoginButton.setOnClickListener(this);
     }
 
@@ -148,6 +164,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     }
                 });
             }
+        }
+        else if(view.getId() == R.id.com_kakao_login){
+
         }
     }
 
@@ -241,11 +260,22 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         }                                            // 로그인화면을 다시 불러옴
     }
 
+
     protected void redirectSignupActivity() {       //세션 연결 성공 시 SignupActivity로 넘김
+<<<<<<< HEAD
+        final Intent intent = new Intent(this, KakaoSignupActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        finish();
+    }
+
+
+=======
 //        final Intent intent = new Intent(this, KakaoSignupActivity.class);
 //        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 //        startActivity(intent);
 //        finish();
         requestMe();
     }
+>>>>>>> 01c2a85bcbc7de8d119180b2e7aad9ba8e32a234
 }
