@@ -40,37 +40,6 @@ import java.util.Arrays;
  * Created by X on 2016-09-06.
  */
 
-//final class BitmapTarget implements Target {
-//    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-//    @Override
-//    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-//        BitmapDrawable bitmapDrawable = new BitmapDrawable(bitmap);
-//        LoginActivity.profileImage.setBackground(bitmapDrawable);
-//
-//        //imageViewTest
-////        ImageView image = new ImageView(this);
-////        image.setImageResource("");
-////        setContentView(image);
-////        ((ImageView) findViewById(R.id.imageView1))
-////        bmImage.setImageBitmap(result);
-////
-//
-//        //LoginActivity.imageViewTest.setImageBitmap(bitmap);
-//        //LoginActivity.textViewTest.setBackground(bitmapDrawable);
-//        Log.d("TAG", "onBitmapLoaded.");
-//
-//    }
-//
-//    @Override
-//    public void onBitmapFailed(Drawable errorDrawable) {
-//        Log.d("TAG", "FAILED");
-//    }
-//
-//    @Override
-//    public void onPrepareLoad(Drawable placeHolderDrawable) {
-//        Log.d("TAG", "Prepare Load");
-//    }
-//}
 public class LoginActivity extends Activity implements View.OnClickListener {
 
     private SessionCallback callback;      //kakao 콜백 선언
