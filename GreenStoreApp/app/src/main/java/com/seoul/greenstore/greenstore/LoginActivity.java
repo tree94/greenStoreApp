@@ -28,7 +28,6 @@ import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
 import com.kakao.util.helper.log.Logger;
-import com.seoul.greenstore.greenstore.Kakao.KakaoSignupActivity;
 import com.squareup.picasso.Target;
 
 import org.json.JSONException;
@@ -46,8 +45,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private SessionCallback callback;      //kakao 콜백 선언
     private CallbackManager callbackManager; // facebook 콜백 선언
 
-    private LoginButton facebookLoginButton;
-
+    private LoginButton FacebookLoginButton;
     private com.kakao.usermgmt.LoginButton kakaoLoginButton;
     private AccessToken token;
     private ImageButton profileImage;
@@ -70,18 +68,18 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
         token = AccessToken.getCurrentAccessToken();
 
-        facebookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
-        kakaoLoginButton = (com.kakao.usermgmt.LoginButton) findViewById(R.id.com_kakao_login);
-
+        //kakao callback
         callback = new SessionCallback();                  // 이 두개의 함수 중요함
         Session.getCurrentSession().addCallback(callback);
+
+        FacebookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
+        kakaoLoginButton = (com.kakao.usermgmt.LoginButton) findViewById(R.id.com_kakao_login);
 
         // facebook 매니저.
         callbackManager = CallbackManager.Factory.create();
 
-        facebookLoginButton.setOnClickListener(this);
-
-        kakaoLoginButton.setOnClickListener(this);
+        FacebookLoginButton.setOnClickListener(this);
+       kakaoLoginButton.setOnClickListener(this);
     }
 
     //    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -241,7 +239,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         public void onSessionOpenFailed(KakaoException exception) {
             if (exception != null) {
                 Log.e("exception", exception.toString());
-
             }
             setContentView(R.layout.activity_login); // 세션 연결이 실패했을때
         }                                            // 로그인화면을 다시 불러옴
@@ -250,11 +247,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     protected void redirectSignupActivity() {       //세션 연결 성공 시 SignupActivity로 넘김
 
-        final Intent intent = new Intent(this, KakaoSignupActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
-        finish();
+        requestMe();
     }
-
-
 }

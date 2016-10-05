@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                     profileImage = (ImageView)findViewById(R.id.profileImage);
                     if(facebookUserData!=null){
                         LoginManager.getInstance().logOut();
-                        finish();
+                        facebookUserData=null;
                     }else{
                         Log.v("kakaologout","logout");
                         UserManagement.requestLogout(new LogoutResponseCallback() {
@@ -135,14 +135,12 @@ public class MainActivity extends AppCompatActivity {
                                 Log.v("loginCheck","checkechk");
                             }
                         });
+                        kakaoUserData=null;
                     }
                     profileImage.setImageResource(R.drawable.circle);
                     userIdView.setText("로그인하세요");
                     menuItem.setTitle("Login");
-                    facebookUserData=null;
-                    kakaoUserData=null;
                 }
-
                 break;
             case R.id.nav_Mypage:
                 fragmentClass = null;
