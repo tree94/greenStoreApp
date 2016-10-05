@@ -141,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
                     userIdView.setText("로그인하세요");
                     menuItem.setTitle("Login");
                 }
-
                 break;
             case R.id.nav_Mypage:
                 fragmentClass = null;

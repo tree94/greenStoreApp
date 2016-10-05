@@ -28,17 +28,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private ViewHolder holder;
     private View v;
 
-    public RecyclerAdapter(){}
-
     public RecyclerAdapter(Context context,List<Recycler_item> data) {
         this.context = context;
         this.items = data;
     }
 
-//    public void setRecyclerAdapter(List<Recycler_item> data){
-//        items = data;
-//        notifyDataSetChanged();
-//    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private ImageView imageView;
@@ -56,7 +50,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View viewItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview,parent,false);
+        View viewItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview,null);
 //        RecyclerView.ViewHolder
 //        v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview,null);
 //        holder = new ViewHolder(v);
@@ -66,19 +60,19 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 //        holder.cardview = (CardView) v.findViewById(R.id.cardview);
 //        v.setTag(holder);
 //        Log.e("tes13","112");
-        ViewHolder v = new ViewHolder(viewItem);
-        return v;
+//        ViewHolder v = new ViewHolder(viewItem);
+        return new ViewHolder(viewItem);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-//
+        Recycler_item recycler_item = items.get(position);
 //        holder = (ViewHolder) v.getTag();
 //        Recycler_item store = items.get(position);
 //        Log.e("storename",store.getName());
-        holder.name.setText(items.get(position).getName());
-        holder.addr.setText(items.get(position).getAddr());
-        Picasso.with(context).load(items.get(position).getImage()).fit().centerInside().into(holder.imageView);
+        holder.name.setText(recycler_item.getName());
+        holder.addr.setText(recycler_item.getAddr());
+        Picasso.with(context).load(recycler_item.getImage()).fit().centerInside().into(holder.imageView);
     }
 
     @Override
