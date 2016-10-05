@@ -62,10 +62,6 @@ public class KakaoSignupActivity extends Activity{
 
             @Override
             public void onSuccess(UserProfile userProfile) {  //성공 시 userProfile 형태로 반환
-                Log.d("UserProfile", userProfile.toString());
-
-                Log.d("UserProfile" , userProfile.toString());
-//                kakaoProfileImage.setImageResource(userProfile); 에러나서 관둠..오빠가하세요 캬캬캬
                 redirectMainActivity(userProfile); // 로그인 성공시 MainActivity로
             }
         });

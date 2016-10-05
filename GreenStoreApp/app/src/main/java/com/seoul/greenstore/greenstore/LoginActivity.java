@@ -247,10 +247,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
 
     protected void redirectSignupActivity() {       //세션 연결 성공 시 SignupActivity로 넘김
-//        final Intent intent = new Intent(this, KakaoSignupActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//        startActivity(intent);
-//        finish();
         requestMe();
     }
 }
