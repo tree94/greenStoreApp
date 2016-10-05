@@ -4,18 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-<<<<<<< HEAD
-import android.widget.ImageView;
-import android.widget.Toast;
-=======
->>>>>>> 01c2a85bcbc7de8d119180b2e7aad9ba8e32a234
 
 import com.kakao.auth.ErrorCode;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.MeResponseCallback;
-import com.kakao.util.helper.log.Logger;import com.kakao.usermgmt.response.model.UserProfile;
-
+import com.kakao.usermgmt.response.model.UserProfile;
+import com.kakao.util.helper.log.Logger;
 import com.seoul.greenstore.greenstore.LoginActivity;
 
 public class KakaoSignupActivity extends Activity{
@@ -29,14 +24,6 @@ public class KakaoSignupActivity extends Activity{
      * @param savedInstanceState 기존 session 정보가 저장된 객체
      */
 
-<<<<<<< HEAD
-    ImageView kakaoProfileImage;
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        kakaoProfileImage = (ImageView) findViewById(R.id.profileImage);
-        requestMe();
-=======
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +32,6 @@ public class KakaoSignupActivity extends Activity{
         extra = new Bundle();
         Log.v("test123?","123123");
 //        requestMe();
->>>>>>> 01c2a85bcbc7de8d119180b2e7aad9ba8e32a234
     }
 
     /**
@@ -76,32 +62,19 @@ public class KakaoSignupActivity extends Activity{
 
             @Override
             public void onSuccess(UserProfile userProfile) {  //성공 시 userProfile 형태로 반환
-<<<<<<< HEAD
                 Log.d("UserProfile", userProfile.toString());
 
-
-                Toast.makeText(KakaoSignupActivity.this, "로그인성공", Toast.LENGTH_SHORT).show();
-                redirectMainActivity(); // 로그인 성공시 MainActivity로
-=======
                 Log.d("UserProfile" , userProfile.toString());
 //                kakaoProfileImage.setImageResource(userProfile); 에러나서 관둠..오빠가하세요 캬캬캬
                 redirectMainActivity(userProfile); // 로그인 성공시 MainActivity로
->>>>>>> 01c2a85bcbc7de8d119180b2e7aad9ba8e32a234
             }
         });
     }
 
-<<<<<<< HEAD
-    private void redirectMainActivity() {
-        startActivity(new Intent(this, MainActivity.class));
-
-        setTitle("GreenStore");
-=======
     private void redirectMainActivity(UserProfile userProfile) {
         extra.putString("kakaoData",userProfile.toString());
         intent.putExtras(extra);
         setResult(RESULT_OK,intent);
->>>>>>> 01c2a85bcbc7de8d119180b2e7aad9ba8e32a234
         finish();
     }
     protected void redirectLoginActivity() {
