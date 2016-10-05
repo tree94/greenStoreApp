@@ -59,7 +59,7 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult{
         super.onStart();
         Log.d("coffee", "Review onstart IN");
 
-        String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW, "GET"};
+        String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_ALL, "GET"};
         Server server = new Server(getActivity(), this);
         server.execute(gets);
         Log.d("coffee", "IN");
@@ -103,7 +103,7 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult{
             for (int i = 0; i < jsonArray.length(); i++) {
                 Review_item review = new Review_item();
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                review.setStore_name(jsonObject.getString("store_name"));
+                review.setStoreName(jsonObject.getString("storeName"));
                 review.setRkey(Integer.parseInt(jsonObject.getString("rkey")));
                 review.setMkey(Integer.parseInt(jsonObject.getString("mkey")));
                 review.setSh_id(Integer.parseInt(jsonObject.getString("sh_id")));

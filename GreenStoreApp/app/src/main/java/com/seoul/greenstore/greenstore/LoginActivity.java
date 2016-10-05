@@ -28,6 +28,7 @@ import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
 import com.kakao.util.helper.log.Logger;
+import com.seoul.greenstore.greenstore.Kakao.KakaoSignupActivity;
 import com.squareup.picasso.Target;
 
 import org.json.JSONException;
@@ -44,11 +45,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     private SessionCallback callback;      //kakao 콜백 선언
     private CallbackManager callbackManager; // facebook 콜백 선언
-<<<<<<< HEAD
+
     private LoginButton facebookLoginButton;
-=======
-    private LoginButton FacebookLoginButton;
->>>>>>> 01c2a85bcbc7de8d119180b2e7aad9ba8e32a234
+
     private com.kakao.usermgmt.LoginButton kakaoLoginButton;
     private AccessToken token;
     private ImageButton profileImage;
@@ -70,30 +69,18 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         intent = new Intent();
 
         token = AccessToken.getCurrentAccessToken();
-<<<<<<< HEAD
+
         facebookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
         kakaoLoginButton = (com.kakao.usermgmt.LoginButton) findViewById(R.id.com_kakao_login);
 
         callback = new SessionCallback();                  // 이 두개의 함수 중요함
         Session.getCurrentSession().addCallback(callback);
-=======
-        FacebookLoginButton = (LoginButton) findViewById(R.id.facebook_login_button);
-        kakaoLoginButton = (com.kakao.usermgmt.LoginButton) findViewById(R.id.com_kakao_login);
->>>>>>> 01c2a85bcbc7de8d119180b2e7aad9ba8e32a234
 
         // facebook 매니저.
         callbackManager = CallbackManager.Factory.create();
 
-<<<<<<< HEAD
         facebookLoginButton.setOnClickListener(this);
-=======
-        // kakao 콜백
-        callback = new SessionCallback();                  // 이 두개의 함수 중요함
-        Session.getCurrentSession().addCallback(callback);
-//        Session.getCurrentSession().checkAndImplicitOpen();
 
-        FacebookLoginButton.setOnClickListener(this);
->>>>>>> 01c2a85bcbc7de8d119180b2e7aad9ba8e32a234
         kakaoLoginButton.setOnClickListener(this);
     }
 
@@ -127,7 +114,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                         Log.i("PICURL", picUrl);
 //                                        setResult(RESULT_OK,intent);
 //                                        finish();
-                                       // Picasso.with(LoginActivity.this).load(picUrl).into(profileImage);
+                                        // Picasso.with(LoginActivity.this).load(picUrl).into(profileImage);
 //                                        new AsyncProfileTask().execute(picUrl);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -136,12 +123,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                     Log.i("TAG", "AccessToken: " + result.getAccessToken().getToken());
 
                                     ArrayList<String> userData = new ArrayList<String>(
-                                            Arrays.asList(userId,userName,userEmail,gender,birth,picUrl)
+                                            Arrays.asList(userId, userName, userEmail, gender, birth, picUrl)
                                     );
                                     extra = new Bundle();
-                                    extra.putStringArrayList("userData",userData);
+                                    extra.putStringArrayList("userData", userData);
                                     intent.putExtras(extra);
-                                    setResult(RESULT_OK,intent);
+                                    setResult(RESULT_OK, intent);
                                     finish();
                                 }
                             }
@@ -164,8 +151,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     }
                 });
             }
-        }
-        else if(view.getId() == R.id.com_kakao_login){
+        } else if (view.getId() == R.id.com_kakao_login) {
 
         }
     }
@@ -191,12 +177,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             }
 
             @Override
-            public void onNotSignedUp() {} // 카카오톡 회원이 아닐 시 showSignup(); 호출해야함
+            public void onNotSignedUp() {
+            } // 카카오톡 회원이 아닐 시 showSignup(); 호출해야함
 
             @Override
             public void onSuccess(UserProfile userProfile) {  //성공 시 userProfile 형태로 반환
 
-                Log.d("UserProfile" , userProfile.toString());
+                Log.d("UserProfile", userProfile.toString());
                 redirectMainActivity(userProfile); // 로그인 성공시 MainActivity로
 //                kakaoProfileImage.setImageResource(userProfile); 에러나서 관둠..오빠가하세요 캬캬캬
 
@@ -205,18 +192,18 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     private void redirectMainActivity(UserProfile userProfile) {
-        Log.v("userprofile","profile1");
+        Log.v("userprofile", "profile1");
         String nickname = userProfile.getNickname();
         String profile = userProfile.getProfileImagePath();
         String thumnail = userProfile.getThumbnailImagePath();
         ArrayList<String> userData = new ArrayList<String>(
-                Arrays.asList(nickname,profile,thumnail)
+                Arrays.asList(nickname, profile, thumnail)
         );
 
         extra = new Bundle();
-        extra.putStringArrayList("kakaoData",userData);
+        extra.putStringArrayList("kakaoData", userData);
         intent.putExtras(extra);
-        setResult(RESULT_OK,intent);
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -262,7 +249,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
 
     protected void redirectSignupActivity() {       //세션 연결 성공 시 SignupActivity로 넘김
-<<<<<<< HEAD
+
         final Intent intent = new Intent(this, KakaoSignupActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
@@ -270,12 +257,4 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
 
-=======
-//        final Intent intent = new Intent(this, KakaoSignupActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-//        startActivity(intent);
-//        finish();
-        requestMe();
-    }
->>>>>>> 01c2a85bcbc7de8d119180b2e7aad9ba8e32a234
 }

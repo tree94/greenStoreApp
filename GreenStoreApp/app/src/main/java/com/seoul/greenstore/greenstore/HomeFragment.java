@@ -33,6 +33,7 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
 
     private RecyclerAdapter adapter;
     private List<Recycler_item> data = new ArrayList<Recycler_item>();
+    String abc;
 
     private View view = null;
     RecyclerView recyclerView = null;
@@ -87,6 +88,11 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
         switch (parent.getId()){
             case R.id.typeSpinner2:
                 sortCategory(id);
+                Toast.makeText(getActivity(),
+                        "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
+                        Toast.LENGTH_SHORT).show();
+                abc = parent.getItemAtPosition(position).toString();
+                System.out.print("abc"+abc+"\n");
                 break;
             case R.id.likeSpinner:
                 sortLike(id);
