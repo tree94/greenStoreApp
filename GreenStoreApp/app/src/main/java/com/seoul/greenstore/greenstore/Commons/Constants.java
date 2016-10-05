@@ -16,7 +16,8 @@ public class Constants {
     public static final String GREEN_STORE_URL_APP = GREEN_STORE_URL_BASIC + "app/";
     public static final String GREEN_STORE_URL_APP_SEARCH = GREEN_STORE_URL_APP + "search/";
     public static final String GREEN_STORE_URL_APP_NOTICE = GREEN_STORE_URL_APP + "notice/list";
-    public static final String GREEN_STORE_URL_APP_REVIEW = GREEN_STORE_URL_APP + "review/one";
+    public static final String GREEN_STORE_URL_APP_REVIEW_ONE = GREEN_STORE_URL_APP + "review/one";
+    public static final String GREEN_STORE_URL_APP_REVIEW_ALL = GREEN_STORE_URL_APP + "review/listAll";
 
     public static final String GREEN_STORE_URL_APP_REVIEW_WRITE = GREEN_STORE_URL_APP + "review/write";
 

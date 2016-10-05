@@ -44,6 +44,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     private SessionCallback callback;      //kakao 콜백 선언
     private CallbackManager callbackManager; // facebook 콜백 선언
+
     private LoginButton FacebookLoginButton;
     private com.kakao.usermgmt.LoginButton kakaoLoginButton;
     private AccessToken token;
@@ -77,10 +78,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         // facebook 매니저.
         callbackManager = CallbackManager.Factory.create();
 
-//        Session.getCurrentSession().checkAndImplicitOpen();
-
         FacebookLoginButton.setOnClickListener(this);
-        kakaoLoginButton.setOnClickListener(this);
+       kakaoLoginButton.setOnClickListener(this);
     }
 
     //    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -113,7 +112,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                         Log.i("PICURL", picUrl);
 //                                        setResult(RESULT_OK,intent);
 //                                        finish();
-                                       // Picasso.with(LoginActivity.this).load(picUrl).into(profileImage);
+                                        // Picasso.with(LoginActivity.this).load(picUrl).into(profileImage);
 //                                        new AsyncProfileTask().execute(picUrl);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -122,12 +121,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                     Log.i("TAG", "AccessToken: " + result.getAccessToken().getToken());
 
                                     ArrayList<String> userData = new ArrayList<String>(
-                                            Arrays.asList(userId,userName,userEmail,gender,birth,picUrl)
+                                            Arrays.asList(userId, userName, userEmail, gender, birth, picUrl)
                                     );
                                     extra = new Bundle();
-                                    extra.putStringArrayList("userData",userData);
+                                    extra.putStringArrayList("userData", userData);
                                     intent.putExtras(extra);
-                                    setResult(RESULT_OK,intent);
+                                    setResult(RESULT_OK, intent);
                                     finish();
                                 }
                             }
@@ -150,8 +149,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     }
                 });
             }
-        }
-        else if(view.getId() == R.id.com_kakao_login){
+        } else if (view.getId() == R.id.com_kakao_login) {
 
         }
     }
@@ -177,12 +175,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             }
 
             @Override
-            public void onNotSignedUp() {} // 카카오톡 회원이 아닐 시 showSignup(); 호출해야함
+            public void onNotSignedUp() {
+            } // 카카오톡 회원이 아닐 시 showSignup(); 호출해야함
 
             @Override
             public void onSuccess(UserProfile userProfile) {  //성공 시 userProfile 형태로 반환
 
-                Log.d("UserProfile" , userProfile.toString());
+                Log.d("UserProfile", userProfile.toString());
                 redirectMainActivity(userProfile); // 로그인 성공시 MainActivity로
 //                kakaoProfileImage.setImageResource(userProfile); 에러나서 관둠..오빠가하세요 캬캬캬
 
@@ -191,18 +190,18 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     private void redirectMainActivity(UserProfile userProfile) {
-        Log.v("userprofile","profile1");
+        Log.v("userprofile", "profile1");
         String nickname = userProfile.getNickname();
         String profile = userProfile.getProfileImagePath();
         String thumnail = userProfile.getThumbnailImagePath();
         ArrayList<String> userData = new ArrayList<String>(
-                Arrays.asList(nickname,profile,thumnail)
+                Arrays.asList(nickname, profile, thumnail)
         );
 
         extra = new Bundle();
-        extra.putStringArrayList("kakaoData",userData);
+        extra.putStringArrayList("kakaoData", userData);
         intent.putExtras(extra);
-        setResult(RESULT_OK,intent);
+        setResult(RESULT_OK, intent);
         finish();
     }
 
