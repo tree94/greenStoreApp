@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         if(fragmentClass!=null)
         backStateName = fragmentClass.getClass().getName();
 
-        if (!nowFragment.getClass().equals(fragmentClass) && fragmentClass!=null) { //fragment not in back stack, create it.
+         if (!nowFragment.getClass().equals(fragmentClass) && fragmentClass!=null) { //fragment not in back stack, create it.
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.llContents, fragment);
             transaction.addToBackStack(backStateName);

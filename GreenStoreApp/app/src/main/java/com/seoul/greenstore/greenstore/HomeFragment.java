@@ -3,6 +3,8 @@ package com.seoul.greenstore.greenstore;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -29,11 +32,16 @@ import java.util.List;
  * Created by X on 2016-09-08.
  */
 @SuppressLint("ValidFragment")
-public class HomeFragment extends Fragment implements Server.ILoadResult, AdapterView.OnItemSelectedListener{
+public class HomeFragment extends Fragment implements Server.ILoadResult, AdapterView.OnItemSelectedListener, View.OnClickListener{
 
     private RecyclerAdapter adapter;
     private List<Recycler_item> data = new ArrayList<Recycler_item>();
-    String abc;
+    private Button searchBtn;
+    private Spinner locationSpinner;
+    private Spinner typeSpinner1;
+    private Spinner typeSpinner2;
+    private Spinner likeSpinner;
+    private String[] spinnerData = new String[2];
 
     private View view = null;
     RecyclerView recyclerView = null;
@@ -68,17 +76,22 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
         recyclerView.setLayoutManager(layoutManager);
 
         //메인 페이지 스피너 등록
-        Spinner locationSpinner = (Spinner) view.findViewById(R.id.locationSpinner);
-        Spinner typeSpinner1 = (Spinner) view.findViewById(R.id.typeSpinner1);
-        Spinner typeSpinner2 = (Spinner) view.findViewById(R.id.typeSpinner2);
-        Spinner likeSpinner = (Spinner) view.findViewById(R.id.likeSpinner);
+        locationSpinner = (Spinner) view.findViewById(R.id.locationSpinner);
+        typeSpinner1 = (Spinner) view.findViewById(R.id.typeSpinner1);
+        typeSpinner2 = (Spinner) view.findViewById(R.id.typeSpinner2);
+        likeSpinner = (Spinner) view.findViewById(R.id.likeSpinner);
 
         //구, 업종, 좋아요와 관련된 스피너 등록 시 필요한 파라미터 전송
         Spinners spinner = new Spinners(getActivity(),locationSpinner,typeSpinner1,typeSpinner2,likeSpinner);
 
-
+        typeSpinner1.setOnItemSelectedListener(this);
         typeSpinner2.setOnItemSelectedListener(this);
         likeSpinner.setOnItemSelectedListener(this);
+        locationSpinner.setOnItemSelectedListener(this);
+
+        searchBtn = (Button)view.findViewById(R.id.search_main);
+        searchBtn.setOnClickListener(this);
+        Log.d("home","end");
         return view;
     }
 
@@ -88,17 +101,35 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
         switch (parent.getId()){
             case R.id.typeSpinner2:
                 sortCategory(id);
-                Toast.makeText(getActivity(),
-                        "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
-                        Toast.LENGTH_SHORT).show();
-                abc = parent.getItemAtPosition(position).toString();
-                System.out.print("abc"+abc+"\n");
                 break;
             case R.id.likeSpinner:
                 sortLike(id);
                 break;
+            case R.id.typeSpinner1:
+                spinnerData[0] = parent.getItemAtPosition(position).toString();
+                break;
+            case R.id.locationSpinner:
+                spinnerData[1] = parent.getItemAtPosition(position).toString();
+                break;
         }
+    }
 
+    @Override
+    public void onClick(View v){
+        if(v.getId()==R.id.search_main){
+            Log.v("test123","!23123");
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+            Fragment fragment = new SearchResultFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putStringArray("spinnerData",spinnerData);
+            fragment.setArguments(bundle);
+
+            fragmentTransaction.replace(R.id.llContents, fragment);
+            fragmentTransaction.addToBackStack("HomeFragment");
+            fragmentTransaction.commit();
+        }
     }
 
     @Override
