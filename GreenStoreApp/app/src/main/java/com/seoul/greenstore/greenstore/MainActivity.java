@@ -27,6 +27,7 @@ import com.facebook.login.LoginManager;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.seoul.greenstore.greenstore.Commons.BackPressCloseHandler;
+import com.seoul.greenstore.greenstore.Review.ReviewWriteFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -38,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private MenuItem menu;
     private NavigationView naviView;
     private ActionBarDrawerToggle drawerToggle;
-    private Fragment fragment = null;
+    //private Fragment fragment = null;
+public static Fragment fragment = null;
     private SearchView searchView;
     private MenuItem searchItem;
     private TextView searchTextView;
@@ -55,8 +57,10 @@ public class MainActivity extends AppCompatActivity {
     public static String strCommon;
 
 
-    Class fragmentClass = HomeFragment.class;
-    FragmentManager fragmentManager = getSupportFragmentManager();
+//    Class fragmentClass = HomeFragment.class;
+public static Class fragmentClass = HomeFragment.class;
+public static FragmentManager fragmentManager = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
         backPressCloseHandler = new BackPressCloseHandler(this);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.llContents, new HomeFragment()).commit();
+
+        fragmentManager = getSupportFragmentManager();
+
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -170,13 +177,13 @@ public class MainActivity extends AppCompatActivity {
         // Insert the fragment by replacing any existing fragment
 
 
-        fragmentManager = getSupportFragmentManager();
+//        fragmentManager = getSupportFragmentManager();
         Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
 
         if(fragmentClass!=null)
         backStateName = fragmentClass.getClass().getName();
 
-        if (!nowFragment.getClass().equals(fragmentClass) && fragmentClass!=null) { //fragment not in back stack, create it.
+        if (fragmentClass!=null && !nowFragment.getClass().equals(fragmentClass)) { //fragment not in back stack, create it.
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.llContents, fragment);
             transaction.addToBackStack(backStateName);
@@ -282,7 +289,42 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        backPressCloseHandler.onBackPressed();
+//        Log.d("___", "fragment.getClass().toString() : " + fragment.getClass().toString());
+//        Log.d("___", "HomeFragment.class.toString() : " + HomeFragment.class.toString());
+        Log.d("___", "size : " + fragmentManager.getFragments().size());
+
+        //Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
+        if( fragment!=null) {
+            if( fragmentManager.getFragments().size() <= 1 ) // HOW TO : 지금 프래그먼트가 HomeFragment인지 검사 ???    // fragment.getClass().equals(HomeFragment.class) )
+                backPressCloseHandler.onBackPressed();
+        } else {
+            Log.d("___", "fragment is null");
+        }
+    }
+
+    public static void changeFragment(String strNewFragment) {
+        if(strNewFragment.equals("fragment1")) {
+            //Log.d("___","newFragment : fragment1");
+            //Log.d("___","fragmentManager.getFragments().size() : " + fragmentManager.getFragments().size() );
+
+            Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
+
+            fragmentClass = ReviewWriteFragment.class;
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+            } catch(Exception e) { e.printStackTrace(); }
+
+            if (fragmentClass!=null && !nowFragment.getClass().equals(fragmentClass)) { //fragment not in back stack, create it.
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.llContents, fragment);
+                transaction.addToBackStack(fragmentClass.getClass().getName());
+                transaction.commit();
+            }
+
+            //fragmentManager.beginTransaction().replace(R.id.llContents, new ReviewWriteFragment()).commit();
+
+        }
+
     }
 
 

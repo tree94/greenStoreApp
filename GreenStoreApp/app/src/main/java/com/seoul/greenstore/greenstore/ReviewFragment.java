@@ -36,6 +36,9 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult{
     private RecyclerView recyclerView = null;
     private TextView storeName_review;
     private Button btnWrite; // 글쓰기 버튼을 일단 만들어놓음.
+    private Button btnSetting;
+
+
 
     public static ReviewFragment newInstance(){
         ReviewFragment fragment = new ReviewFragment();
@@ -77,16 +80,34 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult{
         view = inflater.inflate(R.layout.activity_review, null);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,true);
 
+
+
          recyclerView = (RecyclerView) view.findViewById(R.id.recyclerReview);
         Spinner locationSpinner = (Spinner) view.findViewById(R.id.locationSpinner);
         Spinner typeSpinner1 = (Spinner) view.findViewById(R.id.typeSpinner1);
         Spinners spinner = new Spinners(getActivity(),locationSpinner,typeSpinner1);
         storeName_review = (TextView)  view.findViewById(R.id.storeName_review);
+        btnWrite = (Button) view.findViewById(R.id.review_write);
 
         adapter = new ReviewAdapter(getActivity(), data);
-
+        recyclerView.setHasFixedSize(true);
         Log.i("ADAPTER", adapter.toString());
 
+
+        btnSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        btnWrite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Activty 의 메소드 호출
+                MainActivity.changeFragment("fragment1");
+            }
+        });
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
@@ -103,10 +124,10 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult{
             for (int i = 0; i < jsonArray.length(); i++) {
                 Review_item review = new Review_item();
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                review.setStoreName(jsonObject.getString("storeName"));
+                review.setStoreName(jsonObject.getString("sh_name"));
                 review.setRkey(Integer.parseInt(jsonObject.getString("rkey")));
                 review.setMkey(Integer.parseInt(jsonObject.getString("mkey")));
-                review.setSh_id(Integer.parseInt(jsonObject.getString("sh_id")));
+//                review.setSh_id(Integer.parseInt(jsonObject.getString("sh_id")));
                 review.setRcontents(jsonObject.getString("rcontent"));
                 review.setRelike(Integer.parseInt(jsonObject.getString("relike")));
 
@@ -121,12 +142,20 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult{
 
                 data.add(review);
             }
+
             adapter.notifyDataSetChanged();
+
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,true);
+            layoutManager.scrollToPositionWithOffset(0,0);
+            recyclerView.scrollToPosition(0);
+
             Log.d("coffee", "Review notifyDataSetChanged IN");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
 
 }

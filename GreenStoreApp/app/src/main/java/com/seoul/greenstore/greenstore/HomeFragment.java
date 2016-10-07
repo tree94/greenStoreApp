@@ -46,7 +46,8 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
     public HomeFragment() {
     }
 
-    @Override
+
+        @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
