@@ -246,7 +246,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
 
     protected void redirectSignupActivity() {       //세션 연결 성공 시 SignupActivity로 넘김
-
         requestMe();
     }
 }

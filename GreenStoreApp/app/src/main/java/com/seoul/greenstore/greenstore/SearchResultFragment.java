@@ -32,7 +32,8 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
     private List<Recycler_item> data = new ArrayList<Recycler_item>();
     private RecyclerView recyclerView = null;
     private TextView textView;
-    String encodeStr;
+    private String[] searchList = new String[2];;
+    private String encodeStr;
 
 
     public static SearchResultFragment newInstance(){
@@ -42,7 +43,10 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+
     }
 
 
@@ -55,20 +59,29 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
     @Override
     public void onStart() {
         super.onStart();
-        Log.d("coffee", "IN");
-
 
         //서버에 보낼 query를 UTF-8로 인코딩
-        try {
-            encodeStr = URLEncoder.encode(MainActivity.strCommon, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        if(MainActivity.strCommon!=null) {
 
-        String[] gets = {Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr, "GET"};
-        Log.d("hot6", "URL" + Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr);
-        Server server = new Server(getActivity(), this);
-        server.execute(gets);
+            //내용 검색
+            try {
+                encodeStr = URLEncoder.encode(MainActivity.strCommon, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+            String[] gets = {Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr, "GET"};
+            Log.d("hot6", "URL" + Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr);
+            Server server = new Server(getActivity(), this);
+            server.execute(gets);
+        }else{
+
+            // 카테고리 검색
+            String[] gets = {Constants.GREEN_STORE_URL_APP_CATESEARCH + searchList[1]+"/"+searchList[0], "GET"};
+            Log.d("hot6", "URL" + Constants.GREEN_STORE_URL_APP_CATESEARCH + searchList[1]+"/"+searchList[0]);
+            Server server = new Server(getActivity(), this);
+            server.execute(gets);
+        }
 
     }
 
@@ -81,7 +94,17 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewSearch);
         textView = (TextView) view.findViewById(R.id.searchTextView);
-        textView.setText("'"+MainActivity.strCommon+"'"+" 로 검색한 결과입니다.");
+        if(MainActivity.strCommon!=null)
+            textView.setText("'"+MainActivity.strCommon+"'"+" 로 검색한 결과입니다.");
+        else{
+            Bundle bundle = this.getArguments();
+            searchList = bundle.getStringArray("spinnerData");
+            if(searchList[1].equals("지역 선택"))
+                searchList[1] = "전체";
+            if(searchList[0].equals("업종 선택"))
+                searchList[0] = "전체";
+            textView.setText("'"+searchList[1]+"' 지역의 '"+searchList[0]+"' 카테고리로 검색한 결과입니다.");
+        }
 
         adapter = new RecyclerAdapter(getActivity(), data);
 
@@ -95,6 +118,11 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
 // Inflate the layout for this fragment
         return view;
     }
+
+    public void btnSearch(int location, int type){
+
+    }
+
 
     @Override
     public void customAddList(String result) {

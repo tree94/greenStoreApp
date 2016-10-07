@@ -53,7 +53,7 @@ public class Spinners{
 
     //지역구 스피너 등록 메소드
     public void setLocationSpinner(){
-        List<String> locList = Arrays.asList("강남구","강동구","강북구","강서구","관악구","광진구","구로구","금천구","노원구","도봉구","동대문구","동작구",
+        List<String> locList = Arrays.asList("지역 선택","강남구","강동구","강북구","강서구","관악구","광진구","구로구","금천구","노원구","도봉구","동대문구","동작구",
                 "마포구","서대문구","서초구","성동구","성북구","송파구","양천구","영등포구","용산구","은평구","종로구","중구","중랑구");
 
         ArrayAdapter<String> locationSpinnerApater = new ArrayAdapter<String>(context,
@@ -80,7 +80,7 @@ public class Spinners{
 
     //업종 스피너 등록 메소드
     public Map setTypeSpinner(){
-        String[] list = {"전체","한식","중식","경양식,일식","기타 외식업","이,미용업","목욕업","세탁업","숙박업","기타서비스업종"};
+        String[] list = {"업종 선택","한식","중식","경양식,일식","기타외식업","이 미용업","목욕업","세탁업","숙박업","영화","대여","노래방","수영장/볼링장/당구장/골프연습장","기타서비스업종"};
         Map<String,Integer> spinnerMap = new HashMap<>();
 //        List<String> secList = Arrays.asList("한식","중식","경양식,일식","기타 외식업","이,미용업","목욕업","세탁업","숙박업","기타서비스업종");
 
