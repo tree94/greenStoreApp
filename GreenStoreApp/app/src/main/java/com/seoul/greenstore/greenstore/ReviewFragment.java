@@ -2,6 +2,7 @@ package com.seoul.greenstore.greenstore;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -29,18 +31,19 @@ import java.util.List;
 /**
  * Created by X on 2016-09-08.
  */
-public class ReviewFragment extends Fragment implements Server.ILoadResult{
+public class ReviewFragment extends Fragment implements Server.ILoadResult, View.OnClickListener {
     private ReviewAdapter adapter;
     private View view;
     private List<Review_item> data = new ArrayList<Review_item>();
     private RecyclerView recyclerView = null;
-    private TextView storeName_review;
+    private Button sortCate;
     private Button btnWrite; // 글쓰기 버튼을 일단 만들어놓음.
-    private Button btnSetting;
+    private CardView cardview;
+    private ImageButton like_image;
+    private TextView storeName_review;
 
 
-
-    public static ReviewFragment newInstance(){
+    public static ReviewFragment newInstance() {
         ReviewFragment fragment = new ReviewFragment();
         return fragment;
     }
@@ -58,11 +61,19 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult{
     }
 
     @Override
+    public void onClick(View v) {
+        String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_LIKE, "GET", "reviewDelete", "5"};
+        Server server = new Server(getActivity(), this);
+        server.execute(gets);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         Log.d("coffee", "Review onstart IN");
 
         String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_ALL, "GET"};
+
         Server server = new Server(getActivity(), this);
         server.execute(gets);
         Log.d("coffee", "IN");
@@ -78,15 +89,17 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_review, null);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true);
 
 
-
-         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerReview);
+        sortCate = (Button) view.findViewById(R.id.sortCate);
+        like_image = (ImageButton) view.findViewById(R.id.like_image);
+        cardview = (CardView) view.findViewById(R.id.cardview_review);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerReview);
         Spinner locationSpinner = (Spinner) view.findViewById(R.id.locationSpinner);
         Spinner typeSpinner1 = (Spinner) view.findViewById(R.id.typeSpinner1);
-        Spinners spinner = new Spinners(getActivity(),locationSpinner,typeSpinner1);
-        storeName_review = (TextView)  view.findViewById(R.id.storeName_review);
+        Spinners spinner = new Spinners(getActivity(), locationSpinner, typeSpinner1);
+        storeName_review = (TextView) view.findViewById(R.id.storeName_review);
         btnWrite = (Button) view.findViewById(R.id.review_write);
 
         adapter = new ReviewAdapter(getActivity(), data);
@@ -94,12 +107,8 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult{
         Log.i("ADAPTER", adapter.toString());
 
 
-        btnSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        like_image.setOnClickListener(this);
 
-            }
-        });
 
         btnWrite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +122,8 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult{
         recyclerView.setLayoutManager(layoutManager);
 // Inflate the layout for this fragment
         return view;
+
+
     }
 
     @Override
@@ -137,7 +148,7 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult{
                 String temp = transFormat.format(from);
                 Date to = transFormat.parse(temp);
                 review.setRdate(to);
-                Log.e("dateformat",""+transFormat.format(from));
+                Log.e("dateformat", "" + transFormat.format(from));
 
 
                 data.add(review);
@@ -145,8 +156,8 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult{
 
             adapter.notifyDataSetChanged();
 
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,true);
-            layoutManager.scrollToPositionWithOffset(0,0);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true);
+            layoutManager.scrollToPositionWithOffset(0, 0);
             recyclerView.scrollToPosition(0);
 
             Log.d("coffee", "Review notifyDataSetChanged IN");
@@ -155,7 +166,6 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult{
             e.printStackTrace();
         }
     }
-
 
 
 }

@@ -152,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
             case R.id.nav_Home:
                 fragmentClass = HomeFragment.class;
                 break;
+
             case R.id.nav_Login:
                 if (facebookUserData == null && kakaoUserData == null) {
                     fragmentClass = null;
@@ -179,10 +180,8 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                 }
                 break;
             case R.id.nav_Mypage:
-                fragmentClass = null;
-                Intent intent2 = new Intent(this, MypageFragment.class);
-//                startActivityForResult(intent2,MY_PAGE);
-                startActivity(intent2);
+                fragmentClass = MypageFragment.class;
+
                 break;
             case R.id.nav_Notice:
                 fragmentClass = NoticeFragment.class;
