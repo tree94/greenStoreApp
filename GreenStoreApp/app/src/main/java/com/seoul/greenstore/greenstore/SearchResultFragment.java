@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.seoul.greenstore.greenstore.Commons.Constants;
 import com.seoul.greenstore.greenstore.Recycler.RecyclerAdapter;
@@ -43,10 +44,7 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
-
     }
 
 
@@ -66,6 +64,7 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
             //내용 검색
             try {
                 encodeStr = URLEncoder.encode(MainActivity.strCommon, "UTF-8");
+                MainActivity.strCommon = null;
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -140,6 +139,10 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
                     store.setIndutyCode(Integer.parseInt(jsonObject.getString("induty_code_se")));
                     data.add(store);
                 }
+                if(data.size()==0){
+                    Toast.makeText(getContext(),"겸색 결과가 존재하지 않습니다.",Toast.LENGTH_SHORT).show();
+                }
+
                 adapter.notifyDataSetChanged();
             } catch (Exception e) {
                 e.printStackTrace();

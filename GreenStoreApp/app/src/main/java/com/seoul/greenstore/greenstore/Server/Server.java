@@ -10,6 +10,8 @@ import org.json.JSONArray;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -19,7 +21,7 @@ import java.net.URL;
 public class Server extends AsyncTask<String, Void, String>{
 
     private ProgressDialog waitDlg = null;
-    Activity activity;
+    private Activity activity;
 
     ILoadResult loadResult;
 
@@ -53,8 +55,6 @@ public class Server extends AsyncTask<String, Void, String>{
             waitDlg = null;
         }
         loadResult.customAddList(aResult);
-//        ((MainActivity)activity).addList(aResult);
-
     }
 
 
@@ -70,6 +70,16 @@ public class Server extends AsyncTask<String, Void, String>{
             httpURLConnection.setConnectTimeout(TIME_OUT * 10000);
             httpURLConnection.setReadTimeout(TIME_OUT * 10000);
             httpURLConnection.setRequestMethod(values[1]);
+            if(values.length>2 && values[2].equals("memberLookup")){
+                StringBuffer buffer = new StringBuffer();
+                buffer.append("mid").append("=").append(values[3]).append("&");
+                buffer.append("mname").append("=").append(values[4]).append("&");
+                buffer.append("mphoto").append("=").append(values[5]);
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(httpURLConnection.getOutputStream(),"UTF-8");
+                PrintWriter writer = new PrintWriter(outputStreamWriter);
+                writer.write(buffer.toString());
+                writer.flush();
+            }
             httpURLConnection.connect();
             int responseCode = httpURLConnection.getResponseCode();
 

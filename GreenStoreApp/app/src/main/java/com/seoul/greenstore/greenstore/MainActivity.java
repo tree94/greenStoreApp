@@ -27,12 +27,15 @@ import com.facebook.login.LoginManager;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.seoul.greenstore.greenstore.Commons.BackPressCloseHandler;
+import com.seoul.greenstore.greenstore.Commons.Constants;
+import com.seoul.greenstore.greenstore.Server.Server;
+import com.seoul.greenstore.greenstore.User.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Server.ILoadResult {
     private DrawerLayout drawer;
     private Toolbar toolbar;
     private MenuItem menu;
@@ -53,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int MY_PAGE = 1;
     public static final Stack<Fragment> mStack = new Stack<>();
     public static String strCommon;
-
 
     Class fragmentClass = HomeFragment.class;
     FragmentManager fragmentManager = getSupportFragmentManager();
@@ -76,11 +78,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
-                            navigationView.setNavigationItemSelectedListener(
-                                    new NavigationView.OnNavigationItemSelectedListener() {
-                                        @Override
-                                        public boolean onNavigationItemSelected(MenuItem menuItem) {
-                                            selectDrawerItem(menuItem);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
                         return true;
                     }
                 });
@@ -94,18 +96,42 @@ public class MainActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     if (data.getStringArrayListExtra("userData") != null) {
                         facebookUserData = data.getStringArrayListExtra("userData");
+                        User.user = facebookUserData;
                         profileImage = (ImageView) naviView.findViewById(R.id.profileImage);
                         userIdView = (TextView) naviView.findViewById(R.id.userId);
                         userIdView.setText(facebookUserData.get(1));
-                        Picasso.with(getApplicationContext()).load(facebookUserData.get(5)).fit().into(profileImage);
+                        Picasso.with(getApplicationContext()).load(User.user.get(5)).fit().into(profileImage);
                     } else {
                         kakaoUserData = data.getStringArrayListExtra("kakaoData");
+                        User.user = kakaoUserData;
+
                         userIdView = (TextView) naviView.findViewById(R.id.userId);
                         userIdView.setText(kakaoUserData.get(0));
                     }
                     menu.setTitle("Logout");
-                }break;
+
+                    //사용자 조회
+                    memberLookup();
+                }
+                break;
         }
+    }
+
+    //사용자 조회 메소드
+    private void memberLookup() {
+        String[] gets = {Constants.GREEN_STORE_URL_APP_MEBERLOOKUP, "POST", "memberLookup", "", "", ""};
+        gets[3] = User.user.get(0);
+        gets[4] = User.user.get(1);
+        gets[5] = User.user.get(2);
+
+        Server server = new Server(MainActivity.this, this);
+        server.execute(gets);
+    }
+
+    @Override
+    public void customAddList(String result) {
+        User.user.add(result);
+        Log.v("member"," memb"+User.user.get(3));
     }
 
     //Drawer에서 항목을 선택했을 때 전환해줄 fragment 선택
@@ -117,26 +143,26 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = HomeFragment.class;
                 break;
             case R.id.nav_Login:
-                if(facebookUserData==null && kakaoUserData==null) {
+                if (facebookUserData == null && kakaoUserData == null) {
                     fragmentClass = null;
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivityForResult(intent, LOGIN_ACTIVITY);
-                }
-                else{
-                    profileImage = (ImageView)findViewById(R.id.profileImage);
-                    if(facebookUserData!=null){
+                } else {
+                    profileImage = (ImageView) findViewById(R.id.profileImage);
+                    if (facebookUserData != null) {
                         LoginManager.getInstance().logOut();
-                        facebookUserData=null;
-                    }else{
-                        Log.v("kakaologout","logout");
+                        facebookUserData = null;
+                    } else {
+                        Log.v("kakaologout", "logout");
                         UserManagement.requestLogout(new LogoutResponseCallback() {
                             @Override
                             public void onCompleteLogout() {
-                                Log.v("loginCheck","checkechk");
+                                Log.v("loginCheck", "checkechk");
                             }
                         });
-                        kakaoUserData=null;
+                        kakaoUserData = null;
                     }
+                    User.user = null;
                     profileImage.setImageResource(R.drawable.circle);
                     userIdView.setText("로그인하세요");
                     menuItem.setTitle("Login");
@@ -173,10 +199,10 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
 
-        if(fragmentClass!=null)
-        backStateName = fragmentClass.getClass().getName();
+        if (fragmentClass != null)
+            backStateName = fragmentClass.getClass().getName();
 
-         if (!nowFragment.getClass().equals(fragmentClass) && fragmentClass!=null) { //fragment not in back stack, create it.
+        if (!nowFragment.getClass().equals(fragmentClass) && fragmentClass != null) { //fragment not in back stack, create it.
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.llContents, fragment);
             transaction.addToBackStack(backStateName);
@@ -186,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
         // Set action bar title
-        if(menuItem.getTitle()!="Login")
+        if (menuItem.getTitle() != "Login")
             setTitle(menuItem.getTitle());
         // Close the navigation drawer
         drawer.closeDrawers();
@@ -225,8 +251,8 @@ public class MainActivity extends AppCompatActivity {
         public boolean onQueryTextSubmit(String query) {
 
             strCommon = query;
-            if(fragmentClass!=null)
-            backStateName = fragmentClass.getClass().getName();
+            if (fragmentClass != null)
+                backStateName = fragmentClass.getClass().getName();
 
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.llContents, SearchResultFragment.newInstance());
