@@ -67,7 +67,7 @@
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
-                    android:layout_toLeftOf="@id/like_image"
+                    android:layout_toLeftOf="@+id/like_image"
                     android:background="@drawable/update" />
 
 

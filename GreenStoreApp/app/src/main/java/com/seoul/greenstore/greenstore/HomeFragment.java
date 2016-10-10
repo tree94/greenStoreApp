@@ -118,7 +118,6 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
     @Override
     public void onClick(View v){
         if(v.getId()==R.id.search_main){
-            Log.v("test123","!23123");
             FragmentManager fm = getFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
             Fragment fragment = new SearchResultFragment();

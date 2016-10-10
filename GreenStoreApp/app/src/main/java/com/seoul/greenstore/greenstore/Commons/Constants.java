@@ -8,7 +8,7 @@ public class Constants {
 //        public static final String BASIC_URL = "http://192.168.100.247:8080/";
 //    public static final String BASIC_URL = "http://172.30.49.177:8080/";
 //    public static final String BASIC_URL = "http://192.168.100.253:8080/";
-    public static final String BASIC_URL = "http://172.30.49.177:8080/";
+    public static final String BASIC_URL = "http://192.168.100.247:8080/";
 //    public static final String BASIC_URL = "http://172.30.40.131:8080/";
 //    public static final String BASIC_URL = "http://172.30.40.131:8080/";
 
@@ -26,6 +26,10 @@ public class Constants {
     public static final String GREEN_STORE_URL_APP_REVIEW_ONE = GREEN_STORE_URL_APP + "review/one";
     public static final String GREEN_STORE_URL_APP_REVIEW_ALL = GREEN_STORE_URL_APP + "review/listAll";
 
+    public static final String GREEN_STORE_URL_APP_REVIEW_WRITE = GREEN_STORE_URL_APP + "review/insert";
+    public static final String GREEN_STORE_URL_APP_REVIEW_DELETE = GREEN_STORE_URL_APP + "review/delete";
+
+    public static final String GREEN_STORE_URL_APP_REVIEW_LIKE = GREEN_STORE_URL_APP+"review/like";
 
 
 

@@ -20,4 +20,10 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+
+    <style name="MyButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">#aaaaff</item>
+        <item name="colorButtonNormal">#ffffff</item>
+    </style>
+
 </resources>

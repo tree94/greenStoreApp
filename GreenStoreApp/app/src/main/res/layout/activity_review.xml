@@ -22,7 +22,9 @@
             android:layout_height="50dp"
             android:layout_weight="1" />
 
-        <TextView
+        <Button
+            android:id="@+id/sortCate"
+            android:theme="@style/MyButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -39,7 +41,7 @@
         android:layout_height="wrap_content"
         android:text="글쓰기" />
 <ScrollView
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerReview"
