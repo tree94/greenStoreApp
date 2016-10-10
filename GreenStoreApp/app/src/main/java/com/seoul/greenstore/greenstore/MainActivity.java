@@ -110,13 +110,13 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                         profileImage = (ImageView) naviView.findViewById(R.id.profileImage);
                         userIdView = (TextView) naviView.findViewById(R.id.userId);
                         userIdView.setText(facebookUserData.get(1));
-                        Picasso.with(getApplicationContext()).load(User.user.get(5)).fit().into(profileImage);
+                        Picasso.with(getApplicationContext()).load(User.user.get(2)).fit().into(profileImage);
                     } else {
                         kakaoUserData = data.getStringArrayListExtra("kakaoData");
                         User.user = kakaoUserData;
 
                         userIdView = (TextView) naviView.findViewById(R.id.userId);
-                        userIdView.setText(kakaoUserData.get(0));
+                        userIdView.setText(kakaoUserData.get(1));
                     }
                     menu.setTitle("Logout");
 

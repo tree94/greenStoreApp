@@ -58,28 +58,30 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
     public void onStart() {
         super.onStart();
 
-        //서버에 보낼 query를 UTF-8로 인코딩
-        if(MainActivity.strCommon!=null) {
+        if(data.size() == 0) {
+            //서버에 보낼 query를 UTF-8로 인코딩
+            if (MainActivity.strCommon != null) {
 
-            //내용 검색
-            try {
-                encodeStr = URLEncoder.encode(MainActivity.strCommon, "UTF-8");
-                MainActivity.strCommon = null;
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                //내용 검색
+                try {
+                    encodeStr = URLEncoder.encode(MainActivity.strCommon, "UTF-8");
+                    MainActivity.strCommon = null;
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                String[] gets = {Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr, "GET"};
+                Log.d("hot6", "URL" + Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr);
+                Server server = new Server(getActivity(), this);
+                server.execute(gets);
+            } else {
+
+                // 카테고리 검색
+                String[] gets = {Constants.GREEN_STORE_URL_APP_CATESEARCH + searchList[1] + "/" + searchList[0], "GET"};
+                Log.d("hot6", "URL" + Constants.GREEN_STORE_URL_APP_CATESEARCH + searchList[1] + "/" + searchList[0]);
+                Server server = new Server(getActivity(), this);
+                server.execute(gets);
             }
-
-            String[] gets = {Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr, "GET"};
-            Log.d("hot6", "URL" + Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr);
-            Server server = new Server(getActivity(), this);
-            server.execute(gets);
-        }else{
-
-            // 카테고리 검색
-            String[] gets = {Constants.GREEN_STORE_URL_APP_CATESEARCH + searchList[1]+"/"+searchList[0], "GET"};
-            Log.d("hot6", "URL" + Constants.GREEN_STORE_URL_APP_CATESEARCH + searchList[1]+"/"+searchList[0]);
-            Server server = new Server(getActivity(), this);
-            server.execute(gets);
         }
 
     }

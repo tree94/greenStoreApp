@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.seoul.greenstore.greenstore.Commons.Constants;
 import com.seoul.greenstore.greenstore.R;
 import com.seoul.greenstore.greenstore.Server.Server;
 
@@ -97,10 +96,10 @@ public class ReviewWriteFragment extends Fragment implements Server.ILoadResult,
 
                 } else {
 
-                    Log.d("reviewCon.getText():", reviewContent.getText().toString());
-                    String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_WRITE, "POST","reviewInsert", "1", "9018", reviewContent.getText().toString()};
-                    Server server = new Server(getActivity(), this);
-                    server.execute(gets);
+//                    Log.d("reviewCon.getText():", reviewContent.getText().toString());
+//                    String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_WRITE, "POST","reviewInsert", "1", "9018", reviewContent.getText().toString()};
+//                    Server server = new Server(getActivity(), this);
+//                    server.execute(gets);
 
                 }
 

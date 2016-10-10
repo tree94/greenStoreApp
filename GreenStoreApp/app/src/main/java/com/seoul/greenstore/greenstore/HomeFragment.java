@@ -139,9 +139,12 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
     @Override
     public void onStart() {
         super.onStart();
-        String[] gets = {Constants.GREEN_STORE_URL_APP, "GET"};
-        Server server = new Server(getActivity(),this);
-        server.execute(gets);
+
+        if(data.size()==0){
+            String[] gets = {Constants.GREEN_STORE_URL_APP, "GET"};
+            Server server = new Server(getActivity(),this);
+            server.execute(gets);
+        }
     }
 
     public void addList(String result) {

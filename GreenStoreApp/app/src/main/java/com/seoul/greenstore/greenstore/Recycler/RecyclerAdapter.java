@@ -5,6 +5,7 @@ package com.seoul.greenstore.greenstore.Recycler;
  */
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -77,15 +78,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 FragmentTransaction fragmentTransaction = fm.beginTransaction();
                 Fragment fragment = new DetailFragment();
 
-                Toast.makeText(context, ""+fm.findFragmentById(R.id.llContents).toString(), Toast.LENGTH_SHORT).show();
-//
-//                Bundle bundle = new Bundle();
-//                bundle.putInt("position",recycler_item.getId());
-//                fragment.setArguments(bundle);
-//
-//                fragmentTransaction.replace(R.id.llContents, fragment);
-//                fragmentTransaction.addToBackStack("HomeFragment");
-//                fragmentTransaction.commit();
+                Toast.makeText(context, ""+recycler_item.getId(), Toast.LENGTH_SHORT).show();
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("position",recycler_item.getId());
+                fragment.setArguments(bundle);
+
+                fragmentTransaction.replace(R.id.llContents, fragment);
+                fragmentTransaction.addToBackStack(fm.findFragmentById(R.id.llContents).toString());
+                fragmentTransaction.commit();
 
             }
         });
