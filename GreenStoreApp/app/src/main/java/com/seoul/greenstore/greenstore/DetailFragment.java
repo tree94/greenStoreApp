@@ -5,9 +5,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.seoul.greenstore.greenstore.Commons.Constants;
 import com.seoul.greenstore.greenstore.Server.Server;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class DetailFragment extends Fragment implements Server.ILoadResult{
+public class DetailFragment extends Fragment implements Server.ILoadResult,View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
 
     private View view;
@@ -30,6 +35,14 @@ public class DetailFragment extends Fragment implements Server.ILoadResult{
     private List<String> menu;    //스토어 메뉴
     private List<Integer> price;      //스토어 메뉴 가격
     private String pride;   //스토어 자랑거리
+
+    //android item
+    private ImageView detailPhoto;
+    private TextView detailName;
+    private TextView detailLike;
+    private TextView detailRcmn;
+    private ImageButton clickLikeButton;
+    private TextView clickLikeText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +86,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult{
                     addr = jsonObject.getString("sh_addr");
                     info = jsonObject.getString("sh_info");
                     pride = jsonObject.getString("sh_pride");
+                    photo = jsonObject.getString("sh_photo");
                 }
                 menu.add(i,jsonObject.getString("menu"));
                 price.add(i,Integer.parseInt(jsonObject.getString("price")));
@@ -84,6 +98,33 @@ public class DetailFragment extends Fragment implements Server.ILoadResult{
     }
 
     private void settingDetailFragment(){
+        detailPhoto = (ImageView) view.findViewById(R.id.detailPhoto);
+        detailName = (TextView)view.findViewById(R.id.detailName);
+        detailLike = (TextView)view.findViewById(R.id.detailLike);
+        detailRcmn = (TextView)view.findViewById(R.id.detailRcmn);
+        clickLikeButton = (ImageButton)view.findViewById(R.id.clickLikeButton);
+        clickLikeText = (TextView)view.findViewById(R.id.clickLikeText);
 
+        if(photo!=null)
+            Picasso.with(getActivity().getApplicationContext()).load(photo).fit().centerInside().into(detailPhoto);
+        detailName.setText(name);
+        detailLike.setText(String.valueOf(like));
+        detailRcmn.setText(String.valueOf(rcmn));
+
+        clickLikeButton.setOnClickListener(this);
+        clickLikeText.setOnClickListener(this);
     }
+
+    @Override
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.clickLikeButton:
+                Toast.makeText(getActivity().getApplicationContext(),"button",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.clickLikeText:
+                Toast.makeText(getActivity().getApplicationContext(),"text",Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
 }

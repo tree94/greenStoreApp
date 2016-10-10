@@ -2,14 +2,94 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.seoul.greenstore.greenstore.DetailFragment">
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/detailPhoto"
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:background="@drawable/mybg3"
-        android:orientation="vertical">
+        android:scaleType="fitXY">
+    </ImageView>
 
-    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp">
 
+        <TextView
+            android:id="@+id/detailName"
+            android:textSize="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="스펙트럼커피랩"/>
+
+        <ImageView
+            android:id="@+id/imageLike"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/star"
+            android:layout_below="@+id/detailName"
+            android:layout_alignLeft="@+id/detailName"
+            android:layout_alignStart="@+id/detailName" />
+
+        <TextView
+            android:id="@+id/detailLike"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="127"
+            android:layout_below="@+id/detailName"
+            android:layout_toRightOf="@+id/imageLike" />
+
+        <ImageView
+            android:id="@+id/imageRcmn"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/heart_false"
+            android:layout_below="@+id/detailName"
+            android:layout_toRightOf="@+id/detailLike"
+            android:layout_marginLeft="10dp"/>
+
+        <TextView
+            android:id="@+id/detailRcmn"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="127"
+            android:layout_below="@+id/detailName"
+            android:layout_toRightOf="@+id/imageRcmn" />
+
+        <ImageButton
+            android:id="@+id/clickLikeButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/star2"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/detailName"
+            android:layout_toEndOf="@+id/detailName"
+            android:layout_marginLeft="47dp"
+            android:layout_marginStart="47dp" />
+
+        <TextView
+            android:id="@+id/clickLikeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="5dp"
+            android:text="좋아요"
+            android:clickable="true"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/clickLikeButton"
+            android:layout_toEndOf="@+id/clickLikeButton" />
+    </RelativeLayout>
+    
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="5dp"
+        android:background="#a0a0a0"/>
 </LinearLayout>
