@@ -177,6 +177,9 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
     // 선택된 카테고리에 해당하는 정보들만 추출하여 화면에 출력
     public void sortCategory(long id){
         int check = (int)id;
+
+        Log.v("id??",""+check);
+
         List<Recycler_item> tempData = new ArrayList<>();
 
         // 반복문을 돌면서 사용자가 선택한 카테고리(id)와 data에 들어있는 indutyCode가 같은것을 찾아서 tempData에 참조시킴.
@@ -184,21 +187,21 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
         if(check==0) {
             tempData = data;
         }
-        if(check>8){
-            for (int i = 0; i < data.size(); ++i) {
-                if (data.get(i).getIndutyCode() >= check) {
-                    System.out.println("match id!");
-                    tempData.add(data.get(i));
-                }
-            }
-        }else {
+//        if(check>8){
+//            for (int i = 0; i < data.size(); ++i) {
+//                if (data.get(i).getIndutyCode() >= check) {
+//                    System.out.println("match id!");
+//                    tempData.add(data.get(i));
+//                }
+//            }
+//        }else {
             for (int i = 0; i < data.size(); ++i) {
                 if (check == data.get(i).getIndutyCode()) {
                     System.out.println("match id!");
                     tempData.add(data.get(i));
                 }
             }
-        }
+//        }
 
         if(check!=0 && tempData.size()==0){
             Toast.makeText(getActivity(),"데이터가 없습니다.",Toast.LENGTH_SHORT).show();
