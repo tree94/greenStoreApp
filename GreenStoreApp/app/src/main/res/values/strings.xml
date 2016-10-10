@@ -7,4 +7,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_search_result">SearchResultActivity</string>
     <string name="facebook_app_id">905544642922785</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

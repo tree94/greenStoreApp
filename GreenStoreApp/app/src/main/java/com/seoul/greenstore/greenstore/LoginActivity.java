@@ -121,7 +121,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                     Log.i("TAG", "AccessToken: " + result.getAccessToken().getToken());
 
                                     ArrayList<String> userData = new ArrayList<String>(
-                                            Arrays.asList(userId, userName, userEmail, gender, birth, picUrl)
+                                            Arrays.asList(userId, userName, picUrl,userEmail, gender, birth)
                                     );
                                     extra = new Bundle();
                                     extra.putStringArrayList("userData", userData);
@@ -149,8 +149,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     }
                 });
             }
-        } else if (view.getId() == R.id.com_kakao_login) {
-
         }
     }
 
@@ -191,11 +189,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     private void redirectMainActivity(UserProfile userProfile) {
         Log.v("userprofile", "profile1");
+        String userId = String.valueOf(userProfile.getId());
         String nickname = userProfile.getNickname();
         String profile = userProfile.getProfileImagePath();
-        String thumnail = userProfile.getThumbnailImagePath();
         ArrayList<String> userData = new ArrayList<String>(
-                Arrays.asList(nickname, profile, thumnail)
+                Arrays.asList(userId,nickname, profile)
         );
 
         extra = new Bundle();

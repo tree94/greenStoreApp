@@ -19,6 +19,9 @@ public class Constants {
     public static final String GREEN_STORE_URL_APP_SEARCH = GREEN_STORE_URL_APP + "search/";
     public static final String GREEN_STORE_URL_APP_CATESEARCH = GREEN_STORE_URL_APP + "cateSearch/";
 
+    //meber
+    public static final String GREEN_STORE_URL_APP_MEBERLOOKUP = GREEN_STORE_URL_APP + "memberLookup/";
+
     //notice
     public static final String GREEN_STORE_URL_APP_NOTICE = GREEN_STORE_URL_APP + "notice/list";
 

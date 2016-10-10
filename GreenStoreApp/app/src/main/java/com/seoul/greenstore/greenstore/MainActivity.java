@@ -27,20 +27,26 @@ import com.facebook.login.LoginManager;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.seoul.greenstore.greenstore.Commons.BackPressCloseHandler;
+
+import com.seoul.greenstore.greenstore.Commons.Constants;
+import com.seoul.greenstore.greenstore.Server.Server;
+import com.seoul.greenstore.greenstore.User.User;
+
 import com.seoul.greenstore.greenstore.Review.ReviewWriteFragment;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Server.ILoadResult {
     private DrawerLayout drawer;
     private Toolbar toolbar;
     private MenuItem menu;
     private NavigationView naviView;
     private ActionBarDrawerToggle drawerToggle;
     //private Fragment fragment = null;
-public static Fragment fragment = null;
+    public static Fragment fragment = null;
     private SearchView searchView;
     private MenuItem searchItem;
     private TextView searchTextView;
@@ -56,10 +62,9 @@ public static Fragment fragment = null;
     public static final Stack<Fragment> mStack = new Stack<>();
     public static String strCommon;
 
-
-//    Class fragmentClass = HomeFragment.class;
-public static Class fragmentClass = HomeFragment.class;
-public static FragmentManager fragmentManager = null;
+    //    Class fragmentClass = HomeFragment.class;
+    public static Class fragmentClass = HomeFragment.class;
+    public static FragmentManager fragmentManager = null;
 
 
     @Override
@@ -83,11 +88,11 @@ public static FragmentManager fragmentManager = null;
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
-                            navigationView.setNavigationItemSelectedListener(
-                                    new NavigationView.OnNavigationItemSelectedListener() {
-                                        @Override
-                                        public boolean onNavigationItemSelected(MenuItem menuItem) {
-                                            selectDrawerItem(menuItem);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
                         return true;
                     }
                 });
@@ -101,18 +106,42 @@ public static FragmentManager fragmentManager = null;
                 if (resultCode == RESULT_OK) {
                     if (data.getStringArrayListExtra("userData") != null) {
                         facebookUserData = data.getStringArrayListExtra("userData");
+                        User.user = facebookUserData;
                         profileImage = (ImageView) naviView.findViewById(R.id.profileImage);
                         userIdView = (TextView) naviView.findViewById(R.id.userId);
                         userIdView.setText(facebookUserData.get(1));
-                        Picasso.with(getApplicationContext()).load(facebookUserData.get(5)).fit().into(profileImage);
+                        Picasso.with(getApplicationContext()).load(User.user.get(5)).fit().into(profileImage);
                     } else {
                         kakaoUserData = data.getStringArrayListExtra("kakaoData");
+                        User.user = kakaoUserData;
+
                         userIdView = (TextView) naviView.findViewById(R.id.userId);
                         userIdView.setText(kakaoUserData.get(0));
                     }
                     menu.setTitle("Logout");
-                }break;
+
+                    //사용자 조회
+                    memberLookup();
+                }
+                break;
         }
+    }
+
+    //사용자 조회 메소드
+    private void memberLookup() {
+        String[] gets = {Constants.GREEN_STORE_URL_APP_MEBERLOOKUP, "POST", "memberLookup", "", "", ""};
+        gets[3] = User.user.get(0);
+        gets[4] = User.user.get(1);
+        gets[5] = User.user.get(2);
+
+        Server server = new Server(MainActivity.this, this);
+        server.execute(gets);
+    }
+
+    @Override
+    public void customAddList(String result) {
+        User.user.add(result);
+        Log.v("member", " memb" + User.user.get(3));
     }
 
     //Drawer에서 항목을 선택했을 때 전환해줄 fragment 선택
@@ -125,26 +154,26 @@ public static FragmentManager fragmentManager = null;
                 break;
 
             case R.id.nav_Login:
-                if(facebookUserData==null && kakaoUserData==null) {
+                if (facebookUserData == null && kakaoUserData == null) {
                     fragmentClass = null;
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivityForResult(intent, LOGIN_ACTIVITY);
-                }
-                else{
-                    profileImage = (ImageView)findViewById(R.id.profileImage);
-                    if(facebookUserData!=null){
+                } else {
+                    profileImage = (ImageView) findViewById(R.id.profileImage);
+                    if (facebookUserData != null) {
                         LoginManager.getInstance().logOut();
-                        facebookUserData=null;
-                    }else{
-                        Log.v("kakaologout","logout");
+                        facebookUserData = null;
+                    } else {
+                        Log.v("kakaologout", "logout");
                         UserManagement.requestLogout(new LogoutResponseCallback() {
                             @Override
                             public void onCompleteLogout() {
-                                Log.v("loginCheck","checkechk");
+                                Log.v("loginCheck", "checkechk");
                             }
                         });
-                        kakaoUserData=null;
+                        kakaoUserData = null;
                     }
+                    User.user = null;
                     profileImage.setImageResource(R.drawable.circle);
                     userIdView.setText("로그인하세요");
                     menuItem.setTitle("Login");
@@ -179,130 +208,134 @@ public static FragmentManager fragmentManager = null;
 //        fragmentManager = getSupportFragmentManager();
         Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
 
-        if(fragmentClass!=null)
-        backStateName = fragmentClass.getClass().getName();
+        if (fragmentClass != null)
+            backStateName = fragmentClass.getClass().getName();
 
-        if (fragmentClass!=null && !nowFragment.getClass().equals(fragmentClass)) { //fragment not in back stack, create it.
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.llContents, fragment);
-            transaction.addToBackStack(backStateName);
-            transaction.commit();
+        if (!nowFragment.getClass().equals(fragmentClass) && fragmentClass != null) { //fragment not in back stack, create it.
+
+            if (fragmentClass != null && !nowFragment.getClass().equals(fragmentClass)) { //fragment not in back stack, create it.
+
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.llContents, fragment);
+                transaction.addToBackStack(backStateName);
+                transaction.commit();
+            }
+
+            // Highlight the selected item has been done by NavigationView
+            menuItem.setChecked(true);
+            // Set action bar title
+            if (menuItem.getTitle() != "Login")
+                setTitle(menuItem.getTitle());
+            // Close the navigation drawer
+            drawer.closeDrawers();
         }
-
-        // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked(true);
-        // Set action bar title
-        if(menuItem.getTitle()!="Login")
-            setTitle(menuItem.getTitle());
-        // Close the navigation drawer
-        drawer.closeDrawers();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+        @Override
+        public boolean onCreateOptionsMenu (Menu menu){
 //        super.onCreateOptionsMenu(menu);
 //        MenuInflater inflater = getMenuInflater();
 //        inflater.inflate(R.menu.main,menu);
 //        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        // Inflate the menu; this adds items to the action bar if it is present.
+            // Inflate the menu; this adds items to the action bar if it is present.
 
-        getMenuInflater().inflate(R.menu.main, menu);
+            getMenuInflater().inflate(R.menu.main, menu);
 
-        super.onCreateOptionsMenu(menu);
-        MenuInflater inflater = getMenuInflater();
+            super.onCreateOptionsMenu(menu);
+            MenuInflater inflater = getMenuInflater();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            searchItem = menu.findItem(R.id.action_search);
-            searchView = (SearchView) searchItem.getActionView();
-            searchView.setQueryHint("음식이나 지역을 입력하세요.");
-            searchView.setOnQueryTextListener(queryTextListener);
-            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-            if (null != searchManager) {
-                searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+                searchItem = menu.findItem(R.id.action_search);
+                searchView = (SearchView) searchItem.getActionView();
+                searchView.setQueryHint("음식이나 지역을 입력하세요.");
+                searchView.setOnQueryTextListener(queryTextListener);
+                SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+                if (null != searchManager) {
+                    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+                }
+                searchView.setIconifiedByDefault(true);
+
             }
-            searchView.setIconifiedByDefault(true);
-
+            return true;
         }
-        return true;
-    }
 
-    private OnQueryTextListener queryTextListener = new OnQueryTextListener() {
+        private OnQueryTextListener queryTextListener = new OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                strCommon = query;
+                if (fragmentClass != null)
+                    backStateName = fragmentClass.getClass().getName();
+
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.llContents, SearchResultFragment.newInstance());
+                transaction.addToBackStack(backStateName);
+                transaction.commit();
+
+
+                setTitle("검색결과");
+                searchView.setQuery("", false);
+                searchView.setIconified(true);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+        };
+
+
+        //툴바 메뉴에서 옵션 아이템 선택했을 때
         @Override
-        public boolean onQueryTextSubmit(String query) {
+        public boolean onOptionsItemSelected (MenuItem item){
+            int id = item.getItemId();
 
-            strCommon = query;
-            if(fragmentClass!=null)
-            backStateName = fragmentClass.getClass().getName();
-
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.llContents, SearchResultFragment.newInstance());
-            transaction.addToBackStack(backStateName);
-            transaction.commit();
-
-
-            setTitle("검색결과");
-            searchView.setQuery("", false);
-            searchView.setIconified(true);
-            return false;
-        }
-
-        @Override
-        public boolean onQueryTextChange(String newText) {
-            // TODO Auto-generated method stub
-            return false;
-        }
-    };
-
-
-    //툴바 메뉴에서 옵션 아이템 선택했을 때
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
+            switch (id) {
      /*       case android.R.id.home:
                 drawer.openDrawer(GravityCompat.START);
                 break;
 */
-            case R.id.action_settings:
-                Toast.makeText(MainActivity.this, "setting", Toast.LENGTH_SHORT).show();
-                break;
+                case R.id.action_settings:
+                    Toast.makeText(MainActivity.this, "setting", Toast.LENGTH_SHORT).show();
+                    break;
 
-            case R.id.action_search:
-                break;
+                case R.id.action_search:
+                    break;
+            }
+
+
+            return super.onOptionsItemSelected(item);
         }
 
+        // `onPostCreate` called when activity start-up is complete after `onStart()`
+        // NOTE! Make sure to
+        // override the method with only a single `Bundle` argument
+        @Override
+        protected void onPostCreate (Bundle savedInstanceState){
+            super.onPostCreate(savedInstanceState);
+        }
 
-        return super.onOptionsItemSelected(item);
-    }
-
-    // `onPostCreate` called when activity start-up is complete after `onStart()`
-    // NOTE! Make sure to
-    // override the method with only a single `Bundle` argument
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+        @Override
+        public void onBackPressed () {
+            super.onBackPressed();
 
 //        Log.d("___", "fragment.getClass().toString() : " + fragment.getClass().toString());
 //        Log.d("___", "HomeFragment.class.toString() : " + HomeFragment.class.toString());
-        Log.d("___", "size : " + fragmentManager.getFragments().size());
+            Log.d("___", "size : " + fragmentManager.getFragments().size());
 
-        //Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
-        if( fragment!=null) {
-            if( fragmentManager.getFragments().size() <= 1 ) // HOW TO : 지금 프래그먼트가 HomeFragment인지 검사 ???    // fragment.getClass().equals(HomeFragment.class) )
-                backPressCloseHandler.onBackPressed();
-        } else {
-            Log.d("___", "fragment is null");
+            //Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
+            if (fragment != null) {
+                if (fragmentManager.getFragments().size() <= 1) // HOW TO : 지금 프래그먼트가 HomeFragment인지 검사 ???    // fragment.getClass().equals(HomeFragment.class) )
+                    backPressCloseHandler.onBackPressed();
+            } else {
+                Log.d("___", "fragment is null");
+            }
         }
-    }
 
     public static void changeFragment(String strNewFragment) {
-        if(strNewFragment.equals("fragment1")) {
+        if (strNewFragment.equals("fragment1")) {
             //Log.d("___","newFragment : fragment1");
             //Log.d("___","fragmentManager.getFragments().size() : " + fragmentManager.getFragments().size() );
 
@@ -311,9 +344,11 @@ public static FragmentManager fragmentManager = null;
             fragmentClass = ReviewWriteFragment.class;
             try {
                 fragment = (Fragment) fragmentClass.newInstance();
-            } catch(Exception e) { e.printStackTrace(); }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-            if (fragmentClass!=null && !nowFragment.getClass().equals(fragmentClass)) { //fragment not in back stack, create it.
+            if (fragmentClass != null && !nowFragment.getClass().equals(fragmentClass)) { //fragment not in back stack, create it.
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.llContents, fragment);
                 transaction.addToBackStack(fragmentClass.getClass().getName());
