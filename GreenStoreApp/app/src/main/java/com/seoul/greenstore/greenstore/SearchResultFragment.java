@@ -57,7 +57,6 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
     @Override
     public void onStart() {
         super.onStart();
-
         if(data.size() == 0) {
             //서버에 보낼 query를 UTF-8로 인코딩
             if (MainActivity.strCommon != null) {
