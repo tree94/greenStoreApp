@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Created by X on 2016-09-08.
  */
-public class ReviewFragment extends Fragment implements Server.ILoadResult, View.OnClickListener {
+public class ReviewFragment extends Fragment implements Server.ILoadResult {
     private ReviewAdapter adapter;
     private View view;
     private List<Review_item> data = new ArrayList<Review_item>();
@@ -41,6 +41,7 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, View
     private CardView cardview;
     private ImageButton like_image;
     private TextView storeName_review;
+    private Button review_setting;
 
 
     public static ReviewFragment newInstance() {
@@ -60,12 +61,6 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, View
 
     }
 
-    @Override
-    public void onClick(View v) {
-        String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_LIKE, "GET", "reviewDelete", "5"};
-        Server server = new Server(getActivity(), this);
-        server.execute(gets);
-    }
 
     @Override
     public void onStart() {
@@ -101,13 +96,38 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, View
         Spinners spinner = new Spinners(getActivity(), locationSpinner, typeSpinner1);
         storeName_review = (TextView) view.findViewById(R.id.storeName_review);
         btnWrite = (Button) view.findViewById(R.id.review_write);
+        review_setting = (Button) view.findViewById(R.id.review_setting);
 
         adapter = new ReviewAdapter(getActivity(), data);
         recyclerView.setHasFixedSize(true);
         Log.i("ADAPTER", adapter.toString());
 
+/*
+        like_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                *//*String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_LIKE, "GET", "reviewDelete", "5"};
+                Server server = new Server(getActivity(), this);
+                server.execute(gets);*//*
+                Toast.makeText(getActivity(), "하트 이미지를 누름", Toast.LENGTH_SHORT).show();
 
-        like_image.setOnClickListener(this);
+            }
+        });*/
+
+     /*   review_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder;
+                AlertDialog alertDialog;
+                Toast.makeText(getActivity(), "리뷰세팅 버튼을 누름", Toast.LENGTH_SHORT).show();
+                LayoutInflater inflater =(LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View layout = inflater.inflate(R.layout.review_custom_dialog, (ViewGroup) view.findViewById(R.id.layout_root));
+                builder = new AlertDialog.Builder(getContext());
+
+                builder.setView(layout);
+                alertDialog = builder.create();
+            }
+        });*/
 
 
         btnWrite.setOnClickListener(new View.OnClickListener() {

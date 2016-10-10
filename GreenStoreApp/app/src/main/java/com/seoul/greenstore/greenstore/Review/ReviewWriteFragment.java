@@ -2,6 +2,7 @@ package com.seoul.greenstore.greenstore.Review;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.seoul.greenstore.greenstore.Commons.Constants;
+import com.seoul.greenstore.greenstore.MainActivity;
 import com.seoul.greenstore.greenstore.R;
 import com.seoul.greenstore.greenstore.Server.Server;
 
@@ -24,6 +27,7 @@ public class ReviewWriteFragment extends Fragment implements Server.ILoadResult,
     private Button imgInsertBtn;
     private Button reviewSubmitBtn;
     private Button reviewCancelBtn;
+    private FragmentManager fragmentManager = getFragmentManager();
 
 
     public static ReviewWriteFragment newInstance() {
@@ -88,24 +92,25 @@ public class ReviewWriteFragment extends Fragment implements Server.ILoadResult,
                 Toast.makeText(getActivity(), "이미지 추가버튼을 눌렀음", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.review_submit:
-
                 Log.d("reviewCon.getText():", reviewContent.getText().toString());
                 if (reviewContent.getText().toString().equals("")) {
 
                     Toast.makeText(getActivity(), "내용을 입력해주세요", Toast.LENGTH_SHORT).show();
-
                 } else {
-
-//                    Log.d("reviewCon.getText():", reviewContent.getText().toString());
-//                    String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_WRITE, "POST","reviewInsert", "1", "9018", reviewContent.getText().toString()};
-//                    Server server = new Server(getActivity(), this);
-//                    server.execute(gets);
-
+                    Log.d("reviewCon.getText():", reviewContent.getText().toString());
+                    String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_WRITE, "POST","reviewInsert", "1", "9018", reviewContent.getText().toString()};
+                    Server server = new Server(getActivity(), this);
+                    server.execute(gets);
+                    Toast.makeText(getActivity(), "리뷰를 등록했습니다.", Toast.LENGTH_SHORT).show();
+//                    fragmentManager.popBackStack();
+                    MainActivity.changeFragment("Review");
                 }
-
                 break;
             case R.id.review_cancel:
-
+                Log.d("review_cancel click ","클릭");
+                Toast.makeText(getActivity(), "전으로 돌아갑니다", Toast.LENGTH_SHORT).show();
+//                    fragmentManager.popBackStack();
+                MainActivity.changeFragment("Review");
                 break;
 
         }
