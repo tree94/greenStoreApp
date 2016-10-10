@@ -27,9 +27,13 @@ import com.facebook.login.LoginManager;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.seoul.greenstore.greenstore.Commons.BackPressCloseHandler;
+
 import com.seoul.greenstore.greenstore.Commons.Constants;
 import com.seoul.greenstore.greenstore.Server.Server;
 import com.seoul.greenstore.greenstore.User.User;
+
+import com.seoul.greenstore.greenstore.Review.ReviewWriteFragment;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -41,7 +45,8 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     private MenuItem menu;
     private NavigationView naviView;
     private ActionBarDrawerToggle drawerToggle;
-    private Fragment fragment = null;
+    //private Fragment fragment = null;
+    public static Fragment fragment = null;
     private SearchView searchView;
     private MenuItem searchItem;
     private TextView searchTextView;
@@ -57,8 +62,10 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     public static final Stack<Fragment> mStack = new Stack<>();
     public static String strCommon;
 
-    Class fragmentClass = HomeFragment.class;
-    FragmentManager fragmentManager = getSupportFragmentManager();
+    //    Class fragmentClass = HomeFragment.class;
+    public static Class fragmentClass = HomeFragment.class;
+    public static FragmentManager fragmentManager = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +82,9 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
         backPressCloseHandler = new BackPressCloseHandler(this);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.llContents, new HomeFragment()).commit();
+
+        fragmentManager = getSupportFragmentManager();
+
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -131,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     @Override
     public void customAddList(String result) {
         User.user.add(result);
-        Log.v("member"," memb"+User.user.get(3));
+        Log.v("member", " memb" + User.user.get(3));
     }
 
     //Drawer에서 항목을 선택했을 때 전환해줄 fragment 선택
@@ -196,119 +206,160 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
         // Insert the fragment by replacing any existing fragment
 
 
-        fragmentManager = getSupportFragmentManager();
+//        fragmentManager = getSupportFragmentManager();
         Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
 
         if (fragmentClass != null)
             backStateName = fragmentClass.getClass().getName();
 
         if (!nowFragment.getClass().equals(fragmentClass) && fragmentClass != null) { //fragment not in back stack, create it.
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.llContents, fragment);
-            transaction.addToBackStack(backStateName);
-            transaction.commit();
-        }
 
-        // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked(true);
-        // Set action bar title
-        if (menuItem.getTitle() != "Login")
-            setTitle(menuItem.getTitle());
-        // Close the navigation drawer
-        drawer.closeDrawers();
+            if (fragmentClass != null && !nowFragment.getClass().equals(fragmentClass)) { //fragment not in back stack, create it.
+
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.llContents, fragment);
+                transaction.addToBackStack(backStateName);
+                transaction.commit();
+            }
+
+            // Highlight the selected item has been done by NavigationView
+            menuItem.setChecked(true);
+            // Set action bar title
+            if (menuItem.getTitle() != "Login")
+                setTitle(menuItem.getTitle());
+            // Close the navigation drawer
+            drawer.closeDrawers();
+        }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+        @Override
+        public boolean onCreateOptionsMenu (Menu menu){
 //        super.onCreateOptionsMenu(menu);
 //        MenuInflater inflater = getMenuInflater();
 //        inflater.inflate(R.menu.main,menu);
 //        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        // Inflate the menu; this adds items to the action bar if it is present.
+            // Inflate the menu; this adds items to the action bar if it is present.
 
-        getMenuInflater().inflate(R.menu.main, menu);
+            getMenuInflater().inflate(R.menu.main, menu);
 
-        super.onCreateOptionsMenu(menu);
-        MenuInflater inflater = getMenuInflater();
+            super.onCreateOptionsMenu(menu);
+            MenuInflater inflater = getMenuInflater();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            searchItem = menu.findItem(R.id.action_search);
-            searchView = (SearchView) searchItem.getActionView();
-            searchView.setQueryHint("음식이나 지역을 입력하세요.");
-            searchView.setOnQueryTextListener(queryTextListener);
-            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-            if (null != searchManager) {
-                searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+                searchItem = menu.findItem(R.id.action_search);
+                searchView = (SearchView) searchItem.getActionView();
+                searchView.setQueryHint("음식이나 지역을 입력하세요.");
+                searchView.setOnQueryTextListener(queryTextListener);
+                SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+                if (null != searchManager) {
+                    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+                }
+                searchView.setIconifiedByDefault(true);
+
             }
-            searchView.setIconifiedByDefault(true);
-
+            return true;
         }
-        return true;
-    }
 
-    private OnQueryTextListener queryTextListener = new OnQueryTextListener() {
+        private OnQueryTextListener queryTextListener = new OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                strCommon = query;
+                if (fragmentClass != null)
+                    backStateName = fragmentClass.getClass().getName();
+
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.llContents, SearchResultFragment.newInstance());
+                transaction.addToBackStack(backStateName);
+                transaction.commit();
+
+
+                setTitle("검색결과");
+                searchView.setQuery("", false);
+                searchView.setIconified(true);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+        };
+
+
+        //툴바 메뉴에서 옵션 아이템 선택했을 때
         @Override
-        public boolean onQueryTextSubmit(String query) {
+        public boolean onOptionsItemSelected (MenuItem item){
+            int id = item.getItemId();
 
-            strCommon = query;
-            if (fragmentClass != null)
-                backStateName = fragmentClass.getClass().getName();
-
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.llContents, SearchResultFragment.newInstance());
-            transaction.addToBackStack(backStateName);
-            transaction.commit();
-
-
-            setTitle("검색결과");
-            searchView.setQuery("", false);
-            searchView.setIconified(true);
-            return false;
-        }
-
-        @Override
-        public boolean onQueryTextChange(String newText) {
-            // TODO Auto-generated method stub
-            return false;
-        }
-    };
-
-
-    //툴바 메뉴에서 옵션 아이템 선택했을 때
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
+            switch (id) {
      /*       case android.R.id.home:
                 drawer.openDrawer(GravityCompat.START);
                 break;
 */
-            case R.id.action_settings:
-                Toast.makeText(MainActivity.this, "setting", Toast.LENGTH_SHORT).show();
-                break;
+                case R.id.action_settings:
+                    Toast.makeText(MainActivity.this, "setting", Toast.LENGTH_SHORT).show();
+                    break;
 
-            case R.id.action_search:
-                break;
+                case R.id.action_search:
+                    break;
+            }
+
+
+            return super.onOptionsItemSelected(item);
         }
 
+        // `onPostCreate` called when activity start-up is complete after `onStart()`
+        // NOTE! Make sure to
+        // override the method with only a single `Bundle` argument
+        @Override
+        protected void onPostCreate (Bundle savedInstanceState){
+            super.onPostCreate(savedInstanceState);
+        }
 
-        return super.onOptionsItemSelected(item);
-    }
+        @Override
+        public void onBackPressed () {
+            super.onBackPressed();
 
-    // `onPostCreate` called when activity start-up is complete after `onStart()`
-    // NOTE! Make sure to
-    // override the method with only a single `Bundle` argument
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-    }
+//        Log.d("___", "fragment.getClass().toString() : " + fragment.getClass().toString());
+//        Log.d("___", "HomeFragment.class.toString() : " + HomeFragment.class.toString());
+            Log.d("___", "size : " + fragmentManager.getFragments().size());
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+            //Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
+            if (fragment != null) {
+                if (fragmentManager.getFragments().size() <= 1) // HOW TO : 지금 프래그먼트가 HomeFragment인지 검사 ???    // fragment.getClass().equals(HomeFragment.class) )
+                    backPressCloseHandler.onBackPressed();
+            } else {
+                Log.d("___", "fragment is null");
+            }
+        }
 
-        backPressCloseHandler.onBackPressed();
+    public static void changeFragment(String strNewFragment) {
+        if (strNewFragment.equals("fragment1")) {
+            //Log.d("___","newFragment : fragment1");
+            //Log.d("___","fragmentManager.getFragments().size() : " + fragmentManager.getFragments().size() );
+
+            Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
+
+            fragmentClass = ReviewWriteFragment.class;
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (fragmentClass != null && !nowFragment.getClass().equals(fragmentClass)) { //fragment not in back stack, create it.
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.llContents, fragment);
+                transaction.addToBackStack(fragmentClass.getClass().getName());
+                transaction.commit();
+            }
+
+            //fragmentManager.beginTransaction().replace(R.id.llContents, new ReviewWriteFragment()).commit();
+
+        }
+
     }
 
 

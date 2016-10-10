@@ -43,4 +43,6 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.+'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.android.support:support-v4:23.4.0'
+    compile 'info.hoang8f:fbutton:1.0.5'
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
 }

@@ -13,6 +13,15 @@ public class Review_item {
     int relike;
     Date rdate;
     String storeName;
+    private String image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public String getStoreName() {
         return storeName;
