@@ -13,8 +13,8 @@ public class Constants {
 
 
 
-    public static final String GREEN_STORE_URL_BASIC = BASIC_URL + "greenStore/";
-    public static final String GREEN_STORE_URL_APP = GREEN_STORE_URL_BASIC + "app/";
+//    public static final String GREEN_STORE_URL_BASIC = BASIC_URL + "greenStore/";
+    public static final String GREEN_STORE_URL_APP = BASIC_URL + "app/";
 
     //detail
     public static final String GREEN_STORE_URL_APP_DETAIL = GREEN_STORE_URL_APP + "detail/";
