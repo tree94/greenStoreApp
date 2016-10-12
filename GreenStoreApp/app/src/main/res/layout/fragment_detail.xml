@@ -90,6 +90,43 @@
     
     <View
         android:layout_width="fill_parent"
-        android:layout_height="5dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="5dp"
         android:background="#a0a0a0"/>
+
+    <RelativeLayout
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="120dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <TextView
+            android:id="@+id/detailAddr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="서울시 강북구 수유동 172-150"
+            android:layout_marginTop="12dp"
+            android:textStyle="bold"
+            android:textSize="20dp"/>
+
+        <ImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/addr"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#a0a0a0"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"/>
 </LinearLayout>
