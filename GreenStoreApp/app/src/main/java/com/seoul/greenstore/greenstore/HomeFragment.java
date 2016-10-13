@@ -104,7 +104,7 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
                 sortCategory(id);
                 break;
             case R.id.likeSpinner:
-                sortLike(id);
+//                sortLike(id);
                 break;
             case R.id.typeSpinner1:
                 spinnerData[0] = parent.getItemAtPosition(position).toString();
@@ -211,16 +211,6 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
-
-    private void sortLike(long id){
-        switch ((int)id){
-            case 0:
-                break;
-            case 1:
-                break;
-        }
-    }
-
 
 }
 
