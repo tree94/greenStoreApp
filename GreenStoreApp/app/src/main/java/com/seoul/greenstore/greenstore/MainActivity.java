@@ -27,13 +27,10 @@ import com.facebook.login.LoginManager;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.seoul.greenstore.greenstore.Commons.BackPressCloseHandler;
-
 import com.seoul.greenstore.greenstore.Commons.Constants;
+import com.seoul.greenstore.greenstore.Review.ReviewWriteFragment;
 import com.seoul.greenstore.greenstore.Server.Server;
 import com.seoul.greenstore.greenstore.User.User;
-
-import com.seoul.greenstore.greenstore.Review.ReviewWriteFragment;
-
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -86,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 
         fragmentManager = getSupportFragmentManager();
 
+
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -119,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                         userIdView = (TextView) naviView.findViewById(R.id.userId);
                         userIdView.setText(kakaoUserData.get(1));
                     }
-                    menu.setTitle("Logout");
+
 
                     //사용자 조회
                     memberLookup();
@@ -176,19 +174,24 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                     User.user = null;
                     profileImage.setImageResource(R.drawable.circle);
                     userIdView.setText("로그인하세요");
-                    menuItem.setTitle("Login");
+
                 }
                 break;
             case R.id.nav_Mypage:
                 fragmentClass = MypageFragment.class;
-                Log.d("mymy", fragmentClass.toString());
                 break;
             case R.id.nav_Notice:
                 fragmentClass = NoticeFragment.class;
                 break;
             case R.id.nav_Service:
+                fragmentClass = null;
+                Intent intent = new Intent(this, PlayActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_Review :
                 fragmentClass = ReviewFragment.class;
                 break;
+
             default:
                 fragmentClass = ImageFragment.class;
         }
@@ -196,7 +199,6 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
         if (fragmentClass != null) {
             try {
                 fragment = (Fragment) fragmentClass.newInstance();
-                Log.d("mymy2", fragment.toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -209,10 +211,8 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 
 
         if (fragmentClass != null) {
-            Log.d("mymy3", fragmentClass.toString());
             backStateName = fragmentClass.getClass().getName();
 //            if (!nowFragment.getClass().equals(fragmentClass)) { //fragment not in back stack, create it.
-            Log.d("mymy4", backStateName);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.llContents, fragment);
             transaction.addToBackStack(backStateName);
@@ -223,8 +223,6 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
         // Set action bar title
-        if (menuItem.getTitle() != "Login")
-            setTitle(menuItem.getTitle());
         // Close the navigation drawer
         drawer.closeDrawers();
     }
@@ -337,6 +335,9 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                 break;
             case "Review":
                 fragmentClass = ReviewFragment.class;
+                break;
+
+
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();

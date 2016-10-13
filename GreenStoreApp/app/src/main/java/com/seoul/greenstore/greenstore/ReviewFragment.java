@@ -84,6 +84,7 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_review, null);
+        View view2 = inflater.inflate(R.layout.cardview_review,null);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true);
 
 
@@ -102,8 +103,8 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult {
         recyclerView.setHasFixedSize(true);
         Log.i("ADAPTER", adapter.toString());
 
-/*
-        like_image.setOnClickListener(new View.OnClickListener() {
+
+/*       like_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 *//*String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_LIKE, "GET", "reviewDelete", "5"};
@@ -137,6 +138,9 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult {
                 MainActivity.changeFragment("fragment1");
             }
         });
+
+
+
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
