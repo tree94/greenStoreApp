@@ -83,9 +83,11 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 
         backPressCloseHandler = new BackPressCloseHandler(this);
 
+
         getSupportFragmentManager().beginTransaction().replace(R.id.llContents, new HomeFragment()).commit();
 
         fragmentManager = getSupportFragmentManager();
+
 
     }
 
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                         userIdView = (TextView) naviView.findViewById(R.id.userId);
                         userIdView.setText(kakaoUserData.get(1));
                     }
-                    menu.setTitle("Logout");
+
 
                     //사용자 조회
                     memberLookup();
@@ -175,7 +177,6 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
             case R.id.nav_Home:
                 fragmentClass = HomeFragment.class;
                 break;
-
             case R.id.nav_Login:
                 if (facebookUserData == null && kakaoUserData == null) {
                     fragmentClass = null;
@@ -201,28 +202,31 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                     User.userReviewLike = null;
                     profileImage.setImageResource(R.drawable.circle);
                     userIdView.setText("로그인하세요");
-                    menuItem.setTitle("Login");
+
                 }
                 break;
             case R.id.nav_Mypage:
                 fragmentClass = MypageFragment.class;
-
                 break;
             case R.id.nav_Notice:
                 fragmentClass = NoticeFragment.class;
                 break;
             case R.id.nav_Service:
+                fragmentClass = null;
+                Intent intent = new Intent(this, PlayActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_Review :
                 fragmentClass = ReviewFragment.class;
                 break;
+
             default:
                 fragmentClass = ImageFragment.class;
         }
 
         if (fragmentClass != null) {
-            System.out.println("??????");
             try {
                 fragment = (Fragment) fragmentClass.newInstance();
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -230,35 +234,31 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
         // Insert the fragment by replacing any existing fragment
 
 
-//        fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
 
-        if (fragmentClass != null)
+
+        if (fragmentClass != null) {
             backStateName = fragmentClass.getClass().getName();
+//            if (!nowFragment.getClass().equals(fragmentClass)) { //fragment not in back stack, create it.
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.llContents, fragment);
+            transaction.addToBackStack(backStateName);
+            transaction.commit();
 
-        if (!nowFragment.getClass().equals(fragmentClass) && fragmentClass != null) { //fragment not in back stack, create it.
-
-            if (fragmentClass != null && !nowFragment.getClass().equals(fragmentClass)) { //fragment not in back stack, create it.
-
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.llContents, fragment);
-                transaction.addToBackStack(backStateName);
-                transaction.commit();
-            }
-
-            // Highlight the selected item has been done by NavigationView
-            menuItem.setChecked(true);
-            // Set action bar title
-            if (menuItem.getTitle() != "Login")
-                setTitle(menuItem.getTitle());
-            // Close the navigation drawer
-            drawer.closeDrawers();
         }
+
+        // Highlight the selected item has been done by NavigationView
+        menuItem.setChecked(true);
+        // Set action bar title
+        // Close the navigation drawer
+        drawer.closeDrawers();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        super.onCreateOptionsMenu(menu);
+        super.onCreateOptionsMenu(menu);
 //        MenuInflater inflater = getMenuInflater();
 //        inflater.inflate(R.menu.main,menu);
 //        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
@@ -266,7 +266,6 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 
         getMenuInflater().inflate(R.menu.main, menu);
 
-        super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
@@ -289,12 +288,13 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
         public boolean onQueryTextSubmit(String query) {
 
             strCommon = query;
-            if (fragmentClass != null)
-                backStateName = fragmentClass.getClass().getName();
+
+//                if (fragmentClass != null)
+            backStateName = fragmentClass.getClass().getName();
 
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.llContents, SearchResultFragment.newInstance());
-            transaction.addToBackStack(backStateName);
+            transaction.addToBackStack("");
             transaction.commit();
 
 
@@ -342,49 +342,36 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
         super.onPostCreate(savedInstanceState);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-//        Log.d("___", "fragment.getClass().toString() : " + fragment.getClass().toString());
-//        Log.d("___", "HomeFragment.class.toString() : " + HomeFragment.class.toString());
-        Log.d("___", "size : " + fragmentManager.getFragments().size());
-
-        //Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
-        if (fragment != null) {
-            if (fragmentManager.getFragments().size() <= 1) // HOW TO : 지금 프래그먼트가 HomeFragment인지 검사 ???    // fragment.getClass().equals(HomeFragment.class) )
-                backPressCloseHandler.onBackPressed();
-        } else {
-            Log.d("___", "fragment is null");
-        }
-    }
 
     public static void changeFragment(String strNewFragment) {
-        if (strNewFragment.equals("fragment1")) {
-            //Log.d("___","newFragment : fragment1");
-            //Log.d("___","fragmentManager.getFragments().size() : " + fragmentManager.getFragments().size() );
+        switch (strNewFragment) {
+            case "fragment1":
+                fragmentClass = ReviewWriteFragment.class;
+                break;
+            case "Review":
+                fragmentClass = ReviewFragment.class;
+                break;
 
-            Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
-
-            fragmentClass = ReviewWriteFragment.class;
-            try {
-                fragment = (Fragment) fragmentClass.newInstance();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            if (fragmentClass != null && !nowFragment.getClass().equals(fragmentClass)) { //fragment not in back stack, create it.
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.llContents, fragment);
-                transaction.addToBackStack(fragmentClass.getClass().getName());
-                transaction.commit();
-            }
-
-            //fragmentManager.beginTransaction().replace(R.id.llContents, new ReviewWriteFragment()).commit();
 
         }
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        //fragment not in back stack, create it.
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.llContents, fragment);
+        transaction.addToBackStack(fragmentClass.getClass().getName());
+        transaction.commit();
+
+
+        //fragmentManager.beginTransaction().replace(R.id.llContents, new ReviewWriteFragment()).commit();
 
     }
 
-
 }
+
+

@@ -5,16 +5,16 @@ package com.seoul.greenstore.greenstore.Commons;
  */
 public class Constants {
 
-        public static final String BASIC_URL = "http://192.168.100.253:8080/";
 //    public static final String BASIC_URL = "http://172.30.49.177:8080/";
 
-//    public static final String BASIC_URL = "http://192.168.13.36:8080/";
+//    public static final String BASIC_URL = "http://192.168.43.181:8080/";
 //    public static final String BASIC_URL = "http://172.30.49.177:8080/";
 
+//    public static final String BASIC_URL = "http://192.168.100.253:8080/";
+    public static final String BASIC_URL = "http://192.168.100.247:8080/";
+    public static final String GREEN_STORE_URL_BASIC = BASIC_URL;
+    public static final String GREEN_STORE_URL_APP = GREEN_STORE_URL_BASIC + "app/";
 
-
-//    public static final String GREEN_STORE_URL_BASIC = BASIC_URL + "greenStore/";
-    public static final String GREEN_STORE_URL_APP = BASIC_URL + "app/";
 
     //detail
     public static final String GREEN_STORE_URL_APP_DETAIL = GREEN_STORE_URL_APP + "detail/";
@@ -33,14 +33,15 @@ public class Constants {
     public static final  String GREEN_STORE_URL_APP_STORELIKE = GREEN_STORE_URL_APP + "storeLike/";
 
     //STS에 review/one 이 스토어 9018로 지정되어있음. 현재 스토어 sh_id받아와서 넣어주는걸로 코드변경해야함.
-    public static final String GREEN_STORE_URL_APP_REVIEW_ONE = GREEN_STORE_URL_APP + "review/one";
-    public static final String GREEN_STORE_URL_APP_REVIEW_ALL = GREEN_STORE_URL_APP + "review/listAll";
+    private static final String GREEN_STORE_URL_APP_REVIEW = GREEN_STORE_URL_APP+"review/";
+    public static final String GREEN_STORE_URL_APP_REVIEW_ONE = GREEN_STORE_URL_APP_REVIEW + "one";
 
-    public static final String GREEN_STORE_URL_APP_REVIEW_WRITE = GREEN_STORE_URL_APP + "review/insert";
-    public static final String GREEN_STORE_URL_APP_REVIEW_DELETE = GREEN_STORE_URL_APP + "review/delete";
+    public static final String GREEN_STORE_URL_APP_REVIEW_ALL = GREEN_STORE_URL_APP_REVIEW + "listAll";
+    public static final String GREEN_STORE_URL_APP_REVIEW_WRITE = GREEN_STORE_URL_APP_REVIEW + "insert";
+    public static final String GREEN_STORE_URL_APP_REVIEW_UPDATE = GREEN_STORE_URL_APP_REVIEW + "update";
+    public static final String GREEN_STORE_URL_APP_REVIEW_DELETE = GREEN_STORE_URL_APP_REVIEW + "delete";
 
-    public static final String GREEN_STORE_URL_APP_REVIEW_LIKE = GREEN_STORE_URL_APP+"review/like";
-
+    public static final String GREEN_STORE_URL_APP_REVIEW_LIKE = GREEN_STORE_URL_APP_REVIEW+"like";
 
 
 }

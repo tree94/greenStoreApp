@@ -21,22 +21,22 @@
 
         <TextView
             android:textAlignment="center"
-            android:id="@+id/storeName_review_write"
+            android:id="@+id/storeName_review_write_u"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="테스트"
+            android:text="망우찜쌈밥"
             android:textColor="@color/colorPrimary" />
     </LinearLayout>
 
     <EditText
-        android:id="@+id/review_content"
+        android:id="@+id/review_content_u"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="40dp" />
 
     <Button
-        android:id="@+id/insertImg"
+        android:id="@+id/insertImg_u"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_marginTop="10dp"
@@ -51,7 +51,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/review_submit"
+            android:id="@+id/review_submit_u"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
@@ -62,7 +62,7 @@
 
 
         <Button
-            android:id="@+id/review_cancel"
+            android:id="@+id/review_cancel_u"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"

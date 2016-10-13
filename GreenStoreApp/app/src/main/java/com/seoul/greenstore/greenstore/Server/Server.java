@@ -20,7 +20,7 @@ import java.net.URLEncoder;
 /**
  * Created by user on 2016-08-31.
  */
-public class Server extends AsyncTask<String, Void, String>{
+public class Server extends AsyncTask<String, Void, String> {
 
     private ProgressDialog waitDlg = null;
     private Activity activity;
@@ -32,12 +32,12 @@ public class Server extends AsyncTask<String, Void, String>{
         this.loadResult = loadResult;
     }
 
-    public void setOnLOadResultListener(ILoadResult loadResult){
-        this.loadResult=loadResult;
+    public void setOnLOadResultListener(ILoadResult loadResult) {
+        this.loadResult = loadResult;
     }
 
     @Override
-    protected void onPreExecute(){
+    protected void onPreExecute() {
         super.onPreExecute();
         waitDlg = new ProgressDialog(activity);
         waitDlg.setMessage("데이터 요청 중...");
@@ -45,14 +45,14 @@ public class Server extends AsyncTask<String, Void, String>{
     }
 
     @Override
-    protected String doInBackground(String...values) {
+    protected String doInBackground(String... values) {
         return request(values);
     }
 
     @Override
     protected void onPostExecute(String aResult) {
-        System.out.println(aResult +"//////////////////");
-        if(waitDlg != null){
+        System.out.println(aResult + "//////////////////");
+        if (waitDlg != null) {
             waitDlg.dismiss();
             waitDlg = null;
         }
@@ -60,20 +60,22 @@ public class Server extends AsyncTask<String, Void, String>{
     }
 
 
-    protected String request(String...values) {
+    protected String request(String... values) {
         final int TIME_OUT = 20;
         final String SERVER_URL = values[0];
         JSONArray jsonArray = null;
-        StringBuffer sb= new StringBuffer();
+        StringBuffer sb = new StringBuffer();
 
 
-        try{
+        try {
             URL url = new URL(SERVER_URL);
-            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setConnectTimeout(TIME_OUT * 10000);
             httpURLConnection.setReadTimeout(TIME_OUT * 10000);
             httpURLConnection.setRequestMethod(values[1]);
-            if(values.length>2 && values[2].equals("memberLookup")) {
+            Log.d("reviewDelete method:", values[1]);
+
+            if (values.length > 2 && values[2].equals("memberLookup")) {
                 StringBuffer buffer = new StringBuffer();
                 buffer.append("mid").append("=").append(values[3]).append("&");
                 buffer.append("mname").append("=").append(values[4]).append("&");
@@ -83,41 +85,66 @@ public class Server extends AsyncTask<String, Void, String>{
                 writer.write(buffer.toString());
                 writer.flush();
             }
-            if(values.length>2 && values[2].equals("reviewInsert")) {
-                Log.d("values[2]:",values[3]);
-                String data = URLEncoder.encode("mkey","UTF-8")+"="+URLEncoder.encode(values[3],"UTF-8").toString();
 
-                data+="&"+URLEncoder.encode("sh_id","UTF-8")+"="+URLEncoder.encode(values[4],"UTF-8");
-                data+="&"+URLEncoder.encode("rcontent","UTF-8")+"="+URLEncoder.encode(values[5],"UTF-8");
+
+            if (values.length > 2 && values[2].equals("reviewInsert")) {
+                Log.d("values[2]:", values[3]);
+                String data = URLEncoder.encode("mkey", "UTF-8") + "=" + URLEncoder.encode(values[3], "UTF-8").toString();
+
+//                data+="&"+URLEncoder.encode("rkey","UTF-8")+"="+URLEncoder.encode(values[4],"UTF-8");
+                data += "&" + URLEncoder.encode("sh_id", "UTF-8") + "=" + URLEncoder.encode(values[4], "UTF-8");
+                data += "&" + URLEncoder.encode("rcontent", "UTF-8") + "=" + URLEncoder.encode(values[5], "UTF-8");
                 httpURLConnection.setDoOutput(true);
                 OutputStreamWriter wr = new OutputStreamWriter(httpURLConnection.getOutputStream());
-                Log.d("data : ",data);
+                Log.d("data : ", data);
                 wr.write(data);
                 wr.flush();
+
+            }
+
+            if (values.length > 2 && values[2].equals("reviewUpdate")) {
+                String data = URLEncoder.encode("rkey", "UTF-8") + "=" + URLEncoder.encode(values[3], "UTF-8").toString();
+
+                data += "&" + URLEncoder.encode("rcontent", "UTF-8") + "=" + URLEncoder.encode(values[4], "UTF-8");
+//                data+="&"+URLEncoder.encode("rcontent","UTF-8")+"="+URLEncoder.encode(values[5],"UTF-8");
+                httpURLConnection.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(httpURLConnection.getOutputStream());
+                Log.d("data : ", data);
+                wr.write(data);
+                wr.flush();
+            }
+
+            if (values.length > 2 && values[2].equals("reviewDelete")) {
+                String data = URLEncoder.encode("rkey", "UTF-8") + "=" + URLEncoder.encode(values[3], "UTF-8").toString();
+                httpURLConnection.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(httpURLConnection.getOutputStream());
+                wr.write(data);
+                wr.flush();
+
             }
             httpURLConnection.connect();
             int responseCode = httpURLConnection.getResponseCode();
 
-            if(responseCode<200 || responseCode>=300){
-                Toast.makeText(activity,"서버와 연결이 실패하였습니다.",Toast.LENGTH_LONG).show();
+            if (responseCode < 200 || responseCode >= 300) {
+                Toast.makeText(activity, "서버와 연결이 실패하였습니다.", Toast.LENGTH_LONG).show();
                 return null;
             }
             InputStream in = httpURLConnection.getInputStream();
             BufferedReader rd = new BufferedReader(new InputStreamReader(in));
 
             String json;
-            while((json=rd.readLine())!=null){
-                sb.append(json+"\n");
+            while ((json = rd.readLine()) != null) {
+                sb.append(json + "\n");
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return sb.toString().trim();
     }
 
-    public interface ILoadResult{
+    public interface ILoadResult {
         public void customAddList(String result);
     }
 

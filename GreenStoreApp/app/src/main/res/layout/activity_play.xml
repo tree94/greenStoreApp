@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="500dp"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <ImageView
+        android:id="@+id/play_image"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:src="@drawable/seoul" />
+
+    <TextView
+        android:layout_below="@id/play_image"
+        android:id="@+id/play_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="서울 항동 수목원"
+        android:textSize="30dp" />
+
+    <TextView
+        android:layout_below="@id/play_name"
+        android:id="@+id/play_tel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="02-000-0000"
+        android:textSize="20dp" />
+
+
+    <TextView
+        android:layout_below="@id/play_tel"
+        android:id="@+id/play_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="볼거리 소개 내용입니다 어쩌구 저쩌꾸"
+        android:textSize="12dp" />
+
+
+    <RelativeLayout
+        android:layout_below="@id/play_info"
+        android:layout_marginTop="10dp"
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="300dp" />
+
+
+</RelativeLayout>
+
+

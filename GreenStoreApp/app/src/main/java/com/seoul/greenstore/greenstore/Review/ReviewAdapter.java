@@ -4,20 +4,30 @@ package com.seoul.greenstore.greenstore.Review;
  * Created by X on 2016-09-06.
  */
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.seoul.greenstore.greenstore.Commons.Constants;
 import com.seoul.greenstore.greenstore.R;
+import com.seoul.greenstore.greenstore.Server.Server;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -26,8 +36,10 @@ import java.util.Date;
 import java.util.List;
 
 
-public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
+public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> implements Server.ILoadResult {
     private Context context;
+
+    private Activity acti;
     private LayoutInflater inflater;
     private TextView storeName;
     private List<Review_item> items = Collections.emptyList();
@@ -42,8 +54,10 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     public ReviewAdapter(Context context, List<Review_item> data) {
         this.context = context;
+        this.acti = (Activity) context;
         this.items = data;
     }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView profile;
@@ -106,7 +120,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Review_item review_item = items.get(position);
+        final Review_item review_item = items.get(position);
 //        holder = (ViewHolder) v.getTag();
 //        Recycler_item store = items.get(position);
 //        Log.e("storename",store.getName());
@@ -119,51 +133,74 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         holder.date_review.setText(to);
         holder.storeName.setText(review_item.getStoreName());
         holder.content_review.setText(review_item.getRcontents());
-
-
-
-     /*   if(review_item.getMyLike()!=null){
-            holder.like_image.setImageDrawable(빨간하트);
-        }
-        */
+        holder.like_number.setText(String.valueOf(review_item.getRelike()));
 
         Picasso.with(context).load(review_item.getImage()).fit().centerInside().into(holder.profile);
 
         holder.review_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowDialog();
+                ShowDialog(review_item);
             }
         });
-
-       /* holder.like_image.setOnClickListener(new View.OnClickListener() {
+/*
+        holder.like_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_LIKE, "POST","reviewDelete", "5"};
-                Server server = new Server(getActivity(), this);
+                Server server = new Server(acti, this);
                 server.execute(gets);
             }
-        });*/
+        });
+        */
+
 
     }
 
-    private void ShowDialog() {
+    private void ShowDialog(final Review_item review_item) {
+
         LayoutInflater dialog = LayoutInflater.from(context);
         final View dialogLayout = dialog.inflate(R.layout.review_custom_dialog, null);
         final Dialog myDialog = new Dialog(context);
 
-
+        myDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         myDialog.setContentView(dialogLayout);
         myDialog.show();
+//        Dialog dialog = new Dialog(context);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//
+//        TextView tv = new TextView(context);
+//        tv.setText("gd");
+//        dialog.setContentView(tv);
+//        dialog.show();
 
         Button btn_update = (Button) dialogLayout.findViewById(R.id.review_update);
         Button btn_delete = (Button) dialogLayout.findViewById(R.id.review_delete);
-        Button btn_nothing = (Button) dialogLayout.findViewById(R.id.review_nothing);
+        final Button btn_nothing = (Button) dialogLayout.findViewById(R.id.review_nothing);
 
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "업데이트를 클릭함", Toast.LENGTH_SHORT).show();
+
+
+                FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                Fragment fragment = new ReviewUpdateFragment();
+
+
+                Bundle bundle = new Bundle();
+                bundle.putString("review_Rcontents", review_item.getRcontents().toString());
+                bundle.putString("review_Rkey", String.valueOf(review_item.getRkey()));
+                bundle.putString("review_StoreName", review_item.getStoreName().toString());
+
+
+                fragment.setArguments(bundle);
+
+                fragmentTransaction.replace(R.id.llContents, fragment);
+                fragmentTransaction.addToBackStack(fm.findFragmentById(R.id.llContents).toString());
+                fragmentTransaction.commit();
+                myDialog.cancel();
 
             }
         });
@@ -171,10 +208,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              /* String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_DELETE, "POST","reviewDelete", "5"};
-                Server server = new Server(getActivity(), this);
+                String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_DELETE + "?rkey=" + review_item.getRkey(), "GET"};
+                Log.d("review_item", review_item.getRkey() + "");
+                Server server = new Server(acti, ReviewAdapter.this);
                 server.execute(gets);
-*/
+                Toast.makeText(acti, "리뷰가 삭제되었습니다", Toast.LENGTH_SHORT).show();
+                myDialog.cancel();
             }
         });
 
@@ -184,8 +223,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                 myDialog.cancel();
             }
         });
+
+
     }
 
+    @Override
+    public void customAddList(String result) {
+
+    }
 
     @Override
     public int getItemCount() {

@@ -5,6 +5,10 @@
     <color name="colorAccent">#FF4081</color>
     <color name="border_color">#dedede</color>
 
+
+    <color name="greenStoreMain">#7ac143</color>
+    <color name="greenStoreAccent">#f47721</color>
+
     <color name="header_color">#f6f6f6</color>
     <color name="header_border_shadow">#ffffff</color>
 
