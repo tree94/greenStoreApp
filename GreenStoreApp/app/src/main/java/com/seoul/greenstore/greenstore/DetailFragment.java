@@ -1,5 +1,6 @@
 package com.seoul.greenstore.greenstore;
 
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -61,30 +62,34 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     private TextView detailPride;
     private TextView detailMenu;
     private TextView detailPrice;
+    private TextView detailPhone;
 
     //daum map
     private Location loc;
     private MapView mapView = null;
     private MapPOIItem marker = null;
 
+    //좋아요 플래그
+    private int likeFlag = 0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.v("comeCheck","1");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        Log.v("comeCheck","2");
         view = inflater.inflate(R.layout.fragment_detail, container, false);
-
 
         // Inflate the layout for this fragment
 
         Bundle bundle = this.getArguments();
         position = bundle.getInt("position");
-
+        Toast.makeText(getActivity().getApplicationContext(),""+position,Toast.LENGTH_SHORT).show();
         return view;
     }
 
@@ -107,6 +112,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
 
     @Override
     public void onStart() {
+        Log.v("comeCheck","3");
         super.onStart();
         String[] gets = {Constants.GREEN_STORE_URL_APP_DETAIL + position, "GET"};
         Server server = new Server(getActivity(), this);
@@ -141,6 +147,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     }
 
     private void settingDetailFragment() {
+        Log.v("comeCheck","4");
         detailPhoto = (ImageView) view.findViewById(R.id.detailPhoto);
         detailName = (TextView) view.findViewById(R.id.detailName);
         detailLike = (TextView) view.findViewById(R.id.detailLike);
@@ -151,6 +158,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
         detailPride = (TextView) view.findViewById(R.id.detailPride);
         detailMenu = (TextView) view.findViewById(R.id.detailMenu);
         detailPrice = (TextView) view.findViewById(R.id.detailPrice);
+        detailPhone = (TextView) view.findViewById(R.id.detailPhone);
 
         if (photo != null)
             Picasso.with(getActivity().getApplicationContext()).load(photo).fit().centerInside().into(detailPhoto);
@@ -159,6 +167,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
         detailRcmn.setText(String.valueOf(rcmn));
         detailInfo.setText(info);
         detailPride.setText(pride);
+        detailPhone.setText(phone);
 
         //메뉴와 가격 set해줌.
         String temp = "";
@@ -171,6 +180,17 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
 
         clickLikeButton.setOnClickListener(this);
         clickLikeText.setOnClickListener(this);
+
+        if(User.userStoreLike!=null) {
+            for (int i = 0; i < User.userStoreLike.size(); ++i) {
+                if(User.userStoreLike.get(i).equals(position)){
+                    Drawable drawable = getResources().getDrawable(
+                            R.drawable.star2);
+                    clickLikeButton.setBackgroundDrawable(drawable);
+                    likeFlag = 1;
+                }
+            }
+        }
 
         //daum map
         //스토어 주소로 좌표값 생성
@@ -200,22 +220,35 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.clickLikeButton:
-                if(User.user==null)
-                    Toast.makeText(getActivity().getApplicationContext(),"로그인을 해주세요.",Toast.LENGTH_SHORT).show();
-                else{
-
-                }
+                likeCheck();
                 break;
             case R.id.clickLikeText:
-                if(User.user==null)
-                    Toast.makeText(getActivity().getApplicationContext(),"로그인을 해주세요.",Toast.LENGTH_SHORT).show();
-                else{
-
-                }
+                likeCheck();
                 break;
         }
     }
 
+
+    private void likeCheck(){
+        if(User.user==null)
+            Toast.makeText(getActivity().getApplicationContext(),"로그인을 해주세요.",Toast.LENGTH_SHORT).show();
+        else{
+            if(likeFlag==1)
+                Toast.makeText(getActivity().getApplicationContext(),"이미 좋아요 하셨습니다.",Toast.LENGTH_SHORT).show();
+            else{
+                //서버로 좋아요 +1
+                String[] gets = {Constants.GREEN_STORE_URL_APP_STORELIKE+"?mkey="+User.user.get(3)+"&sh_id="+position, "GET"};
+                Server server = new Server(getActivity(),this);
+                server.execute(gets);
+
+                Drawable drawable = getResources().getDrawable(
+                        R.drawable.likestar);
+                clickLikeButton.setBackgroundDrawable(drawable);
+                detailLike.setText(String.valueOf(++like));
+                likeFlag = 1;
+            }
+        }
+    }
 
     // 이 아래는 맵에 관한 메소드들임.
     @Override

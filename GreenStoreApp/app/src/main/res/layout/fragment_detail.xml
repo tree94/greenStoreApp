@@ -66,30 +66,98 @@
                 android:layout_toRightOf="@+id/imageRcmn"
                 android:text="127" />
 
-            <ImageButton
-                android:id="@+id/clickLikeButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="47dp"
-                android:layout_marginStart="47dp"
-                android:layout_toEndOf="@+id/detailName"
-                android:layout_toRightOf="@+id/detailName"
-                android:background="@drawable/star2" />
-
-            <TextView
-                android:id="@+id/clickLikeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:layout_toEndOf="@+id/clickLikeButton"
-                android:layout_toRightOf="@+id/clickLikeButton"
-                android:clickable="true"
-                android:text="좋아요"
-                android:textSize="25dp"
-                android:textStyle="bold" />
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/detailRcmn"
+                android:layout_marginTop="20dp"
+                android:background="#a0a0a0" />
         </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".30"
+                android:gravity="center_horizontal"
+                >
+
+                <ImageButton
+                    android:id="@+id/clickLikeButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/star2" />
+
+                <TextView
+                    android:id="@+id/clickLikeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/clickLikeButton"
+                    android:clickable="true"
+                    android:text="@string/storeLike"
+                    android:textSize="20dp"
+                    android:layout_marginTop="5dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".30"
+                android:gravity="center_horizontal"
+                >
+
+                <ImageButton
+                    android:id="@+id/clickReviewWriteButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/review_write" />
+
+                <TextView
+                    android:id="@+id/clickReviewWriteText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/clickReviewWriteButton"
+                    android:clickable="true"
+                    android:text="@string/reviewWrite"
+                    android:layout_marginTop="5dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".30"
+                android:gravity="center_horizontal"
+                >
+
+                <ImageButton
+                    android:id="@+id/clickMoreReviewButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="25dp"
+                    android:background="@drawable/review_more" />
+
+                <TextView
+                    android:id="@+id/clickMoreReviewText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/clickMoreReviewButton"
+                    android:clickable="true"
+                    android:text="@string/reviewMore"
+                    android:textSize="20dp"
+                    android:layout_marginTop="5dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </LinearLayout>
 
         <View
             android:layout_width="fill_parent"
@@ -281,7 +349,7 @@
                 android:id="@+id/storeReview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="리뷰"
+                android:text="@string/review"
                 android:textSize="20dp"/>
 
             <View

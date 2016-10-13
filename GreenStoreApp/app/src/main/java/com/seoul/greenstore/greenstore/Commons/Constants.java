@@ -29,6 +29,9 @@ public class Constants {
     //notice
     public static final String GREEN_STORE_URL_APP_NOTICE = GREEN_STORE_URL_APP + "notice/list";
 
+    //storeLike
+    public static final  String GREEN_STORE_URL_APP_STORELIKE = GREEN_STORE_URL_APP + "storeLike/";
+
     //STS에 review/one 이 스토어 9018로 지정되어있음. 현재 스토어 sh_id받아와서 넣어주는걸로 코드변경해야함.
     public static final String GREEN_STORE_URL_APP_REVIEW_ONE = GREEN_STORE_URL_APP + "review/one";
     public static final String GREEN_STORE_URL_APP_REVIEW_ALL = GREEN_STORE_URL_APP + "review/listAll";

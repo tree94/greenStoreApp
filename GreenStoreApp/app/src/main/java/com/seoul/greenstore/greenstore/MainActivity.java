@@ -27,16 +27,18 @@ import com.facebook.login.LoginManager;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.seoul.greenstore.greenstore.Commons.BackPressCloseHandler;
-
 import com.seoul.greenstore.greenstore.Commons.Constants;
+import com.seoul.greenstore.greenstore.Review.ReviewWriteFragment;
 import com.seoul.greenstore.greenstore.Server.Server;
 import com.seoul.greenstore.greenstore.User.User;
-
-import com.seoul.greenstore.greenstore.Review.ReviewWriteFragment;
-
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity implements Server.ILoadResult {
@@ -140,8 +142,29 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 
     @Override
     public void customAddList(String result) {
-        User.user.add(result);
-        Log.v("member", " memb" + User.user.get(3));
+        Log.v("ttttttt","111111111111111111");
+        //사용자가 좋아요 한 정보들을 hashMap 컬렉션에 저장
+        try {
+            JSONArray jsonArray = new JSONArray(result);
+            Map<Integer,String> tempStoreMap = new HashMap<>();
+            Map<Integer,String> tempReviewMap = new HashMap<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                tempReviewMap.put(i,jsonObject.getString("rkey"));
+                tempStoreMap.put(i,jsonObject.getString("sh_id"));
+            }
+            User.userReviewLike = tempReviewMap;
+            User.userStoreLike = tempStoreMap;
+//            int i = User.userStoreLike.size();
+//            Log.v("userLike",""+i);
+//            while(i>=0){
+//                i--;
+//                Log.v("hashtest",""+User.userStoreLike.get(i));
+//                Log.v("hashtest",""+User.userReviewLike.get(i));
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //Drawer에서 항목을 선택했을 때 전환해줄 fragment 선택
@@ -174,6 +197,8 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                         kakaoUserData = null;
                     }
                     User.user = null;
+                    User.userStoreLike = null;
+                    User.userReviewLike = null;
                     profileImage.setImageResource(R.drawable.circle);
                     userIdView.setText("로그인하세요");
                     menuItem.setTitle("Login");
@@ -231,108 +256,108 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
         }
     }
 
-        @Override
-        public boolean onCreateOptionsMenu (Menu menu){
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 //        super.onCreateOptionsMenu(menu);
 //        MenuInflater inflater = getMenuInflater();
 //        inflater.inflate(R.menu.main,menu);
 //        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-            // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this adds items to the action bar if it is present.
 
-            getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
 
-            super.onCreateOptionsMenu(menu);
-            MenuInflater inflater = getMenuInflater();
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-                searchItem = menu.findItem(R.id.action_search);
-                searchView = (SearchView) searchItem.getActionView();
-                searchView.setQueryHint("음식이나 지역을 입력하세요.");
-                searchView.setOnQueryTextListener(queryTextListener);
-                SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-                if (null != searchManager) {
-                    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-                }
-                searchView.setIconifiedByDefault(true);
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            searchItem = menu.findItem(R.id.action_search);
+            searchView = (SearchView) searchItem.getActionView();
+            searchView.setQueryHint("음식이나 지역을 입력하세요.");
+            searchView.setOnQueryTextListener(queryTextListener);
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            if (null != searchManager) {
+                searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
             }
-            return true;
+            searchView.setIconifiedByDefault(true);
+
+        }
+        return true;
+    }
+
+    private OnQueryTextListener queryTextListener = new OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+
+            strCommon = query;
+            if (fragmentClass != null)
+                backStateName = fragmentClass.getClass().getName();
+
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.llContents, SearchResultFragment.newInstance());
+            transaction.addToBackStack(backStateName);
+            transaction.commit();
+
+
+            setTitle("검색결과");
+            searchView.setQuery("", false);
+            searchView.setIconified(true);
+            return false;
         }
 
-        private OnQueryTextListener queryTextListener = new OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-
-                strCommon = query;
-                if (fragmentClass != null)
-                    backStateName = fragmentClass.getClass().getName();
-
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.llContents, SearchResultFragment.newInstance());
-                transaction.addToBackStack(backStateName);
-                transaction.commit();
-
-
-                setTitle("검색결과");
-                searchView.setQuery("", false);
-                searchView.setIconified(true);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                // TODO Auto-generated method stub
-                return false;
-            }
-        };
-
-
-        //툴바 메뉴에서 옵션 아이템 선택했을 때
         @Override
-        public boolean onOptionsItemSelected (MenuItem item){
-            int id = item.getItemId();
+        public boolean onQueryTextChange(String newText) {
+            // TODO Auto-generated method stub
+            return false;
+        }
+    };
 
-            switch (id) {
+
+    //툴바 메뉴에서 옵션 아이템 선택했을 때
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
      /*       case android.R.id.home:
                 drawer.openDrawer(GravityCompat.START);
                 break;
 */
-                case R.id.action_settings:
-                    Toast.makeText(MainActivity.this, "setting", Toast.LENGTH_SHORT).show();
-                    break;
+            case R.id.action_settings:
+                Toast.makeText(MainActivity.this, "setting", Toast.LENGTH_SHORT).show();
+                break;
 
-                case R.id.action_search:
-                    break;
-            }
-
-
-            return super.onOptionsItemSelected(item);
+            case R.id.action_search:
+                break;
         }
 
-        // `onPostCreate` called when activity start-up is complete after `onStart()`
-        // NOTE! Make sure to
-        // override the method with only a single `Bundle` argument
-        @Override
-        protected void onPostCreate (Bundle savedInstanceState){
-            super.onPostCreate(savedInstanceState);
-        }
 
-        @Override
-        public void onBackPressed () {
-            super.onBackPressed();
+        return super.onOptionsItemSelected(item);
+    }
+
+    // `onPostCreate` called when activity start-up is complete after `onStart()`
+    // NOTE! Make sure to
+    // override the method with only a single `Bundle` argument
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
 //        Log.d("___", "fragment.getClass().toString() : " + fragment.getClass().toString());
 //        Log.d("___", "HomeFragment.class.toString() : " + HomeFragment.class.toString());
-            Log.d("___", "size : " + fragmentManager.getFragments().size());
+        Log.d("___", "size : " + fragmentManager.getFragments().size());
 
-            //Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
-            if (fragment != null) {
-                if (fragmentManager.getFragments().size() <= 1) // HOW TO : 지금 프래그먼트가 HomeFragment인지 검사 ???    // fragment.getClass().equals(HomeFragment.class) )
-                    backPressCloseHandler.onBackPressed();
-            } else {
-                Log.d("___", "fragment is null");
-            }
+        //Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
+        if (fragment != null) {
+            if (fragmentManager.getFragments().size() <= 1) // HOW TO : 지금 프래그먼트가 HomeFragment인지 검사 ???    // fragment.getClass().equals(HomeFragment.class) )
+                backPressCloseHandler.onBackPressed();
+        } else {
+            Log.d("___", "fragment is null");
         }
+    }
 
     public static void changeFragment(String strNewFragment) {
         if (strNewFragment.equals("fragment1")) {
