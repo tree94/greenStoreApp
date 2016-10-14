@@ -71,6 +71,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.addr.setText(recycler_item.getAddr());
         Picasso.with(context).load(recycler_item.getImage()).fit().centerInside().into(holder.imageView);
 
+
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,9 +93,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         });
     }
 
+
     @Override
     public int getItemCount() {
         return this.items.size();
     }
 
+
 }
+
+

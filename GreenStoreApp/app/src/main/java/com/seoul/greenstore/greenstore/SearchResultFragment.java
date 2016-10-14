@@ -33,7 +33,7 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
     private List<Recycler_item> data = new ArrayList<Recycler_item>();
     private RecyclerView recyclerView = null;
     private TextView textView;
-    private String[] searchList = new String[2];;
+    private String[] searchList = new String[2];
     private String encodeStr;
 
 
@@ -103,7 +103,7 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
                 searchList[1] = "전체";
             if(searchList[0].equals("업종 선택"))
                 searchList[0] = "전체";
-            textView.setText("'"+searchList[1]+"' 지역의 '"+searchList[0]+"' 카테고리로 검색한 결과입니다.");
+
         }
 
         adapter = new RecyclerAdapter(getActivity(), data);

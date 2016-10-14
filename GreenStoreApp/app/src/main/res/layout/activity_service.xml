@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+
+
+
+        <TextView
+            android:background="#f3cfcf"
+            android:layout_height="100dp"
+            android:layout_width="match_parent"
+            android:padding="20dp"
+            android:text="내 주변\n'착한' 스토어 찾기"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:background="@drawable/cheongyecheon"
+            android:layout_width="288dp"
+            android:layout_height="150dp" />
+
+        <View
+            android:background="#aaaaaa"
+            android:layout_height="1dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="fill_parent" />
+
+        <!-- ddddddddddddddddddddddddddddddddddddddddddddddddddddddd -->
+
+        <ImageView
+            android:background="@drawable/icon_recommend"
+            android:layout_gravity="center"
+            android:layout_height="130dp"
+            android:layout_width="130dp" />
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="서울시가 추천해\n믿을수 있는"
+            android:textAlignment="center"
+            android:textSize="23dp" />
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:padding="10dp"
+            android:text="우리동네 지역 경제 활성화는 덤"
+            android:textAlignment="center"
+            android:textSize="10dp" />
+
+        <View
+            android:background="#aaaaaa"
+            android:layout_height="1dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="fill_parent" />
+
+
+        <!-- ddddddddddddddddddddddddddddddddddddddddddddddddddddddd -->
+        <ImageView
+            android:background="@drawable/icon_rank"
+            android:layout_gravity="center"
+            android:layout_height="130dp"
+            android:layout_width="130dp" />
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="매월 바뀌는\n착한 스토어 순위"
+            android:textAlignment="center"
+            android:textSize="23dp" />
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:padding="10dp"
+            android:text="찾아가봤더니 사라졌다?\n헛걸음 최소화"
+            android:textAlignment="center"
+            android:textSize="10dp" />
+
+        <View
+            android:background="#aaaaaa"
+            android:layout_height="1dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="fill_parent" />
+
+        <!-- ddddddddddddddddddddddddddddddddddddddddddddddddddddddd -->
+
+
+        <ImageView
+            android:background="@drawable/icon_play"
+            android:layout_gravity="center"
+            android:layout_height="130dp"
+            android:layout_width="130dp" />
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="주변 관광 명소까지"
+            android:textAlignment="center"
+            android:textSize="23dp" />
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:padding="10dp"
+            android:text="밥 먹고 뭘할까?\n세탁소에 옷 맡기고 뭘하지?\n고민하지 마세요!"
+            android:textAlignment="center"
+            android:textSize="10dp" />
+
+        <View
+            android:background="#aaaaaa"
+            android:layout_height="1dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="fill_parent" />
+
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:text="음식점은 물론, 세탁소에 미용실까지!\n상황에 꼭 맞는 '착한 스토어'를 찾을 땐\n함께 그린 스토어에 들러보세요."
+            android:textAlignment="center"
+            android:textSize="16dp"
+            android:layout_marginBottom="30dp"/>
+    </LinearLayout>
+</ScrollView>
