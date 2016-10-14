@@ -2,17 +2,15 @@ package com.seoul.greenstore.greenstore;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.seoul.greenstore.greenstore.Commons.Constants;
 import com.seoul.greenstore.greenstore.Review.ReviewAdapter;
@@ -31,17 +29,15 @@ import java.util.List;
 /**
  * Created by X on 2016-09-08.
  */
-public class ReviewFragment extends Fragment implements Server.ILoadResult {
+public class ReviewFragment extends Fragment implements Server.ILoadResult, AdapterView.OnItemSelectedListener {
     private ReviewAdapter adapter;
     private View view;
     private List<Review_item> data = new ArrayList<Review_item>();
     private RecyclerView recyclerView = null;
     private Button sortCate;
     private Button btnWrite; // 글쓰기 버튼을 일단 만들어놓음.
-    private CardView cardview;
-    private ImageButton like_image;
-    private TextView storeName_review;
-    private Button review_setting;
+    private String[] spinnerData = new String[2];
+    private int flag = 0;
 
 
     public static ReviewFragment newInstance() {
@@ -84,25 +80,27 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_review, null);
-        View view2 = inflater.inflate(R.layout.cardview_review,null);
+        View view2 = inflater.inflate(R.layout.cardview_review, null);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true);
 
 
         sortCate = (Button) view.findViewById(R.id.sortCate);
-        like_image = (ImageButton) view.findViewById(R.id.like_image);
-        cardview = (CardView) view.findViewById(R.id.cardview_review);
+//        like_image = (ImageButton) view.findViewById(R.id.like_image);
+//        cardview = (CardView) view.findViewById(R.id.cardview_review);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerReview);
-        Spinner locationSpinner = (Spinner) view.findViewById(R.id.locationSpinner);
-        Spinner typeSpinner1 = (Spinner) view.findViewById(R.id.typeSpinner1);
+        Spinner locationSpinner = (Spinner) view.findViewById(R.id.locationSpinner_r);
+        Spinner typeSpinner1 = (Spinner) view.findViewById(R.id.typeSpinner1_r);
         Spinners spinner = new Spinners(getActivity(), locationSpinner, typeSpinner1);
-        storeName_review = (TextView) view.findViewById(R.id.storeName_review);
+//        storeName_review = (TextView) view.findViewById(R.id.storeName_review);
         btnWrite = (Button) view.findViewById(R.id.review_write);
-        review_setting = (Button) view.findViewById(R.id.review_setting);
+//        review_setting = (Button) view.findViewById(R.id.review_setting);
 
         adapter = new ReviewAdapter(getActivity(), data);
         recyclerView.setHasFixedSize(true);
         Log.i("ADAPTER", adapter.toString());
 
+        typeSpinner1.setOnItemSelectedListener(this);
+        locationSpinner.setOnItemSelectedListener(this);
 
 /*       like_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,22 +113,7 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult {
             }
         });*/
 
-     /*   review_setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder;
-                AlertDialog alertDialog;
-                Toast.makeText(getActivity(), "리뷰세팅 버튼을 누름", Toast.LENGTH_SHORT).show();
-                LayoutInflater inflater =(LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View layout = inflater.inflate(R.layout.review_custom_dialog, (ViewGroup) view.findViewById(R.id.layout_root));
-                builder = new AlertDialog.Builder(getContext());
-
-                builder.setView(layout);
-                alertDialog = builder.create();
-            }
-        });*/
-
-
+        //글쓰기 버튼. 상세 페이지로 갈 것임
         btnWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,6 +122,12 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult {
             }
         });
 
+        sortCate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortCate(spinnerData);
+            }
+        });
 
 
         recyclerView.setAdapter(adapter);
@@ -149,6 +138,12 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult {
 
 
     }
+
+    private void sortCate(String data[]) {
+
+
+    }
+
 
     @Override
     public void customAddList(String result) {
@@ -165,6 +160,9 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult {
 //                review.setSh_id(Integer.parseInt(jsonObject.getString("sh_id")));
                 review.setRcontents(jsonObject.getString("rcontent"));
                 review.setRelike(Integer.parseInt(jsonObject.getString("relike")));
+                review.setSh_addr(jsonObject.getString("sh_addr"));
+                review.setInduty(Integer.parseInt(jsonObject.getString("induty_CODE_SE")));
+                review.setInduty_name(jsonObject.getString("induty_CODE_SE_NAME"));
 
                 //String으로 받는 ndate를 Date로 바꾼 후 실행
                 Date from = new Date(Long.valueOf(jsonObject.getString("rdate")));
@@ -189,6 +187,28 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch (parent.getId()) {
+            case R.id.locationSpinner_r:
+                spinnerData[0] = parent.getItemAtPosition(position).toString();
+                if (spinnerData[0].equals("지역 선택")) ;
+                spinnerData[0] = "전체";
+                break;
+            case R.id.typeSpinner1_r:
+                spinnerData[1] = parent.getItemAtPosition(position).toString();
+                if (spinnerData[1].equals("업종 선택"))
+                    spinnerData[1] = "전체";
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
 

@@ -127,7 +127,7 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
             fragment.setArguments(bundle);
 
             fragmentTransaction.replace(R.id.llContents, fragment);
-            fragmentTransaction.addToBackStack("HomeFragment");
+            fragmentTransaction.addToBackStack(fm.findFragmentById(R.id.llContents).toString());
             fragmentTransaction.commit();
         }
     }
@@ -187,14 +187,6 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
         if(check==0) {
             tempData = data;
         }
-//        if(check>8){
-//            for (int i = 0; i < data.size(); ++i) {
-//                if (data.get(i).getIndutyCode() >= check) {
-//                    System.out.println("match id!");
-//                    tempData.add(data.get(i));
-//                }
-//            }
-//        }else {
             for (int i = 0; i < data.size(); ++i) {
                 if (check == data.get(i).getIndutyCode()) {
                     System.out.println("match id!");

@@ -11,13 +11,13 @@
         android:padding="10dp">
 
         <Spinner
-            android:id="@+id/locationSpinner"
+            android:id="@+id/locationSpinner_r"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1" />
 
         <Spinner
-            android:id="@+id/typeSpinner1"
+            android:id="@+id/typeSpinner1_r"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1" />

@@ -2,50 +2,60 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="300dp"
     android:layout_height="500dp"
+    android:background="#ffffff"
     android:orientation="vertical"
     android:padding="15dp">
 
     <ImageView
         android:id="@+id/play_image"
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:src="@drawable/seoul" />
 
     <TextView
-        android:layout_below="@id/play_image"
         android:id="@+id/play_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/play_image"
         android:layout_marginTop="10dp"
         android:text="서울 항동 수목원"
         android:textSize="30dp" />
 
+
     <TextView
+        android:id="@+id/play_addr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/play_name"
+        android:layout_marginTop="5dp"
+        android:text="서울시 구로구 항동 xx-xx"
+        android:textSize="20dp" />
+
+    <TextView
         android:id="@+id/play_tel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/play_addr"
         android:layout_marginTop="10dp"
         android:text="02-000-0000"
-        android:textSize="20dp" />
-
+        android:textSize="15dp" />
 
     <TextView
-        android:layout_below="@id/play_tel"
         android:id="@+id/play_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/play_tel"
         android:layout_marginTop="10dp"
         android:text="볼거리 소개 내용입니다 어쩌구 저쩌꾸"
         android:textSize="12dp" />
 
 
     <RelativeLayout
-        android:layout_below="@id/play_info"
-        android:layout_marginTop="10dp"
         android:id="@+id/map_view"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="300dp"
+        android:layout_below="@id/play_info"
+        android:layout_marginTop="10dp" />
 
 
 </RelativeLayout>

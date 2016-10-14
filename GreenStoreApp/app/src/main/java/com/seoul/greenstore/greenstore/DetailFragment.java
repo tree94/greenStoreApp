@@ -52,7 +52,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     private String pride;   //스토어 자랑거리
 
     private String playPhoto;   //주변 이미지
-    private String 
+//    private String
     //android item
     private ImageView detailPhoto;
     private TextView detailName;

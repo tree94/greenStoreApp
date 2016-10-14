@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import com.seoul.greenstore.greenstore.Commons.MapKeys;
+
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
@@ -14,7 +16,7 @@ import net.daum.mf.map.api.MapView;
  */
 public class PlayActivity extends Activity implements MapView.MapViewEventListener {
 
-    private String AppKey = "8c4fd6c54bd5c20b1ed84a9e578662e2";
+
     private String findAddress = null;
 
     @Override
@@ -27,7 +29,7 @@ public class PlayActivity extends Activity implements MapView.MapViewEventListen
 
         //지도 띄우기
         MapView mapView = new MapView((this));
-        mapView.setDaumMapApiKey(AppKey);
+        mapView.setDaumMapApiKey(MapKeys.daumMapKey);
 
         ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
         mapViewContainer.addView(mapView);

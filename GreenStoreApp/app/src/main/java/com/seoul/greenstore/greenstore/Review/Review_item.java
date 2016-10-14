@@ -14,6 +14,41 @@ public class Review_item {
     Date rdate;
     String storeName;
     private String image;
+    String sh_addr;
+    String induty_name;
+    int induty;
+
+    public int getSh_id() {
+        return sh_id;
+    }
+
+    public void setSh_id(int sh_id) {
+        this.sh_id = sh_id;
+    }
+
+    public int getInduty() {
+        return induty;
+    }
+
+    public void setInduty(int induty) {
+        this.induty = induty;
+    }
+
+    public String getInduty_name() {
+        return induty_name;
+    }
+
+    public void setInduty_name(String induty_name) {
+        this.induty_name = induty_name;
+    }
+
+    public String getSh_addr() {
+        return sh_addr;
+    }
+
+    public void setSh_addr(String sh_addr) {
+        this.sh_addr = sh_addr;
+    }
 
     public String getImage() {
         return image;
@@ -34,7 +69,7 @@ public class Review_item {
     public Review_item() {
     }
 
-    public Review_item(int rkey, int mkey, int sh_id, String rcontents, int relike, Date rdate) {
+    public Review_item(int rkey, int mkey, int sh_id, String rcontents, int relike, Date rdate, String sh_addr) {
         this.rkey = rkey;
         this.mkey = mkey;
         this.sh_id = sh_id;
@@ -59,13 +94,6 @@ public class Review_item {
         this.mkey = mkey;
     }
 
-    public int getSh_id() {
-        return sh_id;
-    }
-
-    public void setSh_id(int sh_id) {
-        this.sh_id = sh_id;
-    }
 
     public String getRcontents() {
         return rcontents;

@@ -35,7 +35,7 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
     private List<Recycler_item> data = new ArrayList<Recycler_item>();
     private RecyclerView recyclerView = null;
     private TextView textView;
-    private String[] searchList = new String[2];;
+    private String[] searchList = new String[2];
     private String encodeStr;
 
 
@@ -100,6 +100,7 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
             textView.setText("'"+MainActivity.strCommon+"'"+" 로 검색한 결과입니다.");
         else{
             Bundle bundle = this.getArguments();
+
             if(bundle != null) {
                 searchList = bundle.getStringArray("spinnerData");
                 if (searchList[1].equals("지역 선택"))
