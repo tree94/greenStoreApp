@@ -33,7 +33,12 @@ import com.seoul.greenstore.greenstore.Server.Server;
 import com.seoul.greenstore.greenstore.User.User;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity implements Server.ILoadResult {
@@ -139,8 +144,29 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 
     @Override
     public void customAddList(String result) {
-        User.user.add(result);
-        Log.v("member", " memb" + User.user.get(3));
+        Log.v("ttttttt","111111111111111111");
+        //사용자가 좋아요 한 정보들을 hashMap 컬렉션에 저장
+        try {
+            JSONArray jsonArray = new JSONArray(result);
+            Map<Integer,String> tempStoreMap = new HashMap<>();
+            Map<Integer,String> tempReviewMap = new HashMap<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                tempReviewMap.put(i,jsonObject.getString("rkey"));
+                tempStoreMap.put(i,jsonObject.getString("sh_id"));
+            }
+            User.userReviewLike = tempReviewMap;
+            User.userStoreLike = tempStoreMap;
+//            int i = User.userStoreLike.size();
+//            Log.v("userLike",""+i);
+//            while(i>=0){
+//                i--;
+//                Log.v("hashtest",""+User.userStoreLike.get(i));
+//                Log.v("hashtest",""+User.userReviewLike.get(i));
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //Drawer에서 항목을 선택했을 때 전환해줄 fragment 선택
@@ -172,6 +198,8 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                         kakaoUserData = null;
                     }
                     User.user = null;
+                    User.userStoreLike = null;
+                    User.userReviewLike = null;
                     profileImage.setImageResource(R.drawable.circle);
                     userIdView.setText("로그인하세요");
 
@@ -260,6 +288,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
         public boolean onQueryTextSubmit(String query) {
 
             strCommon = query;
+
 //                if (fragmentClass != null)
             backStateName = fragmentClass.getClass().getName();
 
@@ -312,21 +341,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
     }
-/*
 
-        @Override
-        public void onBackPressed () {
-            super.onBackPressed();
-
-            //Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
-            if (fragment != null) {
-                if (fragmentManager.getFragments().size() <= 1) // HOW TO : 지금 프래그먼트가 HomeFragment인지 검사 ???    // fragment.getClass().equals(HomeFragment.class) )
-                    backPressCloseHandler.onBackPressed();
-            } else {
-                Log.d("___", "fragment is null");
-            }
-        }
-*/
 
     public static void changeFragment(String strNewFragment) {
         switch (strNewFragment) {

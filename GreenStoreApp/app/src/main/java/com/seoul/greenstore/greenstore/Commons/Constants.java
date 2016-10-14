@@ -12,10 +12,9 @@ public class Constants {
 
 //    public static final String BASIC_URL = "http://192.168.100.253:8080/";
     public static final String BASIC_URL = "http://192.168.100.247:8080/";
-
-
     public static final String GREEN_STORE_URL_BASIC = BASIC_URL;
     public static final String GREEN_STORE_URL_APP = GREEN_STORE_URL_BASIC + "app/";
+
 
     //detail
     public static final String GREEN_STORE_URL_APP_DETAIL = GREEN_STORE_URL_APP + "detail/";
@@ -29,6 +28,9 @@ public class Constants {
 
     //notice
     public static final String GREEN_STORE_URL_APP_NOTICE = GREEN_STORE_URL_APP + "notice/list";
+
+    //storeLike
+    public static final  String GREEN_STORE_URL_APP_STORELIKE = GREEN_STORE_URL_APP + "storeLike/";
 
     //STS에 review/one 이 스토어 9018로 지정되어있음. 현재 스토어 sh_id받아와서 넣어주는걸로 코드변경해야함.
     private static final String GREEN_STORE_URL_APP_REVIEW = GREEN_STORE_URL_APP+"review/";

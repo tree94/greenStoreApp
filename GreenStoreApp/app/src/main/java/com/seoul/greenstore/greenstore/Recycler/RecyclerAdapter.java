@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.seoul.greenstore.greenstore.DetailFragment;
 import com.seoul.greenstore.greenstore.R;
@@ -78,8 +77,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 FragmentManager fm = ((AppCompatActivity)context).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fm.beginTransaction();
                 Fragment fragment = new DetailFragment();
-
-                Toast.makeText(context, ""+recycler_item.getId(), Toast.LENGTH_SHORT).show();
 
                 Bundle bundle = new Bundle();
                 bundle.putInt("position",recycler_item.getId());

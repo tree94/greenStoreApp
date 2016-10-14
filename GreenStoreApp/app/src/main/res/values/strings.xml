@@ -10,4 +10,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="reviewMore">리뷰더보기</string>
+    <string name="reviewWrite">리뷰쓰기</string>
+    <string name="storeLike">좋아요</string>
+    <string name="review">리뷰</string>
 </resources>

@@ -1,132 +1,477 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.seoul.greenstore.greenstore.DetailFragment">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/detailPhoto"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:background="@drawable/mybg3"
-        android:scaleType="fitXY">
-    </ImageView>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.seoul.greenstore.greenstore.DetailFragment">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp">
+        <ImageView
+            android:id="@+id/detailPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:background="@drawable/mybg3"
+            android:scaleType="fitXY"></ImageView>
 
-        <TextView
-            android:id="@+id/detailName"
-            android:textSize="25dp"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp">
+
+            <TextView
+                android:id="@+id/detailName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="스펙트럼커피랩"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/imageLike"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignLeft="@+id/detailName"
+                android:layout_alignStart="@+id/detailName"
+                android:layout_below="@+id/detailName"
+                android:background="@drawable/star" />
+
+            <TextView
+                android:id="@+id/detailLike"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_below="@+id/detailName"
+                android:layout_toRightOf="@+id/imageLike"
+                android:text="127" />
+
+            <ImageView
+                android:id="@+id/imageRcmn"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_below="@+id/detailName"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/detailLike"
+                android:background="@drawable/heart_false" />
+
+            <TextView
+                android:id="@+id/detailRcmn"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_below="@+id/detailName"
+                android:layout_toRightOf="@+id/imageRcmn"
+                android:text="127" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/detailRcmn"
+                android:layout_marginTop="20dp"
+                android:background="#a0a0a0" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".30"
+                android:gravity="center_horizontal"
+                >
+
+                <ImageButton
+                    android:id="@+id/clickLikeButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/star2" />
+
+                <TextView
+                    android:id="@+id/clickLikeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/clickLikeButton"
+                    android:clickable="true"
+                    android:text="@string/storeLike"
+                    android:textSize="20dp"
+                    android:layout_marginTop="5dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".30"
+                android:gravity="center_horizontal"
+                >
+
+                <ImageButton
+                    android:id="@+id/clickReviewWriteButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/review_write" />
+
+                <TextView
+                    android:id="@+id/clickReviewWriteText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/clickReviewWriteButton"
+                    android:clickable="true"
+                    android:text="@string/reviewWrite"
+                    android:layout_marginTop="5dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".30"
+                android:gravity="center_horizontal"
+                >
+
+                <ImageButton
+                    android:id="@+id/clickMoreReviewButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="25dp"
+                    android:background="@drawable/review_more" />
+
+                <TextView
+                    android:id="@+id/clickMoreReviewText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/clickMoreReviewButton"
+                    android:clickable="true"
+                    android:text="@string/reviewMore"
+                    android:textSize="20dp"
+                    android:layout_marginTop="5dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="6dp"
             android:layout_marginTop="5dp"
+            android:background="#a0a0a0" />
+
+        <!-- 지도, 주소, 전화번호 부분-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/map_view"
+                android:layout_width="match_parent"
+                android:layout_height="120dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/detailAddr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="서울시 강북구 수유동 172-150"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/addr" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/detailAddr"
+                    android:layout_marginTop="20dp"
+                    android:background="#a0a0a0" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/detailPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="043-1234"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/phone" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:layout_marginTop="15dp"
+            android:background="#a0a0a0" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/storeInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="스토어정보"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/detailInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/storeInfo"
+                    android:layout_marginTop="10dp"
+                    android:text="영업시간은~" />
+
+                <View
+                    android:id="@+id/viewInfo"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/detailInfo"
+                    android:layout_marginTop="20dp"
+                    android:background="#a0a0a0" />
+
+                <TextView
+                    android:id="@+id/storePride"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/viewInfo"
+                    android:layout_marginTop="20dp"
+                    android:text="스토어 자랑거리"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/detailPride"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/storePride"
+                    android:layout_marginTop="10dp"
+                    android:text="자랑거리는~" />
+
+                <View
+                    android:id="@+id/viewPride"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/detailPride"
+                    android:layout_marginTop="20dp"
+                    android:background="#a0a0a0" />
+
+                <TextView
+                    android:id="@+id/storeMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/viewPride"
+                    android:layout_marginTop="20dp"
+                    android:text="스토어 메뉴"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/storeMenu">
+
+                    <TextView
+                        android:id="@+id/detailMenu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="메뉴는~" />
+
+                    <TextView
+                        android:id="@+id/detailPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="10dp"
+                        android:text="가격은~" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:background="#a0a0a0" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="스펙트럼커피랩"/>
+            android:layout_marginRight="10dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingTop="10dp">
 
-        <ImageView
-            android:id="@+id/imageLike"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:background="@drawable/star"
-            android:layout_below="@+id/detailName"
-            android:layout_alignLeft="@+id/detailName"
-            android:layout_alignStart="@+id/detailName" />
+            <TextView
+                android:id="@+id/storeReview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/review"
+                android:textSize="20dp"/>
 
-        <TextView
-            android:id="@+id/detailLike"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:text="127"
-            android:layout_below="@+id/detailName"
-            android:layout_toRightOf="@+id/imageLike" />
+            <View
+                android:id="@+id/viewReview"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/storeReview"
+                android:layout_marginTop="10dp"
+                android:background="#a0a0a0"
+                android:layout_marginBottom="10dp" />
 
-        <ImageView
-            android:id="@+id/imageRcmn"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:background="@drawable/heart_false"
-            android:layout_below="@+id/detailName"
-            android:layout_toRightOf="@+id/detailLike"
-            android:layout_marginLeft="10dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="5dp">
 
-        <TextView
-            android:id="@+id/detailRcmn"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:text="127"
-            android:layout_below="@+id/detailName"
-            android:layout_toRightOf="@+id/imageRcmn" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        <ImageButton
-            android:id="@+id/clickLikeButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/star2"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/detailName"
-            android:layout_toEndOf="@+id/detailName"
-            android:layout_marginLeft="47dp"
-            android:layout_marginStart="47dp" />
+                    <ImageView
+                        android:id="@+id/profileImage_review"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/circle" />
 
-        <TextView
-            android:id="@+id/clickLikeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:layout_marginLeft="5dp"
-            android:text="좋아요"
-            android:clickable="true"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/clickLikeButton"
-            android:layout_toEndOf="@+id/clickLikeButton" />
-    </RelativeLayout>
-    
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="5dp"
-        android:background="#a0a0a0"/>
+                    <TextView
+                        android:id="@+id/userId_review"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@+id/profileImage_review"
+                        android:text="진소라"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
 
-    <RelativeLayout
-        android:id="@+id/map_view"
-        android:layout_width="match_parent"
-        android:layout_height="120dp" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+                    <TextView
+                        android:id="@+id/date_review"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_toRightOf="@+id/userId_review"
+                        android:text="2016.09.26 18:23"
+                        android:textSize="9dp" />
 
-        <TextView
-            android:id="@+id/detailAddr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="서울시 강북구 수유동 172-150"
-            android:layout_marginTop="12dp"
-            android:textStyle="bold"
-            android:textSize="20dp"/>
+                    <Button
+                        android:id="@+id/review_setting"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/like_image"
+                        android:background="@drawable/update" />
 
-        <ImageView
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:background="@drawable/addr"
-            android:layout_alignParentRight="true"/>
-    </RelativeLayout>
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="#a0a0a0"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"/>
-</LinearLayout>
+                    <ImageButton
+                        android:id="@+id/like_image"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/like_number"
+                        android:background="@drawable/heart_false" />
+
+                    <TextView
+                        android:id="@+id/like_number"
+                        android:layout_width="35dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/malpungsun"
+                        android:gravity="center"
+                        android:text="22"
+                        android:textAlignment="center" />
+
+
+                </RelativeLayout>
+
+                <TextView
+
+                    android:id="@+id/content_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/like_image"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="25dp"
+                    android:text="망우찜쌈밥 리뷰입니다\n맛있어용\nㅋㅋ"
+                    android:textSize="15dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/reviewImage1"
+                        android:layout_width="100dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/a" />
+
+                    <ImageView
+                        android:id="@+id/reviewImage2"
+                        android:layout_width="100dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/b" />
+
+                    <ImageView
+                        android:id="@+id/reviewImage3"
+                        android:layout_width="100dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/c" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -2,6 +2,8 @@ package com.seoul.greenstore.greenstore;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -98,12 +100,21 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
             textView.setText("'"+MainActivity.strCommon+"'"+" 로 검색한 결과입니다.");
         else{
             Bundle bundle = this.getArguments();
-            searchList = bundle.getStringArray("spinnerData");
-            if(searchList[1].equals("지역 선택"))
-                searchList[1] = "전체";
-            if(searchList[0].equals("업종 선택"))
-                searchList[0] = "전체";
 
+            if(bundle != null) {
+                searchList = bundle.getStringArray("spinnerData");
+                if (searchList[1].equals("지역 선택"))
+                    searchList[1] = "전체";
+                if (searchList[0].equals("업종 선택"))
+                    searchList[0] = "전체";
+                textView.setText("'" + searchList[1] + "' 지역의 '" + searchList[0] + "' 카테고리로 검색한 결과입니다.");
+            }else {
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                Fragment fragment = new HomeFragment();
+                fragmentTransaction.replace(R.id.llContents, fragment);
+                fragmentTransaction.commit();
+            }
         }
 
         adapter = new RecyclerAdapter(getActivity(), data);
