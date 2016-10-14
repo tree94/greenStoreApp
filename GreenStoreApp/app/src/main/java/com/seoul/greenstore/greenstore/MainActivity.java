@@ -122,8 +122,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                         userIdView = (TextView) naviView.findViewById(R.id.userId);
                         userIdView.setText(kakaoUserData.get(1));
                     }
-
-
+                    menu.setTitle("Logout");
                     //사용자 조회
                     memberLookup();
                 }
@@ -144,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 
     @Override
     public void customAddList(String result) {
-        Log.v("ttttttt","111111111111111111");
+        Log.v("ttttttt",""+result);
         //사용자가 좋아요 한 정보들을 hashMap 컬렉션에 저장
         try {
             JSONArray jsonArray = new JSONArray(result);
@@ -152,6 +151,8 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
             Map<Integer,String> tempReviewMap = new HashMap<>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
+                if(i==0)
+                    User.user.add(3,jsonObject.getString("mkey"));
                 tempReviewMap.put(i,jsonObject.getString("rkey"));
                 tempStoreMap.put(i,jsonObject.getString("sh_id"));
             }
@@ -202,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                     User.userReviewLike = null;
                     profileImage.setImageResource(R.drawable.circle);
                     userIdView.setText("로그인하세요");
-
+                    menuItem.setTitle("Login");
                 }
                 break;
             case R.id.nav_Mypage:

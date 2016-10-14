@@ -51,6 +51,8 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     private List<String> price;      //스토어 메뉴 가격
     private String pride;   //스토어 자랑거리
 
+    private String playPhoto;   //주변 이미지
+    private String 
     //android item
     private ImageView detailPhoto;
     private TextView detailName;
@@ -63,6 +65,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     private TextView detailMenu;
     private TextView detailPrice;
     private TextView detailPhone;
+    private TextView detailAddr;
 
     //daum map
     private Location loc;
@@ -90,6 +93,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
         Bundle bundle = this.getArguments();
         position = bundle.getInt("position");
         Toast.makeText(getActivity().getApplicationContext(),""+position,Toast.LENGTH_SHORT).show();
+
         return view;
     }
 
@@ -121,28 +125,33 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
 
     @Override
     public void customAddList(String result) {
-        try {
-            menu = new ArrayList<String>();
-            price = new ArrayList<String>();
-            JSONArray jsonArray = new JSONArray(result);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                if (i == 0) {
-                    name = jsonObject.getString("sh_name");
-                    rcmn = Integer.parseInt(jsonObject.getString("sh_rcmn"));
-                    like = Integer.parseInt(jsonObject.getString("sh_like"));
-                    phone = jsonObject.getString("sh_phone");
-                    addr = jsonObject.getString("sh_addr");
-                    info = jsonObject.getString("sh_info");
-                    pride = jsonObject.getString("sh_pride");
-                    photo = jsonObject.getString("sh_photo");
+        if(!result.isEmpty()) {
+            try {
+                menu = new ArrayList<String>();
+                price = new ArrayList<String>();
+                JSONArray jsonArray = new JSONArray(result);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    if (i == 0) {
+                        name = jsonObject.getString("sh_name");
+                        rcmn = Integer.parseInt(jsonObject.getString("sh_rcmn"));
+                        like = Integer.parseInt(jsonObject.getString("sh_like"));
+                        phone = jsonObject.getString("sh_phone");
+                        addr = jsonObject.getString("sh_addr");
+                        info = jsonObject.getString("sh_info");
+                        pride = jsonObject.getString("sh_pride");
+                        photo = jsonObject.getString("sh_photo");
+                    }
+                    if(Integer.parseInt(jsonObject.getString("price"))!=0) {
+                        menu.add(i, jsonObject.getString("menu"));
+                        price.add(i, jsonObject.getString("price"));
+                    }
+
                 }
-                menu.add(i, jsonObject.getString("menu"));
-                price.add(i, jsonObject.getString("price"));
+                settingDetailFragment();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            settingDetailFragment();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -159,6 +168,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
         detailMenu = (TextView) view.findViewById(R.id.detailMenu);
         detailPrice = (TextView) view.findViewById(R.id.detailPrice);
         detailPhone = (TextView) view.findViewById(R.id.detailPhone);
+        detailAddr = (TextView) view.findViewById(R.id.detailAddr);
 
         if (photo != null)
             Picasso.with(getActivity().getApplicationContext()).load(photo).fit().centerInside().into(detailPhoto);
@@ -168,6 +178,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
         detailInfo.setText(info);
         detailPride.setText(pride);
         detailPhone.setText(phone);
+        detailAddr.setText(addr);
 
         //메뉴와 가격 set해줌.
         String temp = "";
@@ -183,9 +194,10 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
 
         if(User.userStoreLike!=null) {
             for (int i = 0; i < User.userStoreLike.size(); ++i) {
-                if(User.userStoreLike.get(i).equals(position)){
+                Log.v("userlike",""+User.userStoreLike.get(i));
+                if(User.userStoreLike.get(i).equals(String.valueOf(position))){
                     Drawable drawable = getResources().getDrawable(
-                            R.drawable.star2);
+                            R.drawable.likestar);
                     clickLikeButton.setBackgroundDrawable(drawable);
                     likeFlag = 1;
                 }
@@ -240,6 +252,12 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
                 String[] gets = {Constants.GREEN_STORE_URL_APP_STORELIKE+"?mkey="+User.user.get(3)+"&sh_id="+position, "GET"};
                 Server server = new Server(getActivity(),this);
                 server.execute(gets);
+
+                if(User.userStoreLike.size() > 0)
+                    User.userStoreLike.put(User.userStoreLike.size(),String.valueOf(position));
+                else
+                    User.userStoreLike.put(0,String.valueOf(position));
+
 
                 Drawable drawable = getResources().getDrawable(
                         R.drawable.likestar);

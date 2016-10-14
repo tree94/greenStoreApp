@@ -23,11 +23,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-
-
     compile files('libs/libDaumMapAndroid.jar')
-
-
     compile group: project.KAKAO_SDK_GROUP, name: 'usermgmt', version: project.KAKAO_SDK_VERSION
     compile group: 'com.kakao.sdk', name: 'kakaolink', version: project.KAKAO_SDK_VERSION
     // 카카오톡 sdk를 사용하기 위해 필요.
@@ -45,8 +41,7 @@ dependencies {
     compile 'com.android.support:support-v4:23.4.0'
     compile 'info.hoang8f:fbutton:1.0.5'
     compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
-
-    compile files('C:/project/GreenStoreApp/libs/libDaumMapAndroid.jar')
-    compile files('C:/project/GreenStoreApp/libs/libDaumMapEngineApi.jar')
-
+  /*  compile files('C:/project/GreenStoreApp/libs/libDaumMapAndroid.jar')
+    compile files('C:/project/GreenStoreApp/libs/libDaumMapEngineApi.jar')*/
+    compile files('libs/libDaumMapEngineApi.jar')
 }
