@@ -21,6 +21,8 @@ import com.seoul.greenstore.greenstore.Spinner.Spinners;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,6 +41,8 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
     private String[] spinnerData = new String[2];
     private int flag = 0;
 
+    String loc = "";
+    String type = "";
 
     public static ReviewFragment newInstance() {
         ReviewFragment fragment = new ReviewFragment();
@@ -63,16 +67,12 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
         super.onStart();
         Log.d("coffee", "Review onstart IN");
 
-        String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_ALL, "GET"};
-
-        Server server = new Server(getActivity(), this);
-        server.execute(gets);
-        Log.d("coffee", "IN");
-
-//        String[] gets = {Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr, "GET"};
-//        Log.d("hot6", "URL" + Constants.GREEN_STORE_URL_APP_SEARCH + encodeStr);
-//        Server server = new Server(getActivity(), this);
-//        server.execute(gets);
+        if (flag == 0) {
+            String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_ALL, "GET"};
+            Server server = new Server(getActivity(), this);
+            server.execute(gets);
+            Log.d("hot8", flag + "");
+        }
 
     }
 
@@ -99,19 +99,10 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
         recyclerView.setHasFixedSize(true);
         Log.i("ADAPTER", adapter.toString());
 
-        typeSpinner1.setOnItemSelectedListener(this);
+
         locationSpinner.setOnItemSelectedListener(this);
+        typeSpinner1.setOnItemSelectedListener(this);
 
-/*       like_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                *//*String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_LIKE, "GET", "reviewDelete", "5"};
-                Server server = new Server(getActivity(), this);
-                server.execute(gets);*//*
-                Toast.makeText(getActivity(), "하트 이미지를 누름", Toast.LENGTH_SHORT).show();
-
-            }
-        });*/
 
         //글쓰기 버튼. 상세 페이지로 갈 것임
         btnWrite.setOnClickListener(new View.OnClickListener() {
@@ -122,11 +113,13 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
             }
         });
 
+        //리뷰를 카테고리별로
         sortCate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sortCate(spinnerData);
             }
+
         });
 
 
@@ -135,11 +128,27 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
         recyclerView.setLayoutManager(layoutManager);
 // Inflate the layout for this fragment
         return view;
-
-
     }
 
-    private void sortCate(String data[]) {
+    private void sortCate(String[] spinnerData) {
+
+        try {
+            loc = URLEncoder.encode(spinnerData[0], "UTF-8");
+            type = URLEncoder.encode(spinnerData[1], "UTF-8");
+            if (loc.equals("지역 선택"))
+                loc = "전체";
+            if (type.equals("업종 선택"))
+                type = "전체";
+            Log.d("hot8", loc + "/" + type);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        // 카테고리 검색
+        String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_CATESEARCH + loc + "/" + type, "GET"};
+        Log.d("hot6", "URL" + Constants.GREEN_STORE_URL_APP_REVIEW_CATESEARCH + loc + "/" + type);
+        Server server = new Server(getActivity(), this);
+        server.execute(gets);
 
 
     }
@@ -182,7 +191,7 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
             layoutManager.scrollToPositionWithOffset(0, 0);
             recyclerView.scrollToPosition(0);
 
-            Log.d("coffee", "Review notifyDataSetChanged IN");
+            Log.d("hot8", "Review notifyDataSetChanged IN");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -195,13 +204,9 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
         switch (parent.getId()) {
             case R.id.locationSpinner_r:
                 spinnerData[0] = parent.getItemAtPosition(position).toString();
-                if (spinnerData[0].equals("지역 선택")) ;
-                spinnerData[0] = "전체";
                 break;
             case R.id.typeSpinner1_r:
                 spinnerData[1] = parent.getItemAtPosition(position).toString();
-                if (spinnerData[1].equals("업종 선택"))
-                    spinnerData[1] = "전체";
                 break;
         }
     }

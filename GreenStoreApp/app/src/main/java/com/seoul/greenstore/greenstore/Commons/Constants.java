@@ -34,11 +34,13 @@ public class Constants {
     private static final String GREEN_STORE_URL_APP_REVIEW = GREEN_STORE_URL_APP+"review/";
     public static final String GREEN_STORE_URL_APP_REVIEW_ONE = GREEN_STORE_URL_APP_REVIEW + "one";
 
+
     public static final String GREEN_STORE_URL_APP_REVIEW_ALL = GREEN_STORE_URL_APP_REVIEW + "listAll";
     public static final String GREEN_STORE_URL_APP_REVIEW_WRITE = GREEN_STORE_URL_APP_REVIEW + "insert";
     public static final String GREEN_STORE_URL_APP_REVIEW_UPDATE = GREEN_STORE_URL_APP_REVIEW + "update";
     public static final String GREEN_STORE_URL_APP_REVIEW_DELETE = GREEN_STORE_URL_APP_REVIEW + "delete";
 
+    public static final String GREEN_STORE_URL_APP_REVIEW_CATESEARCH = GREEN_STORE_URL_APP_REVIEW + "appReviewCateSearch/";
     public static final String GREEN_STORE_URL_APP_REVIEW_LIKE = GREEN_STORE_URL_APP_REVIEW+"like";
 
 
