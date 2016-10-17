@@ -476,19 +476,71 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#e0e0e0">
+
+            <TextView
+                android:id="@+id/play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="주변 놀거리"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                />
 
             <HorizontalScrollView
+                android:layout_marginTop="25dp"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:scrollbarStyle="outsideInset"
-                android:fadeScrollbars="false">
+                android:fadeScrollbars="false"
+                android:padding="5dp"
+                >
 
                 <LinearLayout
+                    android:id="@+id/playScroll"
                     android:orientation="horizontal"
                     android:layout_height="match_parent"
                     android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
                     >
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:background="#fff"-->
+                        <!--&gt;-->
+
+                        <!--<ImageView-->
+                            <!--android:id="@+id/playPhoto"-->
+                            <!--android:layout_width="150dp"-->
+                            <!--android:layout_height="200dp"-->
+                            <!--android:background="@drawable/mybg2"-->
+                            <!--/>-->
+
+                        <!--<TextView-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:id="@+id/playTitle"-->
+                            <!--android:text="놀거리 이름"-->
+                            <!--android:layout_marginLeft="5dp"-->
+                            <!--android:layout_marginTop="5dp"-->
+                            <!--android:layout_marginBottom="5dp"-->
+                            <!--/>-->
+
+                        <!--<TextView-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:id="@+id/playAddr"-->
+                            <!--android:text="놀거리 주소"-->
+                            <!--android:layout_marginLeft="5dp"-->
+                            <!--android:layout_marginTop="5dp"-->
+                            <!--android:layout_marginBottom="5dp"-->
+                            <!--/>-->
+                    <!--</LinearLayout>-->
 
 
                     </LinearLayout>

@@ -1,9 +1,11 @@
 package com.seoul.greenstore.greenstore;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.RelativeLayout;
 
 import com.seoul.greenstore.greenstore.Commons.MapKeys;
 
@@ -15,9 +17,10 @@ import net.daum.mf.map.api.MapView;
  * Created by X on 2016-10-11.
  */
 public class PlayActivity extends Activity implements MapView.MapViewEventListener {
-
-
+    private Intent intent;
     private String findAddress = null;
+    private RelativeLayout relativeLayout;
+    private static final int RESULT_OK = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,8 +30,11 @@ public class PlayActivity extends Activity implements MapView.MapViewEventListen
         setContentView(R.layout.activity_play);
         this.setFinishOnTouchOutside(false);
 
+        relativeLayout = (RelativeLayout) findViewById(R.id.map_view);
+
+//        if(this.relativeLayout.map)
         //지도 띄우기
-        MapView mapView = new MapView((this));
+        MapView mapView = new MapView(this);
         mapView.setDaumMapApiKey(MapKeys.daumMapKey);
 
         ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
@@ -40,7 +46,6 @@ public class PlayActivity extends Activity implements MapView.MapViewEventListen
         //주소를 위도/경도로 바꾸기기
 
     }
-
 
     //implements MapViewEventListener
     @Override
@@ -61,8 +66,19 @@ public class PlayActivity extends Activity implements MapView.MapViewEventListen
 
         //마커추가
         mapView.addPOIItem(marker);
+    }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+    }
 
+    @Override
+    public void onStop(){
+        super.onStop();
+        intent = new Intent();
+        setResult(RESULT_OK,intent);
+        finish();
     }
 
     @Override
