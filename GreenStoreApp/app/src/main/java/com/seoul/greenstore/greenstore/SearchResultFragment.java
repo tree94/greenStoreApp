@@ -76,10 +76,19 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
                 Server server = new Server(getActivity(), this);
                 server.execute(gets);
             } else {
+                //내용 검색
+                String loc = "";
+                String type = "";
+                try {
+                    type = URLEncoder.encode(searchList[0], "UTF-8");
+                    loc = URLEncoder.encode(searchList[1], "UTF-8");
 
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 // 카테고리 검색
-                String[] gets = {Constants.GREEN_STORE_URL_APP_CATESEARCH + searchList[1] + "/" + searchList[0], "GET"};
-                Log.d("hot6", "URL" + Constants.GREEN_STORE_URL_APP_CATESEARCH + searchList[1] + "/" + searchList[0]);
+                String[] gets = {Constants.GREEN_STORE_URL_APP_CATESEARCH + loc + "/" + type, "GET"};
+                Log.d("hot6", "URL" + Constants.GREEN_STORE_URL_APP_CATESEARCH + loc + "/" + type);
                 Server server = new Server(getActivity(), this);
                 server.execute(gets);
             }

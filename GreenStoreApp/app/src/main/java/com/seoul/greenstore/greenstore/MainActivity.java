@@ -213,8 +213,8 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                 break;
             case R.id.nav_Service:
                 fragmentClass = ServiceFragment.class;
-        /*        Intent intent = new Intent(this, ServiceFragment.class);
-                startActivity(intent);*/
+//                Intent intent = new Intent(this, PlayActivity.class);
+//                startActivity(intent);
                 break;
             case R.id.nav_Review :
                 fragmentClass = ReviewFragment.class;
