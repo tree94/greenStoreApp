@@ -6,9 +6,9 @@
         android:id="@+id/noticeId1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="공지사항입니다"
+        android:text="공지사항을 선택해주세요"
         android:padding="10dp"
-        android:background="#123456"
+        android:background="@color/greenStoreMain"
         android:textColor="#ffffff"
         android:textAlignment="center"/>
 

@@ -3,6 +3,7 @@ package com.seoul.greenstore.greenstore;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -21,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.kakao.usermgmt.UserManagement;
@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     public static final Stack<Fragment> mStack = new Stack<>();
     public static String strCommon;
 
+
     //    Class fragmentClass = HomeFragment.class;
     public static Class fragmentClass = HomeFragment.class;
     public static FragmentManager fragmentManager = null;
@@ -84,12 +85,20 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
         backPressCloseHandler = new BackPressCloseHandler(this);
 
 
+
         getSupportFragmentManager().beginTransaction().replace(R.id.llContents, new HomeFragment()).commit();
 
         fragmentManager = getSupportFragmentManager();
 
+        drawerToggle = new ActionBarDrawerToggle(this, drawer, R.string.drawer_open,R.string.drawer_close);
+        drawer.setDrawerListener(drawerToggle);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
     }
+
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
@@ -143,18 +152,18 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 
     @Override
     public void customAddList(String result) {
-        Log.v("ttttttt",""+result);
+        Log.v("ttttttt", "" + result);
         //사용자가 좋아요 한 정보들을 hashMap 컬렉션에 저장
         try {
             JSONArray jsonArray = new JSONArray(result);
-            Map<Integer,String> tempStoreMap = new HashMap<>();
-            Map<Integer,String> tempReviewMap = new HashMap<>();
+            Map<Integer, String> tempStoreMap = new HashMap<>();
+            Map<Integer, String> tempReviewMap = new HashMap<>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                if(i==0)
-                    User.user.add(3,jsonObject.getString("mkey"));
-                tempReviewMap.put(i,jsonObject.getString("rkey"));
-                tempStoreMap.put(i,jsonObject.getString("sh_id"));
+                if (i == 0)
+                    User.user.add(3, jsonObject.getString("mkey"));
+                tempReviewMap.put(i, jsonObject.getString("rkey"));
+                tempStoreMap.put(i, jsonObject.getString("sh_id"));
             }
             User.userReviewLike = tempReviewMap;
             User.userStoreLike = tempStoreMap;
@@ -217,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 //                Intent intent = new Intent(this, PlayActivity.class);
 //                startActivity(intent);
                 break;
-            case R.id.nav_Review :
+            case R.id.nav_Review:
                 fragmentClass = ReviewFragment.class;
                 break;
 
@@ -251,6 +260,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
+
         // Set action bar title
         // Close the navigation drawer
         drawer.closeDrawers();
@@ -322,15 +332,17 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
      /*       case android.R.id.home:
                 drawer.openDrawer(GravityCompat.START);
                 break;
-*/
+*//*
             case R.id.action_settings:
                 Toast.makeText(MainActivity.this, "setting", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.action_search:
-                break;
+                break;*/
         }
-
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -341,8 +353,14 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
 
     public static void changeFragment(String strNewFragment) {
         switch (strNewFragment) {

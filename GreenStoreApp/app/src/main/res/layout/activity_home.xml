@@ -11,35 +11,67 @@
         android:orientation="vertical">
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="180dp"
-            android:background="@drawable/mybg3"
+            android:background="@drawable/mybg5"
             android:orientation="vertical">
 
-            <Spinner
-                android:id="@+id/locationSpinner"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Spinner
+
+                    android:id="@+id/locationSpinner"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+
+                    android:layout_gravity="top|left"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|center"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="30dp"
+                    android:text="에 있는"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
 
 
-            <Spinner
-                android:id="@+id/typeSpinner1"
-                android:layout_marginLeft="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp" />
+                <Spinner
+
+                    android:id="@+id/typeSpinner1"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|left"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="65dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|center"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="90dp"
+                    android:text="스토어"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
+            </FrameLayout>
 
             <Button
-                android:layout_marginTop="5dp"
                 android:id="@+id/search_main"
-                android:layout_width="40dp"
+                android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_marginLeft="15dp"
-                android:background="@drawable/button"
-                android:text="검색"
-                android:textSize="12dp"/>
+                android:layout_marginLeft="45dp"
+                android:background="#00ff0000"
+                android:text="위 조건으로 검색 →"
+                android:textColor="@color/greenStoreAccent"
+                android:textSize="12dp" />
         </LinearLayout>
 
 

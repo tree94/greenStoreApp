@@ -14,4 +14,8 @@
     <string name="reviewWrite">리뷰쓰기</string>
     <string name="storeLike">좋아요</string>
     <string name="review">리뷰</string>
+
+    <string name="drawer_open">open drawer</string>
+    <string name="drawer_close">close drawer</string>
+    drawer_close
 </resources>
