@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.seoul.greenstore.greenstore.Commons.Constants;
 import com.seoul.greenstore.greenstore.Commons.MapKeys;
 import com.seoul.greenstore.greenstore.Dto.Play;
+import com.seoul.greenstore.greenstore.MapView.MapViewItem;
 import com.seoul.greenstore.greenstore.Server.Server;
 import com.seoul.greenstore.greenstore.User.User;
 import com.squareup.picasso.Picasso;
@@ -77,9 +78,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
 
     //daum map
     private Location loc;
-    private MapView mapView = null;
     private MapPOIItem marker = null;
-    private ViewGroup mapViewContainer = null;
 
     //좋아요 플래그
     private int likeFlag = 0;
@@ -91,13 +90,13 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.v("fragmenttest","1111111");
+        Log.v("fragmenttest", "1111111");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.v("fragmenttest","222222");
+        Log.v("fragmenttest", "222222");
         view = inflater.inflate(R.layout.fragment_detail, container, false);
 
         // Inflate the layout for this fragment
@@ -131,7 +130,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     @Override
     public void onStart() {
         super.onStart();
-        Log.v("fragmenttest","333333");
+        Log.v("fragmenttest", "333333");
         String[] gets = {Constants.GREEN_STORE_URL_APP_DETAIL + position, "GET"};
         Server server = new Server(getActivity(), this);
         server.execute(gets);
@@ -163,12 +162,13 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
                     Play play = new Play();
 
                     Location playLoc = new Location("");
-                    playLoc.setLatitude(Double.valueOf(jsonObject.optString("mapx")));
-                    playLoc.setLongitude(Double.valueOf(jsonObject.optString("mapy")));
+                    playLoc.setLatitude(Double.valueOf(jsonObject.optString("mapy")));
+                    playLoc.setLongitude(Double.valueOf(jsonObject.optString("mapx")));
 
                     play.setPlayAddr(jsonObject.optString("addr1").toString());
                     play.setPlayPhoto(jsonObject.optString("firstimage").toString());
                     play.setPlayTitle(jsonObject.optString("title").toString());
+                    play.setPlayTel(jsonObject.optString("tel").toString());
                     play.setPlayLoc(playLoc);
                     playList.add(play);
                 }
@@ -256,40 +256,30 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mapViewContainer.removeAllViews();
+//                    tempMapViewContainer = mapViewContainer;
+//                    mapViewContainer.removeAllViews();
+                    MapViewItem.mapViewContainer.removeView(MapViewItem.mapView);
+                    MapViewItem.mapView = null;
                     Intent intent = new Intent(getActivity(), PlayActivity.class);
-                    startActivityForResult(intent,PLAY_ACTIVITY);
+                    intent.putExtra("title", item.getPlayTitle());
+                    intent.putExtra("addr", item.getPlayAddr());
+                    intent.putExtra("photo", item.getPlayPhoto());
+                    Log.v("latitude", "" + item.getPlayLoc().getLatitude() + " / " + item.getPlayLoc().getLongitude());
+                    intent.putExtra("lat", item.getPlayLoc().getLatitude());
+                    intent.putExtra("longitude", item.getPlayLoc().getLongitude());
+                    intent.putExtra("tel", item.getPlayTel());
+                    startActivityForResult(intent, PLAY_ACTIVITY);
                 }
             });
         }
     }
 
-    public void startActivityForResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case PLAY_ACTIVITY:
-                if (resultCode == RESULT_OK) {
-                    Log.v("resultSetTest","12313123");
-//                    if (data.getStringArrayListExtra("userData") != null) {
-//                        facebookUserData = data.getStringArrayListExtra("userData");
-//                        User.user = facebookUserData;
-//                        profileImage = (ImageView) naviView.findViewById(R.id.profileImage);
-//                        userIdView = (TextView) naviView.findViewById(R.id.userId);
-//                        userIdView.setText(facebookUserData.get(1));
-//                        Picasso.with(getApplicationContext()).load(User.user.get(2)).fit().into(profileImage);
-//                    } else {
-//                        kakaoUserData = data.getStringArrayListExtra("kakaoData");
-//                        User.user = kakaoUserData;
-//
-//                        userIdView = (TextView) naviView.findViewById(R.id.userId);
-//                        userIdView.setText(kakaoUserData.get(1));
-//                    }
-//                    menu.setTitle("Logout");
-//                    //사용자 조회
-//                    memberLookup();
-                }
-                break;
-        }
+        MapViewItem.mapViewContainer.removeView(MapViewItem.mapView);
+        MapViewItem.mapView = null;
+        settingMap();
     }
 
     private void settingStoreDetailFragment() {
@@ -344,23 +334,26 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
             }
         }
 
-        //daum map
-        //스토어 주소로 좌표값 생성
+
+        settingMap();
+    }
+
+    void settingMap() {
+        MapViewItem.mapViewContainer = (ViewGroup) view.findViewById(R.id.map_view);
+
         loc = findGeoPoint();
 
-        //xml에 선언된 map_view 레이아웃을 찾아온 후, 생성한 MapView객체 추가
-        mapViewContainer = (ViewGroup) view.findViewById(R.id.map_view);
-
         //다음이 제공하는 MapView객체 생성 및 API Key 설정
-        mapView = new MapView(getActivity());
-        mapView.setDaumMapApiKey(MapKeys.daumMapKey);
-        mapView.setOpenAPIKeyAuthenticationResultListener(this);
-        mapView.setMapViewEventListener(this);
-        mapView.setCurrentLocationEventListener(this);
-        mapView.setPOIItemEventListener(this);
+        MapViewItem.mapView = new MapView(getActivity());
+
+        MapViewItem.mapView.setDaumMapApiKey(MapKeys.daumMapKey);
+        MapViewItem.mapView.setOpenAPIKeyAuthenticationResultListener(this);
+        MapViewItem.mapView.setMapViewEventListener(this);
+        MapViewItem.mapView.setCurrentLocationEventListener(this);
+        MapViewItem.mapView.setPOIItemEventListener(this);
 
         //중심점을 해당 스토어로 변경
-        mapViewContainer.addView(mapView);
+        MapViewItem.mapViewContainer.addView(MapViewItem.mapView);
     }
 
     @Override
@@ -471,7 +464,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     public void onMapViewInitialized(MapView mapView) {
         // TODO Auto-generated method stub
         // Move and Zoom to
-        Log.v("test", "@2");
+        Log.v("test", "@2 " + loc.getLatitude() + " / " + loc.getLongitude());
         mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(loc.getLatitude(), loc.getLongitude()), 1, true);
 
         //marker
@@ -495,9 +488,9 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
         // TODO Auto-generated method stub
         Log.v("test", "@3");
         // Move To
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(loc.getLatitude(), loc.getLongitude()), true);
+//        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(loc.getLatitude(), loc.getLongitude()), true);
         // Zoom To
-        mapView.setZoomLevel(1, true);
+//        mapView.setZoomLevel(1, true);
 
     }
 
