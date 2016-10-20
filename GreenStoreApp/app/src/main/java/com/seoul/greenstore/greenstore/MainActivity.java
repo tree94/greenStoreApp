@@ -28,7 +28,6 @@ import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.seoul.greenstore.greenstore.Commons.BackPressCloseHandler;
 import com.seoul.greenstore.greenstore.Commons.Constants;
-import com.seoul.greenstore.greenstore.Review.ReviewWriteFragment;
 import com.seoul.greenstore.greenstore.Server.Server;
 import com.seoul.greenstore.greenstore.User.User;
 import com.squareup.picasso.Picasso;
@@ -97,7 +96,10 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 //        getActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+
+
     }
+
 
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -364,13 +366,9 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 
     public static void changeFragment(String strNewFragment) {
         switch (strNewFragment) {
-            case "fragment1":
-                fragmentClass = ReviewWriteFragment.class;
-                break;
             case "Review":
                 fragmentClass = ReviewFragment.class;
                 break;
-
 
         }
         try {

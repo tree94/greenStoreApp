@@ -1,7 +1,7 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/drawer_layout"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -24,8 +24,8 @@
                 android:layout_height="55dp"
                 android:background="@color/greenStoreMain"
 
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_scrollFlags="scroll|enterAlways">
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             </android.support.v7.widget.Toolbar>
 
@@ -38,20 +38,32 @@
             android:id="@+id/llContents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:orientation="vertical" />
+
+      <!--  <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:src="@android:drawable/ic_dialog_email"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp" />
+-->
+
         <!-- The main content view where fragments are loaded -->
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nvView"
-        android:layout_marginTop="55dp"
         android:layout_width="250dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:layout_marginTop="55dp"
         android:background="@android:color/white"
         app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer"
-        />
+        app:menu="@menu/activity_main_drawer" />
+
+
 
 
 </android.support.v4.widget.DrawerLayout>

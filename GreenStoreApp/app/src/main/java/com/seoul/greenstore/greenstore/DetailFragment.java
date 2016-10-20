@@ -10,6 +10,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +19,14 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.seoul.greenstore.greenstore.Commons.Constants;
 import com.seoul.greenstore.greenstore.Commons.MapKeys;
 import com.seoul.greenstore.greenstore.Dto.Play;
+import com.seoul.greenstore.greenstore.Review.ReviewWriteFragment;
 import com.seoul.greenstore.greenstore.Server.Server;
 import com.seoul.greenstore.greenstore.User.User;
 import com.squareup.picasso.Picasso;
@@ -58,6 +62,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     private List<String> price;      //스토어 메뉴 가격
     private String pride;   //스토어 자랑거리
 
+
     //play item
     private List<Play> playList;
 
@@ -74,6 +79,9 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     private TextView detailPrice;
     private TextView detailPhone;
     private TextView detailAddr;
+    private RelativeLayout rlWrite;
+    private RelativeLayout rlMore;
+
 
     //daum map
     private Location loc;
@@ -98,13 +106,52 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.v("fragmenttest","222222");
-        view = inflater.inflate(R.layout.fragment_detail, container, false);
+        view = inflater.inflate(R.layout.activity_detail, container, false);
 
         // Inflate the layout for this fragment
 
         Bundle bundle = this.getArguments();
         position = bundle.getInt("position");
         Toast.makeText(getActivity().getApplicationContext(), "" + position, Toast.LENGTH_SHORT).show();
+
+        rlWrite = (RelativeLayout) view.findViewById(R.id.review_write);
+        rlMore = (RelativeLayout) view.findViewById(R.id.more);
+        rlWrite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                Fragment fragment = new ReviewWriteFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("sh_id",position);
+                bundle.putString("sh_name",name);
+                fragment.setArguments(bundle);
+
+                fragmentTransaction.replace(R.id.llContents, fragment);
+                fragmentTransaction.addToBackStack(fm.findFragmentById(R.id.llContents).toString());
+                fragmentTransaction.commit();
+            }
+        });
+
+        rlMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                Fragment fragment = new ReviewFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("sh_id",position);
+                bundle.putString("sh_name",name);
+                bundle.putString("sh_addr",addr);
+                fragment.setArguments(bundle);
+
+                fragmentTransaction.replace(R.id.llContents, fragment);
+                fragmentTransaction.addToBackStack(fm.findFragmentById(R.id.llContents).toString());
+                fragmentTransaction.commit();
+            }
+        });
 
 
         return view;

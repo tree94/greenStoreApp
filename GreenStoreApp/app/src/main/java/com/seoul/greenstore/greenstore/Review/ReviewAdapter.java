@@ -34,7 +34,6 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
 
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> implements Server.ILoadResult {
@@ -113,8 +112,28 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         holder.content_review.setText(review_item.getRcontents());
         holder.like_number.setText(String.valueOf(review_item.getRelike()));
 
-        String gu = getAddr(review_item.getSh_addr());
+        if(review_item.getSh_addr()!=null) {
+            String addr = review_item.getSh_addr();
+            String res = "";
+            boolean flag = false;
+            for (int i=0; i < addr.length(); i++) {
+                char c = addr.charAt(i);
+                if (flag == true) {
+                    res += c;   //String으로 변환필요하면 해주기
+                }
+                if (flag == true && c == ' ') {
+                    break;
+                }
+                if (c == ' ') {
+                    flag = true;
+                }
 
+                Log.d("min",addr);
+
+            }
+            //res = res.substring(0, res.length() - 2);   // 맨 뒤 글자 잘라내기
+            System.out.println(res);
+        }
 
         Picasso.with(context).load(review_item.getImage()).fit().centerInside().into(holder.profile);
 
@@ -201,14 +220,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
 
     }
-
+/*
     private String getAddr(String addr) {
         String input = addr;
-        StringTokenizer token = new StringTokenizer(input, " ");
-        token.nextToken();
-        String res = token.nextToken();
+
+
+
         return res;
-    }
+    }*/
 
     @Override
     public void customAddList(String result) {
