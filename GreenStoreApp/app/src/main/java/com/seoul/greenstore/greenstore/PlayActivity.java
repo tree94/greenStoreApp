@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.seoul.greenstore.greenstore.Commons.MapKeys;
+import com.seoul.greenstore.greenstore.MapView.MapViewItem;
+import com.squareup.picasso.Picasso;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -18,9 +20,19 @@ import net.daum.mf.map.api.MapView;
  */
 public class PlayActivity extends Activity implements MapView.MapViewEventListener {
     private Intent intent;
-    private String findAddress = null;
-    private RelativeLayout relativeLayout;
-    private static final int RESULT_OK = 1;
+    private MapPOIItem marker;
+
+    private String title;
+    private String addr;
+    private String photo;
+    private String tel;
+    private double lat;
+    private double longitude;
+
+    private TextView playName;
+    private TextView playAddr;
+    private TextView playTel;
+    private ImageView playPhoto;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,37 +42,50 @@ public class PlayActivity extends Activity implements MapView.MapViewEventListen
         setContentView(R.layout.activity_play);
         this.setFinishOnTouchOutside(false);
 
-        relativeLayout = (RelativeLayout) findViewById(R.id.map_view);
+        intent = getIntent();
+        title = intent.getExtras().getString("title");
+        addr = intent.getExtras().getString("addr");
+        photo = intent.getExtras().getString("photo");
+        lat = intent.getExtras().getDouble("lat");
+        longitude = intent.getExtras().getDouble("longitude");
+        tel = intent.getExtras().getString("tel");
 
-//        if(this.relativeLayout.map)
+        playName = (TextView)findViewById(R.id.play_name);
+        playAddr = (TextView)findViewById(R.id.play_addr);
+        playTel = (TextView)findViewById(R.id.play_tel);
+        playPhoto = (ImageView)findViewById(R.id.play_image);
+
+        if(title.equals("null")) title = "이름 정보가 없습니다.";
+        if(addr.equals("null")) addr = "주소 정보가 없습니다.";
+        if(tel.equals("null")) tel = "번호 정보가 없습니다.";
+
+        playAddr.setText(addr);
+        playName.setText(title);
+        playTel.setText(tel);
+
+        if(!photo.equals("null")) Picasso.with(this).load(photo).resize(1500,400).into(playPhoto);
+
         //지도 띄우기
-        MapView mapView = new MapView(this);
-        mapView.setDaumMapApiKey(MapKeys.daumMapKey);
-
-        ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
-        mapViewContainer.addView(mapView);
-
-
-        mapView.setMapViewEventListener(this);
-
-        //주소를 위도/경도로 바꾸기기
-
+        MapViewItem.mapViewContainer = (ViewGroup) findViewById(R.id.play_map_view);
+        MapViewItem.mapView = new MapView(this);
+        MapViewItem.mapView.setMapViewEventListener(this);
+        MapViewItem.mapViewContainer.addView(MapViewItem.mapView);
     }
 
     //implements MapViewEventListener
     @Override
     public void onMapViewInitialized(MapView mapView) {
-
         //지도이동
-        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633);
+        mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(lat,longitude), 1, true);
+        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(lat,longitude);
         mapView.setMapCenterPoint(mapPoint, true);
 
 
         //마커생성
-        MapPOIItem marker = new MapPOIItem();
-        marker.setItemName("Default Marker");
+        marker = new MapPOIItem();
+        marker.setItemName(title);
         marker.setTag(0);
-        marker.setMapPoint(mapPoint);
+        marker.setMapPoint(MapPoint.mapPointWithGeoCoord(lat,longitude));
         marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
 
@@ -76,9 +101,6 @@ public class PlayActivity extends Activity implements MapView.MapViewEventListen
     @Override
     public void onStop(){
         super.onStop();
-        intent = new Intent();
-        setResult(RESULT_OK,intent);
-        finish();
     }
 
     @Override

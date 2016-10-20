@@ -9,7 +9,16 @@ public class Play {
     private String playPhoto;   //주변 이미지
     private String playTitle;   //주변 이름
     private String playAddr;    //주변 주소
+    private String playTel;     //주변 전화번호
     private Location playLoc;   //주변 좌표, 좌표 때문에 dto 생성함.
+
+    public String getPlayTel() {
+        return playTel;
+    }
+
+    public void setPlayTel(String playTel) {
+        this.playTel = playTel;
+    }
 
     public String getPlayPhoto() {
         return playPhoto;

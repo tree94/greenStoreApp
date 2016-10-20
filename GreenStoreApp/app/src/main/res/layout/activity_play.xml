@@ -40,21 +40,21 @@
         android:text="02-000-0000"
         android:textSize="15dp" />
 
-    <TextView
-        android:id="@+id/play_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/play_tel"
-        android:layout_marginTop="10dp"
-        android:text="볼거리 소개 내용입니다 어쩌구 저쩌꾸"
-        android:textSize="12dp" />
+    <!--<TextView-->
+        <!--android:id="@+id/play_info"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/play_tel"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:text="볼거리 소개 내용입니다 어쩌구 저쩌꾸"-->
+        <!--android:textSize="12dp" />-->
 
 
     <RelativeLayout
-        android:id="@+id/map_view"
+        android:id="@+id/play_map_view"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_below="@id/play_info"
+        android:layout_below="@id/play_tel"
         android:layout_marginTop="10dp" />
 
 
