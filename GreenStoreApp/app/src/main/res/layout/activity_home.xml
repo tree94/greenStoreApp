@@ -99,8 +99,8 @@
             </LinearLayout>
 
             <include layout="@layout/recyclerview" />
-        </LinearLayout>
 
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

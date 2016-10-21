@@ -80,7 +80,7 @@ public class Spinners{
 
     //업종 스피너 등록 메소드
     public Map setTypeSpinner(){
-        String[] list = {"업종 선택","한식","중식","경양식,일식","기타외식업","이 미용업","목욕업","세탁업","숙박업","영화","대여","노래방","운동시설","기타서비스업종"};
+        String[] list = {"업종 선택","한식","중식","경양식,일식","기타외식업","이 미용업","목욕업","세탁업","숙박업","기타서비스업종"};
         Map<String,Integer> spinnerMap = new HashMap<>();
 //        List<String> secList = Arrays.asList("한식","중식","경양식,일식","기타 외식업","이,미용업","목욕업","세탁업","숙박업","기타서비스업종");
 

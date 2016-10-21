@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     private Toolbar toolbar;
     private MenuItem menu;
     private NavigationView naviView;
+    private NavigationView tempNaviView;
     private ActionBarDrawerToggle drawerToggle;
     //private Fragment fragment = null;
     public static Fragment fragment = null;
@@ -65,36 +66,39 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     public static String strCommon;
 
 
-    //    Class fragmentClass = HomeFragment.class;
+    //Class fragmentClass = HomeFragment.class;
     public static Class fragmentClass = HomeFragment.class;
     public static FragmentManager fragmentManager = null;
 
+    public static Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mContext = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        naviView = (NavigationView) findViewById(R.id.nvView);
         searchTextView = (TextView) findViewById(R.id.searchTextView);
+
+        naviView = (NavigationView) findViewById(R.id.nvView);
         setupDrawerContent(naviView);
 
-        backPressCloseHandler = new BackPressCloseHandler(this);
 
+        backPressCloseHandler = new BackPressCloseHandler(this);
 
 
         getSupportFragmentManager().beginTransaction().replace(R.id.llContents, new HomeFragment()).commit();
 
         fragmentManager = getSupportFragmentManager();
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawer, R.string.drawer_open,R.string.drawer_close);
+
+        drawerToggle = new ActionBarDrawerToggle(this, drawer, R.string.drawer_open, R.string.drawer_close);
         drawer.setDrawerListener(drawerToggle);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
     }
@@ -134,6 +138,14 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                     menu.setTitle("Logout");
                     //사용자 조회
                     memberLookup();
+
+                    FragmentManager fm = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                    Fragment fragment = new HomeFragment();
+
+                    fragmentTransaction.replace(R.id.llContents, fragment);
+                    fragmentTransaction.addToBackStack(fm.findFragmentById(R.id.llContents).toString());
+                    fragmentTransaction.commit();
                 }
                 break;
         }
@@ -151,8 +163,19 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     }
 
     @Override
+    protected void onPause(){
+        super.onPause();
+        userReset();
+    }
+
+    private void userReset(){
+        User.user = null;
+        User.userStoreLike = null;
+        User.userReviewLike = null;
+    }
+
+    @Override
     public void customAddList(String result) {
-        Log.v("ttttttt", "" + result);
         //사용자가 좋아요 한 정보들을 hashMap 컬렉션에 저장
         try {
             JSONArray jsonArray = new JSONArray(result);
@@ -167,16 +190,14 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
             }
             User.userReviewLike = tempReviewMap;
             User.userStoreLike = tempStoreMap;
-//            int i = User.userStoreLike.size();
-//            Log.v("userLike",""+i);
-//            while(i>=0){
-//                i--;
-//                Log.v("hashtest",""+User.userStoreLike.get(i));
-//                Log.v("hashtest",""+User.userReviewLike.get(i));
-//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     //Drawer에서 항목을 선택했을 때 전환해줄 fragment 선택
@@ -190,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
             case R.id.nav_Login:
                 if (facebookUserData == null && kakaoUserData == null) {
                     fragmentClass = null;
-                    Intent intent = new Intent(this, LoginActivity.class);
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivityForResult(intent, LOGIN_ACTIVITY);
                 } else {
                     profileImage = (ImageView) findViewById(R.id.profileImage);
@@ -213,6 +234,9 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                     profileImage.setImageResource(R.drawable.circle);
                     userIdView.setText("로그인하세요");
                     menuItem.setTitle("Login");
+
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
                 }
                 break;
             case R.id.nav_Mypage:
@@ -300,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 
             strCommon = query;
 
-//                if (fragmentClass != null)
+            if (fragmentClass != null)
             backStateName = fragmentClass.getClass().getName();
 
             FragmentTransaction transaction = fragmentManager.beginTransaction();

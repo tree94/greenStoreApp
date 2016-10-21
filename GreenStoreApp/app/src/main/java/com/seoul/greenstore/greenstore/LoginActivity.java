@@ -2,12 +2,9 @@ package com.seoul.greenstore.greenstore;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageButton;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -28,7 +25,6 @@ import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
 import com.kakao.util.helper.log.Logger;
-import com.squareup.picasso.Target;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,14 +44,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private LoginButton FacebookLoginButton;
     private com.kakao.usermgmt.LoginButton kakaoLoginButton;
     private AccessToken token;
-    private ImageButton profileImage;
-    private LayoutInflater layoutInflater;
-    private View naviLayout;
-    private Target target;
     private Intent intent;
     private Bundle extra;
     private String picUrl;
-    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +70,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         callbackManager = CallbackManager.Factory.create();
 
         FacebookLoginButton.setOnClickListener(this);
-       kakaoLoginButton.setOnClickListener(this);
+        kakaoLoginButton.setOnClickListener(this);
     }
 
     //    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -121,7 +112,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                     Log.i("TAG", "AccessToken: " + result.getAccessToken().getToken());
 
                                     ArrayList<String> userData = new ArrayList<String>(
-                                            Arrays.asList(userId, userName, picUrl,userEmail, gender, birth)
+                                            Arrays.asList(userId, userName, picUrl, userEmail, gender, birth)
                                     );
                                     extra = new Bundle();
                                     extra.putStringArrayList("userData", userData);
@@ -193,7 +184,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         String nickname = userProfile.getNickname();
         String profile = userProfile.getProfileImagePath();
         ArrayList<String> userData = new ArrayList<String>(
-                Arrays.asList(userId,nickname, profile)
+                Arrays.asList(userId, nickname, profile)
         );
 
         extra = new Bundle();
