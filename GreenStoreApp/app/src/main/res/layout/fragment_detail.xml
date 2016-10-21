@@ -183,18 +183,19 @@
 
                 <TextView
                     android:id="@+id/detailAddr"
-                    android:layout_width="wrap_content"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:text="서울시 강북구 수유동 172-150"
+                    android:text="서울시 강북구 수유동 172-20"
                     android:textSize="15dp"
                     android:textStyle="bold" />
 
                 <ImageView
+                    android:id="@+id/addrImage"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/addr" />
 
                 <View

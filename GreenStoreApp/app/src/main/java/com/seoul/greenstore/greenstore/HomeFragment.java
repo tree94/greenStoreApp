@@ -28,6 +28,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -46,7 +48,7 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
     private Spinner likeSpinner;
     private String[] spinnerData = new String[2];
     private View view = null;
-    private static int start = 0;
+    private static int starts = 0;
 
     public static HomeFragment newInstance() {
         HomeFragment homeFrag = new HomeFragment();
@@ -65,10 +67,11 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.e("home", "home");
+
         view = inflater.inflate(R.layout.activity_home, null);
 
-        getNextItem(start);
+        getNextItem(starts);
+
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
@@ -95,7 +98,7 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
         likeSpinner = (Spinner) view.findViewById(R.id.likeSpinner);
 
         //구, 업종, 좋아요와 관련된 스피너 등록 시 필요한 파라미터 전송
-        Spinners spinner = new Spinners(getActivity(), locationSpinner, typeSpinner1, typeSpinner2, likeSpinner);
+        new Spinners(getActivity(), locationSpinner, typeSpinner1, typeSpinner2, likeSpinner);
 
         typeSpinner1.setOnItemSelectedListener(this);
         typeSpinner2.setOnItemSelectedListener(this);
@@ -113,14 +116,17 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
     }
 
     private void getNextItem(int start) {
-        if(start!=0){
-            String[] gets = {Constants.GREEN_STORE_URL_APP+"/"+start, "GET"};
+        if (start != 0) {
+            String[] gets = {Constants.GREEN_STORE_URL_APP + "/" + start, "GET"};
             Server server = new Server(getActivity(), this);
             server.execute(gets);
-        }else{
-            String[] gets = {Constants.GREEN_STORE_URL_APP+"/"+0, "GET"};
-            Server server = new Server(getActivity(), this);
-            server.execute(gets);
+        }
+        if (data.size() == 0) {
+            if (start == 0) {
+                String[] gets = {Constants.GREEN_STORE_URL_APP + "/" + 0, "GET"};
+                Server server = new Server(getActivity(), this);
+                server.execute(gets);
+            }
         }
     }
 
@@ -132,7 +138,7 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
                 sortCategory(id);
                 break;
             case R.id.likeSpinner:
-//                sortLike(id);
+                sortLike(id);
                 break;
             case R.id.typeSpinner1:
                 spinnerData[0] = parent.getItemAtPosition(position).toString();
@@ -165,7 +171,6 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
     }
 
     public void addList(String result) {
-//        data.clear();
         try {
             JSONArray jsonArray = new JSONArray(result);
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -173,6 +178,7 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 store.setId(Integer.parseInt(jsonObject.getString("sh_id")));
                 store.setLike(Integer.parseInt(jsonObject.getString("sh_rcmn")));
+                store.setUserLike(Integer.parseInt(jsonObject.getString("sh_like")));
                 store.setName(jsonObject.getString("sh_name"));
                 store.setAddr(jsonObject.getString("sh_addr"));
                 store.setImage(jsonObject.getString("sh_photo"));
@@ -183,12 +189,31 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
 
     @Override
     public void customAddList(String result) {
         addList(result);
+    }
+
+    // 선택된 좋아요에 해당하는 정보들만 추출하여 화면에 출력
+    private void sortLike(long id) {
+        final int check = (int) id;
+        Log.v("checkTest", "" + check);
+        Collections.sort(data, new Comparator<Recycler_item>() {
+            public int compare(Recycler_item obj1, Recycler_item obj2) {
+                // TODO Auto-generated method stub
+                if (check == 0) {
+                    Log.v("22d01", "11122");
+                    return (obj1.getLike() > obj2.getLike()) ? -1 : (obj1.getLike() < obj2.getLike()) ? 1 : 0;
+                } else {
+                    Log.v("01", "111");
+                    return (obj1.getUserLike() > obj2.getUserLike()) ? -1 : (obj1.getUserLike() < obj2.getUserLike()) ? 1 : 0;
+                }
+            }
+        });
     }
 
     // 선택된 카테고리에 해당하는 정보들만 추출하여 화면에 출력
@@ -216,7 +241,7 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
         else {
             for (int i = 0; i < data.size(); ++i) {
                 if (check == data.get(i).getIndutyCode()) {
-                    System.out.println("match id!" +data.get(i).getIndutyCode());
+                    System.out.println("match id!" + data.get(i).getIndutyCode());
                     tempData.add(data.get(i));
                 }
             }

@@ -10,16 +10,26 @@ public class Recycler_item {
     private String image;
     private String name;
     private int indutyCode;
+    private int userLike;
 
     public Recycler_item() {
     }
 
-    public Recycler_item(int id, int like, String addr, String image, String name) {
+    public Recycler_item(int id, int like, String addr, String image, String name,int userLike) {
         this.id = id;
         this.like = like;
         this.addr = addr;
         this.image = image;
         this.name = name;
+        this.userLike = userLike;
+    }
+
+    public int getUserLike() {
+        return userLike;
+    }
+
+    public void setUserLike(int userLike) {
+        this.userLike = userLike;
     }
 
     public int getIndutyCode() {

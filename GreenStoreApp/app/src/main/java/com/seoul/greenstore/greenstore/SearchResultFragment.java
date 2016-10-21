@@ -126,7 +126,7 @@ public class SearchResultFragment extends Fragment implements Server.ILoadResult
             }
         }
 
-        adapter = new RecyclerAdapter(data,getActivity(), recyclerView);
+        adapter = new RecyclerAdapter(data,getActivity());
 
         Log.i("ADAPTER", adapter.toString());
 
