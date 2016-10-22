@@ -15,7 +15,7 @@ public class MyPageFragment_review extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_mypage_review, container, false);
+        return inflater.inflate(R.layout.activity_mypage_review, null);
     }
 
 }

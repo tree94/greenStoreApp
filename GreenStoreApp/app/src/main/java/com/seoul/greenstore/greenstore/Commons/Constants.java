@@ -31,6 +31,8 @@ public class Constants {
     //storeLike
     public static final  String GREEN_STORE_URL_APP_STORELIKE = GREEN_STORE_URL_APP + "storeLike/";
 
+    //myStoreLike
+    public static final  String GREEN_STORE_URL_APP_MYSTORElIKE = GREEN_STORE_URL_APP + "myStoreLike/";
 
     private static final String GREEN_STORE_URL_APP_REVIEW = GREEN_STORE_URL_APP+"review/";
     public static final String GREEN_STORE_URL_APP_REVIEW_ONE = GREEN_STORE_URL_APP_REVIEW + "one";

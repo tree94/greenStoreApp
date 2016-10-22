@@ -48,7 +48,7 @@
                 android:layout_height="20dp"
                 android:layout_below="@+id/detailName"
                 android:layout_toRightOf="@+id/imageLike"
-                android:text="127" />
+                android:text="0" />
 
             <ImageView
                 android:id="@+id/imageRcmn"

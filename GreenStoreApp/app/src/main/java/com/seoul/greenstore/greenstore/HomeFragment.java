@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
     private Spinner likeSpinner;
     private String[] spinnerData = new String[2];
     private View view = null;
-    private static int starts = 0;
+    private Boolean pauseFlag = false;
 
     public static HomeFragment newInstance() {
         HomeFragment homeFrag = new HomeFragment();
@@ -62,22 +62,23 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        getNextItem(0);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         view = inflater.inflate(R.layout.activity_home, null);
 
-        getNextItem(starts);
+//        Log.v("dataSize", "end = "+end+" start = "+start+"dataSize = " + data.size());
+        if (data.size() == 0) getNextItem(0);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         adapter = new RecyclerAdapter(data, getActivity());
 
-        Log.i("ADAPTER", adapter.toString());
+        Log.i("ADAPTER", "flag= " + pauseFlag + " / " + adapter.toString());
 
 /*        //맨 위로가기 실행할것
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
@@ -128,18 +129,9 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
     }
 
     private void getNextItem(int start) {
-        if (start != 0) {
-            String[] gets = {Constants.GREEN_STORE_URL_APP + "/" + start, "GET"};
-            Server server = new Server(getActivity(), this);
-            server.execute(gets);
-        }
-        if (data.size() == 0) {
-            if (start == 0) {
-                String[] gets = {Constants.GREEN_STORE_URL_APP + "/" + 0, "GET"};
-                Server server = new Server(getActivity(), this);
-                server.execute(gets);
-            }
-        }
+        String[] gets = {Constants.GREEN_STORE_URL_APP + "/" + start, "GET"};
+        Server server = new Server(getActivity(), this);
+        server.execute(gets);
     }
 
     //업종과 관련된 스피너 선택 시
@@ -226,6 +218,7 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
                 }
             }
         });
+        adapter.notifyDataSetChanged();
     }
 
     // 선택된 카테고리에 해당하는 정보들만 추출하여 화면에 출력
@@ -268,6 +261,17 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        EndlessRecyclerOnScrollListener.setStart();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        EndlessRecyclerOnScrollListener.setStart();
+    }
 }
 
 

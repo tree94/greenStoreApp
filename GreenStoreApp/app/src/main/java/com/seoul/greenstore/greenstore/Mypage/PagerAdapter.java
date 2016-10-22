@@ -9,13 +9,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
-    int mNumOfTabs;
+    private static Fragment tab1;
+    private static Fragment tab2;
+    private static int mNumOfTabs;
 
     public PagerAdapter(FragmentManager fm, int NumOfTabs) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
     }
 
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
 
 
     @Override
@@ -23,10 +28,10 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                MyPageFragment_store tab1 = new MyPageFragment_store();
+                tab1 = new MyPageFragment_store();
                 return tab1;
             case 1:
-                MyPageFragment_review tab2 = new MyPageFragment_review();
+                tab2 = new MyPageFragment_review();
                 return tab2;
             default:
                 return null;

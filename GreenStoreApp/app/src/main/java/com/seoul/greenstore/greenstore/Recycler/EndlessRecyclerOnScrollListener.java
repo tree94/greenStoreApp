@@ -16,9 +16,13 @@ public abstract class EndlessRecyclerOnScrollListener extends
     private int visibleThreshold = 6;
     int firstVisibleItem, visibleItemCount, totalItemCount;
 
-    private int start = 0;
+    private static int start = 0;
 
     private LinearLayoutManager mLinearLayoutManager;
+
+    public static void setStart(){
+        start=0;
+    }
 
     public EndlessRecyclerOnScrollListener(LinearLayoutManager linearLayoutManager) {
         this.mLinearLayoutManager = linearLayoutManager;
@@ -52,5 +56,6 @@ public abstract class EndlessRecyclerOnScrollListener extends
     }
 
     public abstract void onLoadMore(int current_page);
+
 }
 

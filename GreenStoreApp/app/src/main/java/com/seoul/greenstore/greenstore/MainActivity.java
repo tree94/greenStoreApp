@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.kakao.usermgmt.UserManagement;
@@ -242,7 +243,10 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                 }
                 break;
             case R.id.nav_Mypage:
-                fragmentClass = MypageFragment.class;
+                if(User.user!=null)
+                    fragmentClass = MypageFragment.class;
+                else
+                    Toast.makeText(this,"로그인을 해주세요.",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_Notice:
                 fragmentClass = NoticeFragment.class;
