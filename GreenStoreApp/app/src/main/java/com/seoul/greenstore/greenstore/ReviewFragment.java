@@ -1,6 +1,7 @@
 package com.seoul.greenstore.greenstore;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.seoul.greenstore.greenstore.Commons.Constants;
 import com.seoul.greenstore.greenstore.Review.ReviewAdapter;
@@ -37,9 +39,14 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
     private List<Review_item> data = new ArrayList<Review_item>();
     private RecyclerView recyclerView = null;
     private Button sortCate;
-    private Button btnWrite; // 글쓰기 버튼을 일단 만들어놓음.
     private String[] spinnerData = new String[2];
-    private int flag = 0;
+
+
+    private int sh_id;
+    private String sh_addr;
+    private String sh_name;
+
+    Bundle bundle = null;
 
     String loc = "";
     String type = "";
@@ -67,13 +74,15 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
         super.onStart();
         Log.d("coffee", "Review onstart IN");
 
-        if (flag == 0) {
+        if (bundle == null) {
             String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_ALL, "GET"};
             Server server = new Server(getActivity(), this);
             server.execute(gets);
-            Log.d("hot8", flag + "");
+        } else {
+            String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_ONE_STORE + sh_id, "GET"};
+            Server server = new Server(getActivity(), this);
+            server.execute(gets);
         }
-
     }
 
     @Override
@@ -83,6 +92,12 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
         View view2 = inflater.inflate(R.layout.cardview_review, null);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true);
 
+        bundle = this.getArguments();
+        if(bundle!=null) {
+            sh_id = bundle.getInt("sh_id");
+            sh_addr = bundle.getString("sh_addr");
+            sh_name = bundle.getString("sh_name");
+        }
 
         sortCate = (Button) view.findViewById(R.id.sortCate);
 //        like_image = (ImageButton) view.findViewById(R.id.like_image);
@@ -92,7 +107,7 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
         Spinner typeSpinner1 = (Spinner) view.findViewById(R.id.typeSpinner1_r);
         Spinners spinner = new Spinners(getActivity(), locationSpinner, typeSpinner1);
 //        storeName_review = (TextView) view.findViewById(R.id.storeName_review);
-        btnWrite = (Button) view.findViewById(R.id.review_write);
+
 //        review_setting = (Button) view.findViewById(R.id.review_setting);
 
         adapter = new ReviewAdapter(getActivity(), data);
@@ -103,15 +118,6 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
         locationSpinner.setOnItemSelectedListener(this);
         typeSpinner1.setOnItemSelectedListener(this);
 
-
-        //글쓰기 버튼. 상세 페이지로 갈 것임
-        btnWrite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Activty 의 메소드 호출
-                MainActivity.changeFragment("fragment1");
-            }
-        });
 
         //리뷰를 카테고리별로
         sortCate.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +132,17 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                recyclerView.smoothScrollToPosition(0);
+                Toast.makeText(getActivity(), "FAB 누름", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 // Inflate the layout for this fragment
         return view;
     }
@@ -160,6 +177,8 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
         Log.d("coffee", "Review customAddList IN");
         try {
             JSONArray jsonArray = new JSONArray(result);
+            if(result==null)
+                Toast.makeText(getActivity(), "데이터가 없습니다", Toast.LENGTH_SHORT).show();
             for (int i = 0; i < jsonArray.length(); i++) {
                 Review_item review = new Review_item();
                 JSONObject jsonObject = jsonArray.getJSONObject(i);

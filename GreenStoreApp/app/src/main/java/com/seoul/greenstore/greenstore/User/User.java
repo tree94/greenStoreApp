@@ -14,7 +14,6 @@ public class User {
     public static ArrayList<String> user;
 
     //좋아요 사용법.
-
     public static Map<Integer,String> userReviewLike;
 
     //반복문을 돌리면서 map.get(i) 해당 sh_id가 현재 sh_id랑 같은지 확인.

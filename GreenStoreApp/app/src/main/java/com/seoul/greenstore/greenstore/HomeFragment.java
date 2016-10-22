@@ -79,6 +79,18 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
 
         Log.i("ADAPTER", adapter.toString());
 
+/*        //맨 위로가기 실행할것
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            recyclerView.setScrollX(0);
+                recyclerView.setScrollY(0);
+                Toast.makeText(getActivity(), "FAB 누름", Toast.LENGTH_SHORT).show();
+            }
+        });*/
+
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setHasFixedSize(true);

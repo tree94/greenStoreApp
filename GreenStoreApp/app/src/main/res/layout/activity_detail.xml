@@ -107,6 +107,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/review_write"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".30"
@@ -132,6 +133,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/more"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".30"
