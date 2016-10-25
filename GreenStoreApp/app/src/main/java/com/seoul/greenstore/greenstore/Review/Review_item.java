@@ -6,17 +6,17 @@ import java.util.Date;
  * Created by X on 2016-09-26.
  */
 public class Review_item {
-    int rkey;
-    int mkey;
-    int sh_id;
-    String rcontents;
-    int relike;
-    Date rdate;
-    String storeName;
+    private int rkey;
+    private int mkey;
+    private int sh_id;
+    private String rcontents;
+    private int relike;
+    private Date rdate;
+    private String storeName;
     private String image;
-    String sh_addr;
-    String induty_name;
-    int induty;
+    private String sh_addr;
+    private String induty_name;
+    private int induty;
 
     public int getSh_id() {
         return sh_id;

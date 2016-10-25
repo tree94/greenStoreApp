@@ -28,6 +28,7 @@ import com.seoul.greenstore.greenstore.Commons.MapKeys;
 import com.seoul.greenstore.greenstore.Dto.Play;
 import com.seoul.greenstore.greenstore.Dto.Review;
 import com.seoul.greenstore.greenstore.MapView.MapViewItem;
+import com.seoul.greenstore.greenstore.Mypage.MyPageFragment_store;
 import com.seoul.greenstore.greenstore.Review.ReviewWriteFragment;
 import com.seoul.greenstore.greenstore.Server.Server;
 import com.seoul.greenstore.greenstore.User.User;
@@ -239,7 +240,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
                         info = jsonObject.getString("sh_info");
                         pride = jsonObject.getString("sh_pride");
                         photo = jsonObject.getString("sh_photo");
-                        if(jsonObject.getDouble("pointX") != 0) {
+                        if(!jsonObject.getString("pointX").equals("null")) {
                             pointX = jsonObject.getDouble("pointX");
                             pointY = jsonObject.getDouble("pointY");
                         }
@@ -509,6 +510,9 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
                 else
                     User.userStoreLike.put(0, String.valueOf(position));
 
+                //내가 좋아요한 스토어에 데이터 저장.
+                MyPageFragment_store myPageFragment_store = new MyPageFragment_store();
+                myPageFragment_store.setMyStoreLikeData(position,name,addr,photo);
 
                 Drawable drawable = getResources().getDrawable(
                         R.drawable.likestar);

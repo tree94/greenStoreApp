@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="reviewItem">
+        <attr name="reviewPhoto" format="reference|integer"/>
+        <attr name="reviewStoreName" format="reference|string"/>
+        <attr name="reviewName" format="reference|string"/>
+        <attr name="reviewDate" format="reference|string"/>
+        <attr name="reviewCount" format="reference|string"/>
+        <attr name="reviewContent" format="reference|string"/>
+    </declare-styleable>
+</resources>

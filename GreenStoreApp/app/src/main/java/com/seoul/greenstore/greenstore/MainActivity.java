@@ -29,6 +29,7 @@ import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.seoul.greenstore.greenstore.Commons.BackPressCloseHandler;
 import com.seoul.greenstore.greenstore.Commons.Constants;
+import com.seoul.greenstore.greenstore.Recycler.EndlessRecyclerOnScrollListener;
 import com.seoul.greenstore.greenstore.Server.Server;
 import com.seoul.greenstore.greenstore.User.User;
 import com.squareup.picasso.Picasso;
@@ -168,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     @Override
     protected void onPause(){
         super.onPause();
+        EndlessRecyclerOnScrollListener.setStart();
         userReset();
     }
 
@@ -231,22 +233,27 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                         });
                         kakaoUserData = null;
                     }
-                    User.user = null;
-                    User.userStoreLike = null;
-                    User.userReviewLike = null;
+                    userReset();
                     profileImage.setImageResource(R.drawable.circle);
                     userIdView.setText("로그인하세요");
                     menuItem.setTitle("Login");
 
-                    Intent intent = new Intent(this, MainActivity.class);
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
+//                    Intent intent = new Intent(this, MainActivity.class);
+//                    startActivity(intent);
                 }
                 break;
             case R.id.nav_Mypage:
-                if(User.user!=null)
+                if(User.user!=null) {
                     fragmentClass = MypageFragment.class;
-                else
-                    Toast.makeText(this,"로그인을 해주세요.",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(MainActivity.this, "로그인 해주세요.", Toast.LENGTH_SHORT).show();
+//                    fragmentClass = null;
+//                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//                    startActivityForResult(intent, LOGIN_ACTIVITY);
+                }
                 break;
             case R.id.nav_Notice:
                 fragmentClass = NoticeFragment.class;
@@ -257,9 +264,8 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 //                startActivity(intent);
                 break;
             case R.id.nav_Review:
-                fragmentClass = ReviewFragment.class;
+                    fragmentClass = ReviewFragment.class;
                 break;
-
             default:
                 fragmentClass = ImageFragment.class;
         }
@@ -417,6 +423,12 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 
     }
 
+    @Override
+    public void onStop(){
+        super.onStop();
+        EndlessRecyclerOnScrollListener.setStart();
+        userReset();
+    }
 }
 
 

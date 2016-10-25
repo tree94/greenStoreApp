@@ -20,10 +20,10 @@ public class MypageFragment extends Fragment {
     private static TabLayout tabLayout;
     private static PagerAdapter adapter;
 
-    public MypageFragment newInstance() {
-        MypageFragment fragment = new MypageFragment();
-        return fragment;
-    }
+//    public MypageFragment newInstance() {
+//        MypageFragment fragment = new MypageFragment();
+//        return fragment;
+//    }
 
     public MypageFragment() {
     }
@@ -33,12 +33,10 @@ public class MypageFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(view==null)
-        view = inflater.inflate(R.layout.activity_mypage, null);
+        if(view==null) view = inflater.inflate(R.layout.activity_mypage, null);
 
         if(tabLayout==null) {
             tabLayout = (TabLayout) view.findViewById(R.id.tab_layout);
@@ -47,9 +45,8 @@ public class MypageFragment extends Fragment {
             tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         }
 
-
         if(adapter==null)
-        adapter = new PagerAdapter(getFragmentManager(), tabLayout.getTabCount());
+            adapter = new PagerAdapter(getFragmentManager(), tabLayout.getTabCount());
 
         if(viewPager==null) {
             viewPager = (ViewPager) view.findViewById(R.id.pager);
@@ -79,5 +76,13 @@ public class MypageFragment extends Fragment {
     public void onPause() {
         super.onPause();
         Log.v("pauseddddd", "11111");
+//        FragmentManager fm = getFragmentManager();
+//        Fragment f = fm.findFragmentById(R.id.pager);
+//        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+//        fragmentTransaction.remove(f);
+//        fragmentTransaction.commit();
+
     }
+
+
 }

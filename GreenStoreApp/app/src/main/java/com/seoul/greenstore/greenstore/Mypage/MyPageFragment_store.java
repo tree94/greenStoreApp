@@ -33,13 +33,23 @@ public class MyPageFragment_store extends Fragment implements Server.ILoadResult
     private static GridLayoutManager gridLayoutManager;
     private View view;
 
+    public void setMyStoreLikeData(int id,String name,String addr,String photo){
+        Recycler_item recycler_item = new Recycler_item();
+        recycler_item.setId(id);
+        recycler_item.setName(name);
+        recycler_item.setAddr(addr);
+        recycler_item.setImage(photo);
+        data.add(recycler_item);
+        recyclerAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view =  inflater.inflate(R.layout.activity_mypage_store,null);
 
-        //좋아요 누른 공간
-        if(data.size()==0) getLikeItem();
-
+//        //좋아요 누른 공간
+//        if(data.size()==0)
+        getLikeItem();
         gridLayoutManager = new GridLayoutManager(getActivity(), 2);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
@@ -59,6 +69,8 @@ public class MyPageFragment_store extends Fragment implements Server.ILoadResult
 
     @Override
     public void customAddList(String result) {
+        Log.v("test123","1111111111");
+        data.clear();
         try {
             JSONArray jsonArray = new JSONArray(result);
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -79,8 +91,4 @@ public class MyPageFragment_store extends Fragment implements Server.ILoadResult
         }
     }
 
-    @Override
-    public void onPause(){
-        Log.v("pauseddddd","22222");
-    }
 }
