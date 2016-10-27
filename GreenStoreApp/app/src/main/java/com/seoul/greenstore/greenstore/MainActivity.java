@@ -22,12 +22,14 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.seoul.greenstore.greenstore.Commons.BackPressCloseHandler;
 import com.seoul.greenstore.greenstore.Commons.Constants;
+import com.seoul.greenstore.greenstore.Recycler.EndlessRecyclerOnScrollListener;
 import com.seoul.greenstore.greenstore.Server.Server;
 import com.seoul.greenstore.greenstore.User.User;
 import com.squareup.picasso.Picasso;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     private Toolbar toolbar;
     private MenuItem menu;
     private NavigationView naviView;
+    private NavigationView tempNaviView;
     private ActionBarDrawerToggle drawerToggle;
     //private Fragment fragment = null;
     public static Fragment fragment = null;
@@ -65,26 +68,28 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     public static String strCommon;
 
 
-    //    Class fragmentClass = HomeFragment.class;
+    //Class fragmentClass = HomeFragment.class;
     public static Class fragmentClass = HomeFragment.class;
     public static FragmentManager fragmentManager = null;
 
+    public static Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mContext = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        naviView = (NavigationView) findViewById(R.id.nvView);
         searchTextView = (TextView) findViewById(R.id.searchTextView);
+
+        naviView = (NavigationView) findViewById(R.id.nvView);
         setupDrawerContent(naviView);
 
 
         backPressCloseHandler = new BackPressCloseHandler(this);
-
 
         getSupportFragmentManager().beginTransaction().replace(R.id.llContents, new HomeFragment()).commit();
 
@@ -94,12 +99,9 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
         drawer.setDrawerListener(drawerToggle);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-
     }
-
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
@@ -133,8 +135,17 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                         userIdView.setText(kakaoUserData.get(1));
                     }
                     menu.setTitle("Logout");
+
                     //사용자 조회
                     memberLookup();
+
+                    FragmentManager fm = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                    Fragment fragment = new HomeFragment();
+
+                    fragmentTransaction.replace(R.id.llContents, fragment);
+//                    fragmentTransaction.addToBackStack(null); //fm.findFragmentById(R.id.llContents
+                    fragmentTransaction.commit();
                 }
                 break;
         }
@@ -152,8 +163,15 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        EndlessRecyclerOnScrollListener.setStart();
+        User.userReset();
+    }
+
+
+    @Override
     public void customAddList(String result) {
-        Log.v("ttttttt", "" + result);
         //사용자가 좋아요 한 정보들을 hashMap 컬렉션에 저장
         try {
             JSONArray jsonArray = new JSONArray(result);
@@ -168,21 +186,21 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
             }
             User.userReviewLike = tempReviewMap;
             User.userStoreLike = tempStoreMap;
-//            int i = User.userStoreLike.size();
-//            Log.v("userLike",""+i);
-//            while(i>=0){
-//                i--;
-//                Log.v("hashtest",""+User.userStoreLike.get(i));
-//                Log.v("hashtest",""+User.userReviewLike.get(i));
-//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     //Drawer에서 항목을 선택했을 때 전환해줄 fragment 선택
     public void selectDrawerItem(final MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
+
+        if(User.user==null) Log.d("___", "User.user is null.");
         this.menu = menuItem;
         switch (menuItem.getItemId()) {
             case R.id.nav_Home:
@@ -190,10 +208,31 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                 break;
             case R.id.nav_Login:
                 if (facebookUserData == null && kakaoUserData == null) {
-                    fragmentClass = null;
-                    Intent intent = new Intent(this, LoginActivity.class);
+//                    FragmentManager fm = getSupportFragmentManager();
+//                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+//                    Log.v("stack??","fragmentName : "+fm.findFragmentById(R.id.llContents)+"fragmentCount : "+fragmentManager.getFragments().size());
+//                    if(fm.findFragmentById(R.id.llContents).toString().contains("My")){
+//                        Log.v("stack??","fragmentName : 포함됨!!!");
+////                        transaction.remove(fm.findFragmentById(R.id.llContents));
+////                        transaction.commit();
+//                    }
+
+//                    fragmentClass = null;
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    //Log.d("___","1");
                     startActivityForResult(intent, LOGIN_ACTIVITY);
+                    //Log.d("___","2");
                 } else {
+//                    FragmentManager fm = getSupportFragmentManager();
+//                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+////                    transaction.remove(fm.findFragmentById(R.id.llContents));
+//                    Log.v("stack??","fragmentName : "+fm.findFragmentById(R.id.llContents)+"fragmentCount : "+fragmentManager.getFragments().size());
+//                    if(fm.findFragmentById(R.id.llContents).toString().contains("My")){
+//                        Log.v("stack??","fragmentName : 포함됨!!!");
+////                        transaction.remove(MypageFragment.class).commit();
+////                        transaction.commit();
+//                    }
+
                     profileImage = (ImageView) findViewById(R.id.profileImage);
                     if (facebookUserData != null) {
                         LoginManager.getInstance().logOut();
@@ -208,29 +247,45 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                         });
                         kakaoUserData = null;
                     }
-                    User.user = null;
-                    User.userStoreLike = null;
-                    User.userReviewLike = null;
+
+                    //User.userReset();
+
                     profileImage.setImageResource(R.drawable.circle);
                     userIdView.setText("로그인하세요");
                     menuItem.setTitle("Login");
+//                    fragmentClass = null;
+//                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                    startActivity(intent);
+
+//                    Intent intent = new Intent(this, MainActivity.class);
+//                    startActivity(intent);
+
+//                    FragmentManager fm = getSupportFragmentManager();
+//                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+//                    Fragment fragment = new HomeFragment();
+//
+//                    fragmentTransaction.replace(R.id.llContents, fragment);
+//                    fragmentTransaction.addToBackStack(fm.findFragmentById(R.id.llContents).toString());
+//                    fragmentTransaction.commit();
                 }
                 break;
             case R.id.nav_Mypage:
-                fragmentClass = MypageFragment.class;
+                if (User.user != null) {
+                    fragmentClass = MypageFragment.class;
+                } else {
+                    Toast.makeText(MainActivity.this, "로그인을 해주세요.", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.nav_Notice:
                 fragmentClass = NoticeFragment.class;
                 break;
             case R.id.nav_Service:
                 fragmentClass = ServiceFragment.class;
-//                Intent intent = new Intent(this, PlayActivity.class);
-//                startActivity(intent);
                 break;
             case R.id.nav_Review:
                 fragmentClass = ReviewFragment.class;
                 break;
-
             default:
                 fragmentClass = ImageFragment.class;
         }
@@ -244,7 +299,6 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
         }
         // Insert the fragment by replacing any existing fragment
 
-
         fragmentManager = getSupportFragmentManager();
         Fragment nowFragment = fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 1);
 
@@ -252,11 +306,11 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
         if (fragmentClass != null) {
             backStateName = fragmentClass.getClass().getName();
 //            if (!nowFragment.getClass().equals(fragmentClass)) { //fragment not in back stack, create it.
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.llContents, fragment);
-            transaction.addToBackStack(backStateName);
-            transaction.commit();
-
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.llContents, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+//            }
         }
 
         // Highlight the selected item has been done by NavigationView
@@ -265,6 +319,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
         // Set action bar title
         // Close the navigation drawer
         drawer.closeDrawers();
+
     }
 
 
@@ -301,8 +356,8 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 
             strCommon = query;
 
-//                if (fragmentClass != null)
-            backStateName = fragmentClass.getClass().getName();
+            if (fragmentClass != null)
+                backStateName = fragmentClass.getClass().getName();
 
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.llContents, SearchResultFragment.newInstance());
@@ -400,6 +455,12 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
         else super.onBackPressed();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        EndlessRecyclerOnScrollListener.setStart();
+        User.userReset();
+    }
 }
 
 

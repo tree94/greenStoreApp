@@ -4,6 +4,7 @@ package com.seoul.greenstore.greenstore.Recycler;
  * Created by X on 2016-09-06.
  */
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,24 +23,20 @@ import com.seoul.greenstore.greenstore.DetailFragment;
 import com.seoul.greenstore.greenstore.R;
 import com.squareup.picasso.Picasso;
 
-import java.util.Collections;
 import java.util.List;
 
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private Context context;
-    private LayoutInflater inflater;
-    private List<Recycler_item> items = Collections.emptyList();
-    private int currentPos = 0;
-    private Recycler_item current;
-    private ViewHolder holder;
-    private View v;
+    private List<Recycler_item> items;
+    private final int VIEW_ITEM = 1;
+    private final int VIEW_PROG = 0;
 
-    public RecyclerAdapter(Context context,List<Recycler_item> data) {
+
+    public RecyclerAdapter(List<Recycler_item> data,Context context) {
         this.context = context;
         this.items = data;
     }
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private ImageView imageView;
@@ -59,7 +56,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View viewItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview,null);
+        View viewItem=null;
+        ProgressDialog dialog = null;
+        if (viewType == VIEW_ITEM) {
+            if(dialog==null) viewItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview,null);
+            else dialog.dismiss();
+        } else {
+            dialog = ProgressDialog.show(context, "Loading","데이터 요청 중...",true);
+            dialog.show();
+        }
         return new ViewHolder(viewItem);
     }
 
@@ -69,7 +74,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.name.setText(recycler_item.getName());
         holder.addr.setText(recycler_item.getAddr());
         Picasso.with(context).load(recycler_item.getImage()).fit().centerInside().into(holder.imageView);
-
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,17 +89,19 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 fragmentTransaction.replace(R.id.llContents, fragment);
                 fragmentTransaction.addToBackStack(fm.findFragmentById(R.id.llContents).toString());
                 fragmentTransaction.commit();
-
             }
         });
     }
-
 
     @Override
     public int getItemCount() {
         return this.items.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return items.get(position) != null ? VIEW_ITEM : VIEW_PROG;
+    }
 
 }
 

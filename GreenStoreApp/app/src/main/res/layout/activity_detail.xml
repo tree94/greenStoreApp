@@ -4,6 +4,7 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/detailMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -47,7 +48,7 @@
                 android:layout_height="20dp"
                 android:layout_below="@+id/detailName"
                 android:layout_toRightOf="@+id/imageLike"
-                android:text="127" />
+                android:text="0" />
 
             <ImageView
                 android:id="@+id/imageRcmn"
@@ -77,15 +78,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".30"
-                android:gravity="center_horizontal"
-                >
+                android:gravity="center_horizontal">
 
                 <ImageButton
                     android:id="@+id/clickLikeButton"
@@ -99,10 +99,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/clickLikeButton"
+                    android:layout_marginTop="5dp"
                     android:clickable="true"
                     android:text="@string/storeLike"
                     android:textSize="20dp"
-                    android:layout_marginTop="5dp"
                     android:textStyle="bold" />
             </RelativeLayout>
 
@@ -111,8 +111,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".30"
-                android:gravity="center_horizontal"
-                >
+                android:gravity="center_horizontal">
 
                 <ImageButton
                     android:id="@+id/clickReviewWriteButton"
@@ -126,9 +125,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/clickReviewWriteButton"
+                    android:layout_marginTop="5dp"
                     android:clickable="true"
                     android:text="@string/reviewWrite"
-                    android:layout_marginTop="5dp"
                     android:textSize="20dp"
                     android:textStyle="bold" />
             </RelativeLayout>
@@ -138,8 +137,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".30"
-                android:gravity="center_horizontal"
-                >
+                android:gravity="center_horizontal">
 
                 <ImageButton
                     android:id="@+id/clickMoreReviewButton"
@@ -153,10 +151,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/clickMoreReviewButton"
+                    android:layout_marginTop="5dp"
                     android:clickable="true"
                     android:text="@string/reviewMore"
                     android:textSize="20dp"
-                    android:layout_marginTop="5dp"
                     android:textStyle="bold" />
             </RelativeLayout>
         </LinearLayout>
@@ -187,18 +185,19 @@
 
                 <TextView
                     android:id="@+id/detailAddr"
-                    android:layout_width="wrap_content"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:text="서울시 강북구 수유동 172-150"
+                    android:text="서울시 강북구 수유동 172-20"
                     android:textSize="15dp"
                     android:textStyle="bold" />
 
                 <ImageView
+                    android:id="@+id/addrImage"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/addr" />
 
                 <View
@@ -339,6 +338,7 @@
             android:background="#a0a0a0" />
 
         <LinearLayout
+            android:id="@+id/reviewMain"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -352,16 +352,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/review"
-                android:textSize="20dp"/>
+                android:textSize="20dp" />
 
             <View
                 android:id="@+id/viewReview"
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/storeReview"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
-                android:background="#a0a0a0"
-                android:layout_marginBottom="10dp" />
+                android:background="#a0a0a0" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -374,32 +374,32 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/profileImage_review"
+                        android:id="@+id/reviewPhoto"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="10dp"
                         android:src="@drawable/circle" />
 
                     <TextView
-                        android:id="@+id/userId_review"
+                        android:id="@+id/reviewName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_gravity="center"
                         android:layout_marginLeft="10dp"
-                        android:layout_toRightOf="@+id/profileImage_review"
+                        android:layout_toRightOf="@+id/reviewPhoto"
                         android:text="진소라"
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
 
                     <TextView
-                        android:id="@+id/date_review"
+                        android:id="@+id/reviewDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="20dp"
-                        android:layout_toRightOf="@+id/userId_review"
+                        android:layout_toRightOf="@+id/reviewName"
                         android:text="2016.09.26 18:23"
                         android:textSize="9dp" />
 
@@ -418,11 +418,11 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@+id/like_number"
+                        android:layout_toLeftOf="@+id/reviewCount"
                         android:background="@drawable/heart_false" />
 
                     <TextView
-                        android:id="@+id/like_number"
+                        android:id="@+id/reviewCount"
                         android:layout_width="35dp"
                         android:layout_height="30dp"
                         android:layout_alignParentEnd="true"
@@ -437,7 +437,7 @@
 
                 <TextView
 
-                    android:id="@+id/content_review"
+                    android:id="@+id/reviewContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/like_image"
@@ -485,67 +485,64 @@
                 android:id="@+id/play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="주변 놀거리"
-                android:textStyle="bold"
-                android:textSize="20dp"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="10dp"
-                />
+                android:layout_marginTop="5dp"
+                android:text="주변 놀거리"
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
             <HorizontalScrollView
-                android:layout_marginTop="25dp"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:scrollbarStyle="outsideInset"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
                 android:fadeScrollbars="false"
                 android:padding="5dp"
-                >
+                android:scrollbarStyle="outsideInset">
 
                 <LinearLayout
                     android:id="@+id/playScroll"
-                    android:orientation="horizontal"
-                    android:layout_height="match_parent"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
-                    >
+                    android:orientation="horizontal">
 
                     <!--<LinearLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:orientation="vertical"-->
-                        <!--android:background="#fff"-->
-                        <!--&gt;-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:background="#fff"-->
+                    <!--&gt;-->
 
-                        <!--<ImageView-->
-                            <!--android:id="@+id/playPhoto"-->
-                            <!--android:layout_width="150dp"-->
-                            <!--android:layout_height="200dp"-->
-                            <!--android:background="@drawable/mybg2"-->
-                            <!--/>-->
+                    <!--<ImageView-->
+                    <!--android:id="@+id/playPhoto"-->
+                    <!--android:layout_width="150dp"-->
+                    <!--android:layout_height="200dp"-->
+                    <!--android:background="@drawable/mybg2"-->
+                    <!--/>-->
 
-                        <!--<TextView-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:id="@+id/playTitle"-->
-                            <!--android:text="놀거리 이름"-->
-                            <!--android:layout_marginLeft="5dp"-->
-                            <!--android:layout_marginTop="5dp"-->
-                            <!--android:layout_marginBottom="5dp"-->
-                            <!--/>-->
+                    <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:id="@+id/playTitle"-->
+                    <!--android:text="놀거리 이름"-->
+                    <!--android:layout_marginLeft="5dp"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:layout_marginBottom="5dp"-->
+                    <!--/>-->
 
-                        <!--<TextView-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:id="@+id/playAddr"-->
-                            <!--android:text="놀거리 주소"-->
-                            <!--android:layout_marginLeft="5dp"-->
-                            <!--android:layout_marginTop="5dp"-->
-                            <!--android:layout_marginBottom="5dp"-->
-                            <!--/>-->
+                    <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:id="@+id/playAddr"-->
+                    <!--android:text="놀거리 주소"-->
+                    <!--android:layout_marginLeft="5dp"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:layout_marginBottom="5dp"-->
+                    <!--/>-->
                     <!--</LinearLayout>-->
 
 
-                    </LinearLayout>
+                </LinearLayout>
             </HorizontalScrollView>
         </RelativeLayout>
     </LinearLayout>
