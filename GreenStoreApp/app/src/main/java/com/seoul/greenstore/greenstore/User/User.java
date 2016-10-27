@@ -28,4 +28,10 @@ public class User{
 //        sharedPreferences = getSharedPreferences("userData",MODE_PRIVATE);
 //
 //    }
+
+    public static void userReset() {
+        User.user = null;
+        User.userStoreLike = null;
+        User.userReviewLike = null;
+    }
 }

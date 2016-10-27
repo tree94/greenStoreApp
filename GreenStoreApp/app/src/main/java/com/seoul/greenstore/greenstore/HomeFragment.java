@@ -260,6 +260,13 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
+
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        EndlessRecyclerOnScrollListener.setStart();
+//        User.userReset();
+//    }
 }
 
 

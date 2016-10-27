@@ -34,20 +34,23 @@ public class MyPageFragment_review extends Fragment implements Server.ILoadResul
     private static List<Review_item> data = new ArrayList<>();
     private FloatingActionButton fab;
     private View view;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        String[] gets = {Constants.GREEN_STORE_URL_APP_MYREVIEWlIKE + "/" + User.user.get(3), "GET"};
-        Server server = new Server(getActivity(), this);
-        server.execute(gets);
-    }
+//
+//    @Override
+//    public void onStart() {
+//        Log.d("___","3 : _review... onStart() executed");
+//        super.onStart();
+//        String[] gets = {Constants.GREEN_STORE_URL_APP_MYREVIEWlIKE + "/" + User.user.get(3), "GET"};
+//        Server server = new Server(getActivity(), this);
+//        server.execute(gets);
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_mypage_review, null);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true);
         recyclerView = (RecyclerView) view.findViewById(R.id.myRecyclerReview);
+
+        getlikeItem();
 
         reviewAdapter = new MyReviewAdapter(getActivity(), data);
         recyclerView.setAdapter(reviewAdapter);
@@ -112,6 +115,12 @@ public class MyPageFragment_review extends Fragment implements Server.ILoadResul
             e.printStackTrace();
         }
     }
+
+    private void getlikeItem(){
+        String[] gets = {Constants.GREEN_STORE_URL_APP_MYREVIEWlIKE + "/" + User.user.get(3), "GET"};
+        Server server = new Server(getActivity(), this);
+        server.execute(gets);
+    }
 }
 
 //    private void settingDetailItem() {
@@ -134,9 +143,5 @@ public class MyPageFragment_review extends Fragment implements Server.ILoadResul
 //    }
 
 
-//    private void getlikeItem(){
-//        String[] gets = {Constants.GREEN_STORE_URL_APP_MYREVIEWlIKE + "/" + User.user.get(3), "GET"};
-//        Server server = new Server(getActivity(), this);
-//        server.execute(gets);
-//    }
+
 
