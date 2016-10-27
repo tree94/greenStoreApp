@@ -200,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     public void selectDrawerItem(final MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
 
-        if(User.user==null) Log.d("___", "User.user is null.");
         this.menu = menuItem;
         switch (menuItem.getItemId()) {
             case R.id.nav_Home:
@@ -217,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 ////                        transaction.commit();
 //                    }
 
-//                    fragmentClass = null;
+                    fragmentClass = null;
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     //Log.d("___","1");
                     startActivityForResult(intent, LOGIN_ACTIVITY);
@@ -248,12 +247,12 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                         kakaoUserData = null;
                     }
 
-                    //User.userReset();
+                    User.userReset();
 
                     profileImage.setImageResource(R.drawable.circle);
                     userIdView.setText("로그인하세요");
                     menuItem.setTitle("Login");
-//                    fragmentClass = null;
+                    fragmentClass = null;
 //                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
 //                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 //                    startActivity(intent);

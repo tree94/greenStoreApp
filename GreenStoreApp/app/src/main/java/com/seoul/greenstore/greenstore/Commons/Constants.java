@@ -8,13 +8,11 @@ public class Constants {
 //    public static final String BASIC_URL = "http://172.30.49.177:8080/";
 
 //    public static final String BASIC_URL = "http://192.168.13.36:8080/";
-<<<<<<< HEAD
-    public static final String BASIC_URL = "http://172.30.40.131:8080/greenStore/";
-=======
->>>>>>> 44ba26c5c82aba06715fc6f04e3d2335e51684d2
+//    public static final String BASIC_URL = "http://172.30.40.131:8080/greenStore/";
 
-//
-    public static final String BASIC_URL = "http://172.30.49.177/8080";
+
+
+    public static final String BASIC_URL = "http://172.30.40.131:8080/";
     public static final String GREEN_STORE_URL_BASIC = BASIC_URL+"greenStore/";
 //    public static final String BASIC_URL = "http://192.168.100.253:8080/";
     public static final String GREEN_STORE_URL_APP = GREEN_STORE_URL_BASIC + "app/";
