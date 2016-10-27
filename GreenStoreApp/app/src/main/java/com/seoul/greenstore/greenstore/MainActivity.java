@@ -441,6 +441,18 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     }
 
     @Override
+    public void onBackPressed() {
+        FragmentManager fm = getSupportFragmentManager();
+        String now = fm.findFragmentById(R.id.llContents).toString();
+        String[] res = now.split("\\{");
+
+        Log.d("res[0]", res[0]);
+        if (res[0].equals("HomeFragment"))
+            backPressCloseHandler.onBackPressed();
+        else super.onBackPressed();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         EndlessRecyclerOnScrollListener.setStart();

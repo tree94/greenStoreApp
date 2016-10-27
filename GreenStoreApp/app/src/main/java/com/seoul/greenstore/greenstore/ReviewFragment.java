@@ -1,7 +1,6 @@
 package com.seoul.greenstore.greenstore;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -133,15 +132,6 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                recyclerView.smoothScrollToPosition(0);
-                Toast.makeText(getActivity(), "FAB 누름", Toast.LENGTH_SHORT).show();
-            }
-        });
 
 // Inflate the layout for this fragment
         return view;
