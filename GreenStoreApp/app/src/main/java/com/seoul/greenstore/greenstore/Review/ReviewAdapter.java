@@ -7,6 +7,7 @@ package com.seoul.greenstore.greenstore.Review;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -163,6 +164,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         final View dialogLayout = dialog.inflate(R.layout.review_custom_dialog, null);
         final Dialog myDialog = new Dialog(context);
 
+
+        myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         myDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         myDialog.setContentView(dialogLayout);

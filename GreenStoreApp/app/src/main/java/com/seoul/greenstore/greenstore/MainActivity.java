@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     private ArrayList<String> kakaoUserData = null;
     private MenuItem loginItem;
     private String backStateName = null;
-    private static BackPressCloseHandler backPressCloseHandler;
+
+    private BackPressCloseHandler backPressCloseHandler;
     private static final int LOGIN_ACTIVITY = 0;
     private static final int MY_PAGE = 1;
     public static final Stack<Fragment> mStack = new Stack<>();
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
         naviView = (NavigationView) findViewById(R.id.nvView);
         setupDrawerContent(naviView);
 
+
         backPressCloseHandler = new BackPressCloseHandler(this);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.llContents, new HomeFragment()).commit();
@@ -98,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
     }
 
     private void setupDrawerContent(NavigationView navigationView) {

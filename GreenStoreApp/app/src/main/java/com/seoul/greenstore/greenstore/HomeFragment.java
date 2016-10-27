@@ -38,6 +38,7 @@ import java.util.List;
 @SuppressLint("ValidFragment")
 public class HomeFragment extends Fragment implements Server.ILoadResult, AdapterView.OnItemSelectedListener, View.OnClickListener {
 
+
     private static RecyclerAdapter adapter;
     private List<Recycler_item> data = new ArrayList<>();
     private static RecyclerView recyclerView;
@@ -118,7 +119,8 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
         likeSpinner.setOnItemSelectedListener(this);
         locationSpinner.setOnItemSelectedListener(this);
 
-        searchBtn = (Button) view.findViewById(R.id.search_main);
+        searchBtn = (Button)view.findViewById(R.id.search_main);
+
         searchBtn.setOnClickListener(this);
         return view;
     }
@@ -261,12 +263,7 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
         adapter.notifyDataSetChanged();
     }
 
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        EndlessRecyclerOnScrollListener.setStart();
-//        User.userReset();
-//    }
+
 }
 
 
