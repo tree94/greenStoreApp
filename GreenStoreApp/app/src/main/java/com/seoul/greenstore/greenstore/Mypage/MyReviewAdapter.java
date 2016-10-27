@@ -30,6 +30,7 @@ import com.seoul.greenstore.greenstore.R;
 import com.seoul.greenstore.greenstore.Review.ReviewUpdateFragment;
 import com.seoul.greenstore.greenstore.Review.Review_item;
 import com.seoul.greenstore.greenstore.Server.Server;
+import com.seoul.greenstore.greenstore.User.User;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -78,7 +79,6 @@ public class MyReviewAdapter extends RecyclerView.Adapter<MyReviewAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
-
             btnSetting = (Button) itemView.findViewById(R.id.review_setting);
             storeName = (TextView) itemView.findViewById(R.id.storeName_review);
             profile = (ImageView) itemView.findViewById(R.id.profileImage_review);
@@ -113,12 +113,13 @@ public class MyReviewAdapter extends RecyclerView.Adapter<MyReviewAdapter.ViewHo
         holder.storeName.setText(review_item.getStoreName());
         holder.content_review.setText(review_item.getRcontents());
         holder.like_number.setText(String.valueOf(review_item.getRelike()));
+        holder.userId.setText(User.user.get(1));
 
-        if(review_item.getSh_addr()!=null) {
+        if (review_item.getSh_addr() != null) {
             String addr = review_item.getSh_addr();
             String res = "";
             boolean flag = false;
-            for (int i=0; i < addr.length(); i++) {
+            for (int i = 0; i < addr.length(); i++) {
                 char c = addr.charAt(i);
                 if (flag == true) {
                     res += c;   //String으로 변환필요하면 해주기
@@ -130,14 +131,17 @@ public class MyReviewAdapter extends RecyclerView.Adapter<MyReviewAdapter.ViewHo
                     flag = true;
                 }
 
-                Log.d("min",addr);
+                Log.d("min", addr);
 
             }
             //res = res.substring(0, res.length() - 2);   // 맨 뒤 글자 잘라내기
             System.out.println(res);
         }
 
-        Picasso.with(context).load(review_item.getImage()).fit().centerInside().into(holder.profile);
+        if (!User.user.get(2).isEmpty())
+            Picasso.with(context).load(User.user.get(2)).fit().centerInside().into(holder.profile);
+        else
+            Picasso.with(context).load(review_item.getImage()).fit().centerInside().into(holder.profile);
 
         holder.review_setting.setOnClickListener(new View.OnClickListener() {
             @Override
