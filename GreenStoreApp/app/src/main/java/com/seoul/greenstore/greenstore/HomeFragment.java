@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.seoul.greenstore.greenstore.Commons.BackPressCloseHandler;
 import com.seoul.greenstore.greenstore.Commons.Constants;
 import com.seoul.greenstore.greenstore.Recycler.RecyclerAdapter;
 import com.seoul.greenstore.greenstore.Recycler.Recycler_item;
@@ -33,6 +34,8 @@ import java.util.List;
  */
 @SuppressLint("ValidFragment")
 public class HomeFragment extends Fragment implements Server.ILoadResult, AdapterView.OnItemSelectedListener, View.OnClickListener{
+
+    private BackPressCloseHandler backPressCloseHandler;
 
     private RecyclerAdapter adapter;
     private List<Recycler_item> data = new ArrayList<Recycler_item>();
@@ -101,6 +104,7 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
         typeSpinner2.setOnItemSelectedListener(this);
         likeSpinner.setOnItemSelectedListener(this);
         locationSpinner.setOnItemSelectedListener(this);
+
 
         searchBtn = (Button)view.findViewById(R.id.search_main);
         searchBtn.setOnClickListener(this);
@@ -215,6 +219,7 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
+
 
 }
 

@@ -57,7 +57,8 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     private ArrayList<String> kakaoUserData = null;
     private MenuItem loginItem;
     private String backStateName = null;
-    private static BackPressCloseHandler backPressCloseHandler;
+
+    private BackPressCloseHandler backPressCloseHandler;
     private static final int LOGIN_ACTIVITY = 0;
     private static final int MY_PAGE = 1;
     public static final Stack<Fragment> mStack = new Stack<>();
@@ -81,15 +82,15 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
         searchTextView = (TextView) findViewById(R.id.searchTextView);
         setupDrawerContent(naviView);
 
-        backPressCloseHandler = new BackPressCloseHandler(this);
 
+        backPressCloseHandler = new BackPressCloseHandler(this);
 
 
         getSupportFragmentManager().beginTransaction().replace(R.id.llContents, new HomeFragment()).commit();
 
         fragmentManager = getSupportFragmentManager();
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawer, R.string.drawer_open,R.string.drawer_close);
+        drawerToggle = new ActionBarDrawerToggle(this, drawer, R.string.drawer_open, R.string.drawer_close);
         drawer.setDrawerListener(drawerToggle);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -97,9 +98,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
         getSupportActionBar().setHomeButtonEnabled(true);
 
 
-
     }
-
 
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -387,6 +386,18 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
 
         //fragmentManager.beginTransaction().replace(R.id.llContents, new ReviewWriteFragment()).commit();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = getSupportFragmentManager();
+        String now = fm.findFragmentById(R.id.llContents).toString();
+        String[] res = now.split("\\{");
+
+        Log.d("res[0]", res[0]);
+        if (res[0].equals("HomeFragment"))
+            backPressCloseHandler.onBackPressed();
+        else super.onBackPressed();
     }
 
 }

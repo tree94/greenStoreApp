@@ -77,7 +77,7 @@
                     android:layout_height="20dp"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/like_number"
-                    android:background="@drawable/heart_false" />
+                    android:background="@drawable/heart" />
 
                 <TextView
                     android:id="@+id/like_number"
@@ -113,22 +113,26 @@
                 <ImageView
                     android:id="@+id/reviewImage1"
                     android:layout_width="100dp"
+                    android:layout_weight="0.3"
                     android:layout_height="80dp"
-                    android:src="@drawable/a" />
+                    android:src="@drawable/ham" />
 
                 <ImageView
                     android:id="@+id/reviewImage2"
                     android:layout_width="100dp"
                     android:layout_height="80dp"
+                    android:layout_weight="0.3"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/b" />
+                    android:src="@drawable/green" />
 
                 <ImageView
                     android:id="@+id/reviewImage3"
+                    android:layout_weight="0.3"
                     android:layout_width="100dp"
                     android:layout_height="80dp"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/c" />
+                    android:src="@drawable/store" />
+
 
             </LinearLayout>
         </LinearLayout>
