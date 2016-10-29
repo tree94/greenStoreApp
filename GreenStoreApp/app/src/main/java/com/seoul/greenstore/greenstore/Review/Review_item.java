@@ -17,6 +17,24 @@ public class Review_item {
     private String sh_addr;
     private String induty_name;
     private int induty;
+    private String mname;
+    private String dateTime;
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public String getMname() {
+        return mname;
+    }
+
+    public void setMname(String mname) {
+        this.mname = mname;
+    }
 
     public int getSh_id() {
         return sh_id;

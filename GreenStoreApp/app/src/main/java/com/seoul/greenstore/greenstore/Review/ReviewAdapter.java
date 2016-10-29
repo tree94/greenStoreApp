@@ -29,7 +29,6 @@ import android.widget.Toast;
 import com.seoul.greenstore.greenstore.Commons.Constants;
 import com.seoul.greenstore.greenstore.R;
 import com.seoul.greenstore.greenstore.Server.Server;
-import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -80,7 +79,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
             btnSetting = (Button) itemView.findViewById(R.id.review_setting);
             storeName = (TextView) itemView.findViewById(R.id.storeName_review);
-            profile = (ImageView) itemView.findViewById(R.id.profileImage_review);
+//            profile = (ImageView) itemView.findViewById(R.id.profileImage_review);
             userId = (TextView) itemView.findViewById(R.id.userId_review);
             date_review = (TextView) itemView.findViewById(R.id.date_review);
             review_setting = (Button) itemView.findViewById(R.id.review_setting);
@@ -112,12 +111,19 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         holder.storeName.setText(review_item.getStoreName());
         holder.content_review.setText(review_item.getRcontents());
         holder.like_number.setText(String.valueOf(review_item.getRelike()));
+        holder.userId.setText(review_item.getMname());
 
-        if(review_item.getSh_addr()!=null) {
+//        if (review_item.getImage()!=null){
+//            Log.v("imageTest",""+review_item.getImage());
+//            Picasso.with(context).load(review_item.getImage()).fit().centerInside().into(holder.profile);
+//        }
+
+
+        if (review_item.getSh_addr() != null) {
             String addr = review_item.getSh_addr();
             String res = "";
             boolean flag = false;
-            for (int i=0; i < addr.length(); i++) {
+            for (int i = 0; i < addr.length(); i++) {
                 char c = addr.charAt(i);
                 if (flag == true) {
                     res += c;   //String으로 변환필요하면 해주기
@@ -129,14 +135,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                     flag = true;
                 }
 
-                Log.d("min",addr);
+//                Log.d("min", addr);
 
             }
             //res = res.substring(0, res.length() - 2);   // 맨 뒤 글자 잘라내기
             System.out.println(res);
         }
 
-        Picasso.with(context).load(review_item.getImage()).fit().centerInside().into(holder.profile);
+//        Picasso.with(context).load(review_item.getImage()).fit().centerInside().into(holder.profile);
 
         holder.review_setting.setOnClickListener(new View.OnClickListener() {
             @Override

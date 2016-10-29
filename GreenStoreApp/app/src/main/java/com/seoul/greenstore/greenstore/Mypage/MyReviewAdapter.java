@@ -31,11 +31,8 @@ import com.seoul.greenstore.greenstore.Review.ReviewUpdateFragment;
 import com.seoul.greenstore.greenstore.Review.Review_item;
 import com.seoul.greenstore.greenstore.Server.Server;
 import com.seoul.greenstore.greenstore.User.User;
-import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 
@@ -81,7 +78,7 @@ public class MyReviewAdapter extends RecyclerView.Adapter<MyReviewAdapter.ViewHo
             super(itemView);
             btnSetting = (Button) itemView.findViewById(R.id.review_setting);
             storeName = (TextView) itemView.findViewById(R.id.storeName_review);
-            profile = (ImageView) itemView.findViewById(R.id.profileImage_review);
+//            profile = (ImageView) itemView.findViewById(R.id.profileImage_review);
             userId = (TextView) itemView.findViewById(R.id.userId_review);
             date_review = (TextView) itemView.findViewById(R.id.date_review);
             review_setting = (Button) itemView.findViewById(R.id.review_setting);
@@ -105,11 +102,11 @@ public class MyReviewAdapter extends RecyclerView.Adapter<MyReviewAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Review_item review_item = items.get(position);
-        Date from = review_item.getRdate();
-        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String to = transFormat.format(from);
+//        Date from = review_item.getRdate();
+//        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String to = transFormat.format(from);
 
-        holder.date_review.setText(to);
+        holder.date_review.setText(review_item.getDateTime());
         holder.storeName.setText(review_item.getStoreName());
         holder.content_review.setText(review_item.getRcontents());
         holder.like_number.setText(String.valueOf(review_item.getRelike()));
@@ -138,10 +135,10 @@ public class MyReviewAdapter extends RecyclerView.Adapter<MyReviewAdapter.ViewHo
             System.out.println(res);
         }
 
-        if (!User.user.get(2).isEmpty())
-            Picasso.with(context).load(User.user.get(2)).fit().centerInside().into(holder.profile);
-        else
-            Picasso.with(context).load(review_item.getImage()).fit().centerInside().into(holder.profile);
+//        if (!User.user.get(2).isEmpty())
+//            Picasso.with(context).load(User.user.get(2)).fit().centerInside().into(holder.profile);
+//        else
+//            Picasso.with(context).load(review_item.getImage()).fit().centerInside().into(holder.profile);
 
         holder.review_setting.setOnClickListener(new View.OnClickListener() {
             @Override

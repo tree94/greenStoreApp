@@ -70,7 +70,7 @@ public class ReviewUpdateFragment extends Fragment implements Server.ILoadResult
 
         storeName = (TextView) view.findViewById(R.id.storeName_review_write_u);
         reviewContent = (EditText) view.findViewById(R.id.review_content_u);
-        imgInsertBtn = (Button) view.findViewById(R.id.insertImg_u);
+//        imgInsertBtn = (Button) view.findViewById(R.id.insertImg_u);
         reviewSubmitBtn = (Button) view.findViewById(R.id.review_submit_u);
         reviewCancelBtn = (Button) view.findViewById(R.id.review_cancel_u);
 
@@ -79,7 +79,7 @@ public class ReviewUpdateFragment extends Fragment implements Server.ILoadResult
         reviewContent.setText(bundle.getString("review_Rcontents"));
 
 
-        imgInsertBtn.setOnClickListener(this);
+//        imgInsertBtn.setOnClickListener(this);
         reviewSubmitBtn.setOnClickListener(this);
         reviewCancelBtn.setOnClickListener(this);
 
@@ -96,9 +96,9 @@ public class ReviewUpdateFragment extends Fragment implements Server.ILoadResult
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.insertImg_u:
-                Toast.makeText(getActivity(), "이미지 추가버튼을 눌렀음", Toast.LENGTH_SHORT).show();
-                break;
+//            case R.id.insertImg_u:
+//                Toast.makeText(getActivity(), "이미지 추가버튼을 눌렀음", Toast.LENGTH_SHORT).show();
+//                break;
             case R.id.review_submit_u:
 
                 if (reviewContent.getText().toString().equals("")) {

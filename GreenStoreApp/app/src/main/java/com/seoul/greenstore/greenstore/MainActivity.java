@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
             }
             User.userReviewLike = tempReviewMap;
             User.userStoreLike = tempStoreMap;
+            Log.v("likeTest","review = "+User.userReviewLike+" / store = "+User.userStoreLike);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -35,13 +35,13 @@
         android:layout_height="100dp"
         android:layout_marginTop="40dp" />
 
-    <Button
-        android:id="@+id/insertImg_u"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
-        android:text="이미지 등록" />
+    <!--<Button-->
+        <!--android:id="@+id/insertImg_u"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:padding="10dp"-->
+        <!--android:text="이미지 등록" />-->
 
 
     <LinearLayout

@@ -17,6 +17,7 @@ import com.seoul.greenstore.greenstore.Commons.Constants;
 import com.seoul.greenstore.greenstore.DetailFragment;
 import com.seoul.greenstore.greenstore.R;
 import com.seoul.greenstore.greenstore.Server.Server;
+import com.seoul.greenstore.greenstore.User.User;
 
 /**
  * Created by X on 2016-10-04.
@@ -76,12 +77,12 @@ public class ReviewWriteFragment extends Fragment implements Server.ILoadResult,
         storeName.setText(sh_name);
 
         reviewContent = (EditText) view.findViewById(R.id.review_content);
-        imgInsertBtn = (Button) view.findViewById(R.id.insertImg);
+//        imgInsertBtn = (Button) view.findViewById(R.id.insertImg);
         reviewSubmitBtn = (Button) view.findViewById(R.id.review_submit);
         reviewCancelBtn = (Button) view.findViewById(R.id.review_cancel);
 
 
-        imgInsertBtn.setOnClickListener(this);
+//        imgInsertBtn.setOnClickListener(this);
         reviewSubmitBtn.setOnClickListener(this);
         reviewCancelBtn.setOnClickListener(this);
 
@@ -98,9 +99,9 @@ public class ReviewWriteFragment extends Fragment implements Server.ILoadResult,
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.insertImg:
-                Toast.makeText(getActivity(), "이미지 추가버튼을 눌렀음", Toast.LENGTH_SHORT).show();
-                break;
+//            case R.id.insertImg:
+//                Toast.makeText(getActivity(), "이미지 추가버튼을 눌렀음", Toast.LENGTH_SHORT).show();
+//                break;
             case R.id.review_submit:
                 Log.d("reviewCon.getText():", reviewContent.getText().toString());
                 if (reviewContent.getText().toString().equals("")) {
@@ -108,18 +109,18 @@ public class ReviewWriteFragment extends Fragment implements Server.ILoadResult,
                     Toast.makeText(getActivity(), "내용을 입력해주세요", Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d("reviewCon.getText():", reviewContent.getText().toString());
-                    String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_WRITE, "POST", "reviewInsert", "1", String.valueOf(sh_id) +
+                    String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_WRITE, "POST", "reviewInsert", User.user.get(3), String.valueOf(sh_id) +
                             "", reviewContent.getText().toString()};
                     Server server = new Server(getActivity(), this);
                     server.execute(gets);
                     Toast.makeText(getActivity(), "리뷰를 등록했습니다.", Toast.LENGTH_SHORT).show();
 
                     FragmentManager fm = getFragmentManager();
-                   FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
                     Fragment fragment = new DetailFragment();
 
                     Bundle bundle = new Bundle();
-                    bundle.putInt("position",sh_id);
+                    bundle.putInt("position", sh_id);
 
                     fragment.setArguments(bundle);
 
@@ -139,7 +140,7 @@ public class ReviewWriteFragment extends Fragment implements Server.ILoadResult,
                 Fragment fragment = new DetailFragment();
 
                 Bundle bundle = new Bundle();
-                bundle.putInt("position",sh_id);
+                bundle.putInt("position", sh_id);
 
                 fragment.setArguments(bundle);
 

@@ -20,7 +20,7 @@ import com.seoul.greenstore.greenstore.User.User;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,15 +34,16 @@ public class MyPageFragment_review extends Fragment implements Server.ILoadResul
     private static List<Review_item> data = new ArrayList<>();
     private FloatingActionButton fab;
     private View view;
-//
-//    @Override
-//    public void onStart() {
-//        Log.d("___","3 : _review... onStart() executed");
-//        super.onStart();
-//        String[] gets = {Constants.GREEN_STORE_URL_APP_MYREVIEWlIKE + "/" + User.user.get(3), "GET"};
-//        Server server = new Server(getActivity(), this);
-//        server.execute(gets);
-//    }
+
+    public void setMyReviewLikeData(String mname,String rdate,int relike,String rcontent){
+        Review_item recycler_item = new Review_item();
+        recycler_item.setMname(mname);
+        recycler_item.setDateTime(rdate);
+        recycler_item.setRelike(relike);
+        recycler_item.setRcontents(rcontent);
+        data.add(recycler_item);
+        if(reviewAdapter!=null) reviewAdapter.notifyDataSetChanged();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,15 +57,15 @@ public class MyPageFragment_review extends Fragment implements Server.ILoadResul
         recyclerView.setAdapter(reviewAdapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-        fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                recyclerView.smoothScrollToPosition(0);
-                Toast.makeText(getActivity(), "FAB 누름", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        fab = (FloatingActionButton) view.findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                recyclerView.smoothScrollToPosition(0);
+//                Toast.makeText(getActivity(), "FAB 누름", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 //        getlikeItem();
         return view;
     }
@@ -72,6 +73,7 @@ public class MyPageFragment_review extends Fragment implements Server.ILoadResul
     @Override
     public void customAddList(String result) {
         data.clear();
+        DateFormat format1 = DateFormat.getDateInstance(DateFormat.FULL);
         Log.d("coffee", "// " + result);
         try {
             JSONArray jsonArray = new JSONArray(result);
@@ -92,12 +94,13 @@ public class MyPageFragment_review extends Fragment implements Server.ILoadResul
                 review.setInduty_name(jsonObject.getString("induty_CODE_SE_NAME"));
 
                 //String으로 받는 ndate를 Date로 바꾼 후 실행
-                Date from = new Date(Long.valueOf(jsonObject.getString("rdate")));
-                SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String temp = transFormat.format(from);
-                Date to = transFormat.parse(temp);
-                review.setRdate(to);
-                Log.e("dateformat", "" + transFormat.format(from));
+//                Date from = new Date(Long.valueOf(jsonObject.getString("rdate")));
+//                SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                String temp = transFormat.format(from);
+//                Date to = transFormat.parse(temp);
+
+                review.setDateTime(String.valueOf(format1.format(new Date(Long.valueOf(jsonObject.getString("rdate"))))));
+//                Log.e("dateformat", "" + transFormat.format(from));
 
 
                 data.add(review);

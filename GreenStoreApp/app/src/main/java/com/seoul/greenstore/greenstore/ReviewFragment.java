@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.seoul.greenstore.greenstore.Commons.Constants;
@@ -39,6 +40,13 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
     private RecyclerView recyclerView = null;
     private Button sortCate;
     private String[] spinnerData = new String[2];
+
+    //review item
+    private TextView storeName_review;
+    private TextView userId_review;
+    private TextView date_review;
+    private TextView like_number;
+    private TextView content_review;
 
 
     private int sh_id;
@@ -92,7 +100,7 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true);
 
         bundle = this.getArguments();
-        if(bundle!=null) {
+        if (bundle != null) {
             sh_id = bundle.getInt("sh_id");
             sh_addr = bundle.getString("sh_addr");
             sh_name = bundle.getString("sh_name");
@@ -132,7 +140,6 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
-
 // Inflate the layout for this fragment
         return view;
     }
@@ -157,7 +164,6 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
         Server server = new Server(getActivity(), this);
         server.execute(gets);
 
-
     }
 
 
@@ -167,12 +173,13 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
         Log.d("coffee", "Review customAddList IN");
         try {
             JSONArray jsonArray = new JSONArray(result);
-            if(result==null)
+            if (result == null)
                 Toast.makeText(getActivity(), "데이터가 없습니다", Toast.LENGTH_SHORT).show();
             for (int i = 0; i < jsonArray.length(); i++) {
                 Review_item review = new Review_item();
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 review.setStoreName(jsonObject.getString("sh_name"));
+                review.setMname(jsonObject.getString("mname"));
                 review.setRkey(Integer.parseInt(jsonObject.getString("rkey")));
                 review.setMkey(Integer.parseInt(jsonObject.getString("mkey")));
 //                review.setSh_id(Integer.parseInt(jsonObject.getString("sh_id")));
@@ -181,6 +188,7 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
                 review.setSh_addr(jsonObject.getString("sh_addr"));
                 review.setInduty(Integer.parseInt(jsonObject.getString("induty_CODE_SE")));
                 review.setInduty_name(jsonObject.getString("induty_CODE_SE_NAME"));
+                review.setImage(jsonObject.getString("mphoto"));
 
                 //String으로 받는 ndate를 Date로 바꾼 후 실행
                 Date from = new Date(Long.valueOf(jsonObject.getString("rdate")));
@@ -189,7 +197,6 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
                 Date to = transFormat.parse(temp);
                 review.setRdate(to);
                 Log.e("dateformat", "" + transFormat.format(from));
-
 
                 data.add(review);
             }
@@ -202,11 +209,30 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
 
             Log.d("hot8", "Review notifyDataSetChanged IN");
 
+//            reviewSetting();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+//    private void reviewSetting(){
+//        for(Review_item item : data){
+//            storeName_review = (TextView) view.findViewById(R.id.storeName_review);
+//            userId_review = (TextView) view.findViewById(R.id.userId_review);
+//            date_review = (TextView) view.findViewById(R.id.date_review);
+//            like_number = (TextView) view.findViewById(R.id.like_number);
+//            content_review = (TextView) view.findViewById(R.id.content_review);
+//
+//            Log.v("itemsss",""+item.getMname()+" / "+item.getStoreName());
+//            storeName_review.setText(item.getStoreName());
+//            userId_review.setText(item.getMname());
+//            like_number.setText(String.valueOf(item.getRelike()));
+//            content_review.setText(item.getRcontents());
+//
+//            DateFormat format1 = DateFormat.getDateInstance(DateFormat.FULL);
+//            date_review.setText(String.valueOf(format1.format(item.getRdate())));
+//        }
+//    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

@@ -40,7 +40,7 @@ public class MyPageFragment_store extends Fragment implements Server.ILoadResult
         recycler_item.setAddr(addr);
         recycler_item.setImage(photo);
         data.add(recycler_item);
-        recyclerAdapter.notifyDataSetChanged();
+        if(recyclerAdapter!=null) recyclerAdapter.notifyDataSetChanged();
     }
 
     @Override
