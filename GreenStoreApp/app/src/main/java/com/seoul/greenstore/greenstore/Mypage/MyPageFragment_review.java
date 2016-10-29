@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class MyPageFragment_review extends Fragment implements Server.ILoadResult {
     private RecyclerView recyclerView = null;
-    private MyReviewAdapter reviewAdapter;
+    private static MyReviewAdapter reviewAdapter;
     private static List<Review_item> data = new ArrayList<>();
     private FloatingActionButton fab;
     private View view;
@@ -48,11 +48,9 @@ public class MyPageFragment_review extends Fragment implements Server.ILoadResul
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_mypage_review, null);
+        getlikeItem();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, true);
         recyclerView = (RecyclerView) view.findViewById(R.id.myRecyclerReview);
-
-        getlikeItem();
-
         reviewAdapter = new MyReviewAdapter(getActivity(), data);
         recyclerView.setAdapter(reviewAdapter);
         recyclerView.setHasFixedSize(true);

@@ -140,7 +140,6 @@ public class ReviewFragment extends Fragment implements Server.ILoadResult, Adap
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
-// Inflate the layout for this fragment
         return view;
     }
 
