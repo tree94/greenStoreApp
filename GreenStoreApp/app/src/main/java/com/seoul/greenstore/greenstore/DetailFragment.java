@@ -124,7 +124,6 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.v("fragmenttest", "222222");
         view = inflater.inflate(R.layout.activity_detail, container, false);
 
 
@@ -133,7 +132,6 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
         Bundle bundle = this.getArguments();
         position = bundle.getInt("position");
 
-//        Toast.makeText(getActivity().getApplicationContext(), "" + position, Toast.LENGTH_SHORT).show();
         return view;
     }
 
@@ -231,7 +229,6 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
                     Review review = new Review();
                     Log.v("rkeyTest",""+jsonObject.getString("rkey"));
                     reviewId = Integer.parseInt(jsonObject.getString("rkey"));
-//                    review.setReviewId(Integer.parseInt(jsonObject.getString("rkey")));
                     review.setReviewName(jsonObject.getString("mname"));
                     review.setReviewPhoto(jsonObject.getString("mphoto"));
                     review.setReviewCount(Integer.parseInt(jsonObject.getString("relike")));
@@ -278,15 +275,12 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
             reLike = item.getReviewCount();
             rcontent = item.getReviewContent();
 
-//            ImageView reviewPhoto = (ImageView) view.findViewById(R.id.reviewPhoto);
             TextView reviewName = (TextView) view.findViewById(R.id.reviewName);
             TextView reviewDate = (TextView) view.findViewById(R.id.reviewDate);
             reviewCount = (TextView) view.findViewById(R.id.reviewCount);
             TextView reviewContent = (TextView) view.findViewById(R.id.reviewContent);
             likeImage = (ImageButton) view.findViewById(R.id.like_image);
 
-//            if (!item.getReviewPhoto().equals(""))
-//                Picasso.with(view.getContext()).load(item.getReviewPhoto()).resize(100, 200).into(reviewPhoto);
 
             reviewName.setText(item.getReviewName());
             reviewDate.setText(String.valueOf(format1.format(item.getReviewTime())));
@@ -446,7 +440,6 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     private void likeCheck() {
         if (User.userStoreLike != null) {
             for (int i = 0; i < User.userStoreLike.size(); ++i) {
-                Log.v("userlike", "" + User.userStoreLike.get(i));
                 if (User.userStoreLike.get(i).equals(String.valueOf(position))) {
                     Drawable drawable = getResources().getDrawable(R.drawable.likestar);
                     if (clickLikeButton == null)
@@ -461,7 +454,6 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     private void reviewLikeCheck(){
         if (User.userReviewLike != null) {
             for (int i = 0; i < User.userReviewLike.size(); ++i) {
-                Log.v("userlike", "" + User.userReviewLike.get(i)+" / "+reviewId);
                 if (User.userReviewLike.get(i).equals(String.valueOf(reviewId))) {
                     Drawable drawable = getResources().getDrawable(R.drawable.heart);
                     if (likeImage == null)
@@ -636,23 +628,17 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     public void onMapViewInitialized(MapView mapView) {
         // TODO Auto-generated method stub
         // Move and Zoom to
-        Log.v("test", "@2 " + loc.getLatitude() + " / " + loc.getLongitude());
-        Log.v("test", "@3 " + pointX + " / " + pointY);
-
         settingZoomMarkMap(mapView);
     }
 
     private void settingZoomMarkMap(MapView mapView) {
         if (loc.getLatitude() != 0) {
             mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(loc.getLatitude(), loc.getLongitude()), 1, true);
-            Log.v("locTEst", "22");
         } else if (pointX != null) {
             mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(pointY, pointX), 1, true);
-            Log.v("locTEst", "33");
         } else {
             mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(0, 0), 10, true);
             Toast.makeText(getActivity().getApplicationContext(), "주소 데이터 오류", Toast.LENGTH_SHORT).show();
-            Log.v("locTEst", "44");
         }
 
         //marker
@@ -681,7 +667,6 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     @Override
     public void onMapViewSingleTapped(MapView mapView, MapPoint MapPoint) {
         // TODO Auto-generated method stub
-        Log.v("test", "@3");
         settingZoomMarkMap(mapView);
     }
 

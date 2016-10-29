@@ -81,7 +81,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 LoginManager.getInstance().logOut();
                 finish();
             } else {
-//                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile", "email"));
                 LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
                     @Override
@@ -101,10 +100,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                     try {
                                         picUrl = user.getJSONObject("picture").getJSONObject("data").getString("url");
                                         Log.i("PICURL", picUrl);
-//                                        setResult(RESULT_OK,intent);
-//                                        finish();
-                                        // Picasso.with(LoginActivity.this).load(picUrl).into(profileImage);
-//                                        new AsyncProfileTask().execute(picUrl);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -172,14 +167,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
                 Log.d("UserProfile", userProfile.toString());
                 redirectMainActivity(userProfile); // 로그인 성공시 MainActivity로
-//                kakaoProfileImage.setImageResource(userProfile); 에러나서 관둠..오빠가하세요 캬캬캬
-
             }
         });
     }
 
     private void redirectMainActivity(UserProfile userProfile) {
-        Log.v("userprofile", "profile1");
         String userId = String.valueOf(userProfile.getId());
         String nickname = userProfile.getNickname();
         String profile = userProfile.getProfileImagePath();

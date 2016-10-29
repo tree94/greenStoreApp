@@ -85,9 +85,6 @@ public class NoticeFragment extends Fragment implements Server.ILoadResult {
                 String temp = transFormat.format(from);
                 Date to = transFormat.parse(temp);
                 notice.setNdate(to);
-                Log.e("dateformat",""+transFormat.format(from));
-//                Date to = transFormat.parse(String.valueOf(from));
-//                notice.setNdate(to);
 
                 items.add(notice);
             }

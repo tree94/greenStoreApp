@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     private NavigationView naviView;
     private NavigationView tempNaviView;
     private ActionBarDrawerToggle drawerToggle;
-    //private Fragment fragment = null;
     public static Fragment fragment = null;
     private SearchView searchView;
     private MenuItem searchItem;
@@ -208,14 +207,6 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                 break;
             case R.id.nav_Login:
                 if (facebookUserData == null && kakaoUserData == null) {
-//                    FragmentManager fm = getSupportFragmentManager();
-//                    FragmentTransaction transaction = fragmentManager.beginTransaction();
-//                    Log.v("stack??","fragmentName : "+fm.findFragmentById(R.id.llContents)+"fragmentCount : "+fragmentManager.getFragments().size());
-//                    if(fm.findFragmentById(R.id.llContents).toString().contains("My")){
-//                        Log.v("stack??","fragmentName : 포함됨!!!");
-////                        transaction.remove(fm.findFragmentById(R.id.llContents));
-////                        transaction.commit();
-//                    }
 
                     fragmentClass = null;
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -223,16 +214,6 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                     startActivityForResult(intent, LOGIN_ACTIVITY);
                     //Log.d("___","2");
                 } else {
-//                    FragmentManager fm = getSupportFragmentManager();
-//                    FragmentTransaction transaction = fragmentManager.beginTransaction();
-////                    transaction.remove(fm.findFragmentById(R.id.llContents));
-//                    Log.v("stack??","fragmentName : "+fm.findFragmentById(R.id.llContents)+"fragmentCount : "+fragmentManager.getFragments().size());
-//                    if(fm.findFragmentById(R.id.llContents).toString().contains("My")){
-//                        Log.v("stack??","fragmentName : 포함됨!!!");
-////                        transaction.remove(MypageFragment.class).commit();
-////                        transaction.commit();
-//                    }
-
                     profileImage = (ImageView) findViewById(R.id.profileImage);
                     if (facebookUserData != null) {
                         LoginManager.getInstance().logOut();
@@ -254,20 +235,7 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
                     userIdView.setText("로그인하세요");
                     menuItem.setTitle("Login");
                     fragmentClass = null;
-//                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//                    startActivity(intent);
 
-//                    Intent intent = new Intent(this, MainActivity.class);
-//                    startActivity(intent);
-
-//                    FragmentManager fm = getSupportFragmentManager();
-//                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
-//                    Fragment fragment = new HomeFragment();
-//
-//                    fragmentTransaction.replace(R.id.llContents, fragment);
-//                    fragmentTransaction.addToBackStack(fm.findFragmentById(R.id.llContents).toString());
-//                    fragmentTransaction.commit();
                 }
                 break;
             case R.id.nav_Mypage:
@@ -326,9 +294,6 @@ public class MainActivity extends AppCompatActivity implements Server.ILoadResul
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.main,menu);
-//        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         // Inflate the menu; this adds items to the action bar if it is present.
 
         getMenuInflater().inflate(R.menu.main, menu);
