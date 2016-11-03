@@ -30,11 +30,9 @@ import com.seoul.greenstore.greenstore.R;
 import com.seoul.greenstore.greenstore.Review.ReviewUpdateFragment;
 import com.seoul.greenstore.greenstore.Review.Review_item;
 import com.seoul.greenstore.greenstore.Server.Server;
-import com.squareup.picasso.Picasso;
+import com.seoul.greenstore.greenstore.User.User;
 
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 
@@ -78,10 +76,9 @@ public class MyReviewAdapter extends RecyclerView.Adapter<MyReviewAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
-
             btnSetting = (Button) itemView.findViewById(R.id.review_setting);
             storeName = (TextView) itemView.findViewById(R.id.storeName_review);
-            profile = (ImageView) itemView.findViewById(R.id.profileImage_review);
+//            profile = (ImageView) itemView.findViewById(R.id.profileImage_review);
             userId = (TextView) itemView.findViewById(R.id.userId_review);
             date_review = (TextView) itemView.findViewById(R.id.date_review);
             review_setting = (Button) itemView.findViewById(R.id.review_setting);
@@ -105,20 +102,22 @@ public class MyReviewAdapter extends RecyclerView.Adapter<MyReviewAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Review_item review_item = items.get(position);
-        Date from = review_item.getRdate();
-        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String to = transFormat.format(from);
+//        Date from = review_item.getRdate();
+//        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String to = transFormat.format(from);
 
-        holder.date_review.setText(to);
+        holder.date_review.setText(review_item.getDateTime());
         holder.storeName.setText(review_item.getStoreName());
         holder.content_review.setText(review_item.getRcontents());
         holder.like_number.setText(String.valueOf(review_item.getRelike()));
+        holder.userId.setText(User.user.get(1));
+        holder.like_image.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.heart));
 
-        if(review_item.getSh_addr()!=null) {
+        if (review_item.getSh_addr() != null) {
             String addr = review_item.getSh_addr();
             String res = "";
             boolean flag = false;
-            for (int i=0; i < addr.length(); i++) {
+            for (int i = 0; i < addr.length(); i++) {
                 char c = addr.charAt(i);
                 if (flag == true) {
                     res += c;   //String으로 변환필요하면 해주기
@@ -130,14 +129,17 @@ public class MyReviewAdapter extends RecyclerView.Adapter<MyReviewAdapter.ViewHo
                     flag = true;
                 }
 
-                Log.d("min",addr);
+//                Log.d("min", addr);
 
             }
             //res = res.substring(0, res.length() - 2);   // 맨 뒤 글자 잘라내기
-            System.out.println(res);
+//            System.out.println(res);
         }
 
-        Picasso.with(context).load(review_item.getImage()).fit().centerInside().into(holder.profile);
+//        if (!User.user.get(2).isEmpty())
+//            Picasso.with(context).load(User.user.get(2)).fit().centerInside().into(holder.profile);
+//        else
+//            Picasso.with(context).load(review_item.getImage()).fit().centerInside().into(holder.profile);
 
         holder.review_setting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,37 +181,46 @@ public class MyReviewAdapter extends RecyclerView.Adapter<MyReviewAdapter.ViewHo
             public void onClick(View v) {
                 Toast.makeText(context, "업데이트를 클릭함", Toast.LENGTH_SHORT).show();
 
+                if(Integer.parseInt(User.user.get(3))==review_item.getMkey()) {
 
-                FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                Fragment fragment = new ReviewUpdateFragment();
-
-
-                Bundle bundle = new Bundle();
-                bundle.putString("review_Rcontents", review_item.getRcontents().toString());
-                bundle.putString("review_Rkey", String.valueOf(review_item.getRkey()));
-                bundle.putString("review_StoreName", review_item.getStoreName().toString());
+                    FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                    Fragment fragment = new ReviewUpdateFragment();
 
 
-                fragment.setArguments(bundle);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("review_Rcontents", review_item.getRcontents().toString());
+                    bundle.putString("review_Rkey", String.valueOf(review_item.getRkey()));
+                    bundle.putString("review_StoreName", review_item.getStoreName().toString());
 
-                fragmentTransaction.replace(R.id.llContents, fragment);
-                fragmentTransaction.addToBackStack(fm.findFragmentById(R.id.llContents).toString());
-                fragmentTransaction.commit();
-                myDialog.cancel();
 
+                    fragment.setArguments(bundle);
+
+                    fragmentTransaction.replace(R.id.llContents, fragment);
+                    fragmentTransaction.addToBackStack(fm.findFragmentById(R.id.llContents).toString());
+                    fragmentTransaction.commit();
+                    myDialog.cancel();
+                }else{
+                    Toast.makeText(context, "자신의 글만 수정할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_DELETE + "?rkey=" + review_item.getRkey(), "GET"};
-                Log.d("review_item", review_item.getRkey() + "");
-                Server server = new Server(acti, MyReviewAdapter.this);
-                server.execute(gets);
-                Toast.makeText(acti, "리뷰가 삭제되었습니다", Toast.LENGTH_SHORT).show();
-                myDialog.cancel();
+                if(Integer.parseInt(User.user.get(3))==review_item.getMkey()) {
+                    String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_DELETE + "?rkey=" + review_item.getRkey(), "GET"};
+                    Log.d("review_item", review_item.getRkey() + "");
+                    Server server = new Server(acti, MyReviewAdapter.this);
+                    server.execute(gets);
+
+                    items.remove(items.indexOf(review_item.getRkey()) + 1);
+                    Toast.makeText(acti, "리뷰가 삭제되었습니다", Toast.LENGTH_SHORT).show();
+                    myDialog.cancel();
+                }else{
+                    Toast.makeText(context, "자신의 글만 삭제할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

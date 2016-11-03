@@ -63,7 +63,6 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getNextItem(0);
     }
 
     @Override
@@ -71,7 +70,6 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_home, null);
 
-//        Log.v("dataSize", "end = "+end+" start = "+start+"dataSize = " + data.size());
         if (data.size() == 0) getNextItem(0);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
@@ -79,19 +77,6 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         adapter = new RecyclerAdapter(data, getActivity());
 
-        Log.i("ADAPTER", "flag= " + pauseFlag + " / " + adapter.toString());
-
-/*        //맨 위로가기 실행할것
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            recyclerView.setScrollX(0);
-                recyclerView.setScrollY(0);
-                Toast.makeText(getActivity(), "FAB 누름", Toast.LENGTH_SHORT).show();
-            }
-        });*/
 
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -207,15 +192,12 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
     // 선택된 좋아요에 해당하는 정보들만 추출하여 화면에 출력
     private void sortLike(long id) {
         final int check = (int) id;
-        Log.v("checkTest", "" + check);
         Collections.sort(data, new Comparator<Recycler_item>() {
             public int compare(Recycler_item obj1, Recycler_item obj2) {
                 // TODO Auto-generated method stub
                 if (check == 0) {
-                    Log.v("22d01", "11122");
                     return (obj1.getLike() > obj2.getLike()) ? -1 : (obj1.getLike() < obj2.getLike()) ? 1 : 0;
                 } else {
-                    Log.v("01", "111");
                     return (obj1.getUserLike() > obj2.getUserLike()) ? -1 : (obj1.getUserLike() < obj2.getUserLike()) ? 1 : 0;
                 }
             }
@@ -226,8 +208,6 @@ public class HomeFragment extends Fragment implements Server.ILoadResult, Adapte
     // 선택된 카테고리에 해당하는 정보들만 추출하여 화면에 출력
     public void sortCategory(long id) {
         int check = (int) id;
-
-        Log.v("id??", "" + check);
 
         List<Recycler_item> tempData = new ArrayList<>();
 

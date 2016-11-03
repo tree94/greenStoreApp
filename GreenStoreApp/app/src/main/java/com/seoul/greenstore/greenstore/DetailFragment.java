@@ -28,6 +28,7 @@ import com.seoul.greenstore.greenstore.Commons.MapKeys;
 import com.seoul.greenstore.greenstore.Dto.Play;
 import com.seoul.greenstore.greenstore.Dto.Review;
 import com.seoul.greenstore.greenstore.MapView.MapViewItem;
+import com.seoul.greenstore.greenstore.Mypage.MyPageFragment_review;
 import com.seoul.greenstore.greenstore.Mypage.MyPageFragment_store;
 import com.seoul.greenstore.greenstore.Review.ReviewWriteFragment;
 import com.seoul.greenstore.greenstore.Server.Server;
@@ -88,7 +89,20 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     private TextView detailAddr;
     private RelativeLayout rlWrite;
     private RelativeLayout rlMore;
+    private TextView clickReviewWriteText;
+    private TextView clickMoreReviewText;
+    private ImageButton clickMoreReviewButton;
+    private ImageButton clickReviewWriteButton;
 
+    //review item
+    private String mname;
+    private String rdate;
+    private int reLike;
+    private String rcontent;
+    private ImageButton likeImage;
+    private TextView reviewCount;
+    private int reviewId;
+    private int reviewNum = 0;
 
     //daum map
     private Location loc;
@@ -96,6 +110,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
 
     //좋아요 플래그
     private int likeFlag = 0;
+    private int reviewLikeFlag = 0;
 
     //intent 기능 관련
     private static final int PLAY_ACTIVITY = 0;
@@ -109,7 +124,6 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.v("fragmenttest","222222");
         view = inflater.inflate(R.layout.activity_detail, container, false);
 
 
@@ -117,47 +131,6 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
 
         Bundle bundle = this.getArguments();
         position = bundle.getInt("position");
-
-        Toast.makeText(getActivity().getApplicationContext(), "" + position, Toast.LENGTH_SHORT).show();
-
-        rlWrite = (RelativeLayout) view.findViewById(R.id.review_write);
-        rlMore = (RelativeLayout) view.findViewById(R.id.more);
-        rlWrite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                Fragment fragment = new ReviewWriteFragment();
-
-                Bundle bundle = new Bundle();
-                bundle.putInt("sh_id",position);
-                bundle.putString("sh_name",name);
-                fragment.setArguments(bundle);
-
-                fragmentTransaction.replace(R.id.llContents, fragment);
-                fragmentTransaction.addToBackStack(fm.findFragmentById(R.id.llContents).toString());
-                fragmentTransaction.commit();
-            }
-        });
-
-        rlMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                Fragment fragment = new ReviewFragment();
-
-                Bundle bundle = new Bundle();
-                bundle.putInt("sh_id",position);
-                bundle.putString("sh_name",name);
-                bundle.putString("sh_addr",addr);
-                fragment.setArguments(bundle);
-
-                fragmentTransaction.replace(R.id.llContents, fragment);
-                fragmentTransaction.addToBackStack(fm.findFragmentById(R.id.llContents).toString());
-                fragmentTransaction.commit();
-            }
-        });
 
         return view;
     }
@@ -193,7 +166,6 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
         if (!result.isEmpty()) {
             try {
                 int playNum = 0;
-                int reviewNum = 0;
 
                 JSONObject jsonRootObject = new JSONObject(result);
                 playList = new ArrayList<>();
@@ -240,7 +212,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
                         info = jsonObject.getString("sh_info");
                         pride = jsonObject.getString("sh_pride");
                         photo = jsonObject.getString("sh_photo");
-                        if(!jsonObject.getString("pointX").equals("null")) {
+                        if (!jsonObject.getString("pointX").equals("null")) {
                             pointX = jsonObject.getDouble("pointX");
                             pointY = jsonObject.getDouble("pointY");
                         }
@@ -255,6 +227,8 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
                 for (int i = 0; i < reviewNum; ++i) {
                     JSONObject jsonObject = reviewJson.getJSONObject(i);
                     Review review = new Review();
+                    Log.v("rkeyTest",""+jsonObject.getString("rkey"));
+                    reviewId = Integer.parseInt(jsonObject.getString("rkey"));
                     review.setReviewName(jsonObject.getString("mname"));
                     review.setReviewPhoto(jsonObject.getString("mphoto"));
                     review.setReviewCount(Integer.parseInt(jsonObject.getString("relike")));
@@ -281,8 +255,8 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
                 settingPlayDetailFragment();
 
                 //review 부분 아이템 생성
-                if(reviewNum>0) settingReviewDetailFragment();
-                else{
+                if (reviewNum > 0) settingReviewDetailFragment();
+                else {
                     view.findViewById(R.id.reviewMain).setVisibility(View.GONE);
                 }
             } catch (JSONException e) {
@@ -292,21 +266,28 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     }
 
     private void settingReviewDetailFragment() {
+        DateFormat format1 = DateFormat.getDateInstance(DateFormat.FULL);
         for (Review item : reviewList) {
-            ImageView reviewPhoto = (ImageView) view.findViewById(R.id.reviewPhoto);
+            reviewId = item.getReviewId();
+            Log.v("rkeyTest",""+reviewId);
+            mname = item.getReviewName();
+            rdate = String.valueOf(format1.format(item.getReviewTime()));
+            reLike = item.getReviewCount();
+            rcontent = item.getReviewContent();
+
             TextView reviewName = (TextView) view.findViewById(R.id.reviewName);
             TextView reviewDate = (TextView) view.findViewById(R.id.reviewDate);
-            TextView reviewCount = (TextView) view.findViewById(R.id.reviewCount);
+            reviewCount = (TextView) view.findViewById(R.id.reviewCount);
             TextView reviewContent = (TextView) view.findViewById(R.id.reviewContent);
+            likeImage = (ImageButton) view.findViewById(R.id.like_image);
 
-            if (!item.getReviewPhoto().equals(""))
-                Picasso.with(view.getContext()).load(item.getReviewPhoto()).resize(100, 200).into(reviewPhoto);
 
             reviewName.setText(item.getReviewName());
-            DateFormat format1 = DateFormat.getDateInstance(DateFormat.FULL);
             reviewDate.setText(String.valueOf(format1.format(item.getReviewTime())));
             reviewCount.setText(String.valueOf(item.getReviewCount()));
             reviewContent.setText(item.getReviewContent());
+
+            likeImage.setOnClickListener(this);
         }
     }
 
@@ -407,6 +388,11 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
         detailPrice = (TextView) view.findViewById(R.id.detailPrice);
         detailPhone = (TextView) view.findViewById(R.id.detailPhone);
         detailAddr = (TextView) view.findViewById(R.id.detailAddr);
+        rlWrite = (RelativeLayout) view.findViewById(R.id.review_write);
+        clickMoreReviewButton = (ImageButton) view.findViewById(R.id.clickMoreReviewButton);
+        clickReviewWriteButton = (ImageButton) view.findViewById(R.id.clickReviewWriteButton);
+        clickReviewWriteText = (TextView) view.findViewById(R.id.clickReviewWriteText);
+        clickMoreReviewText = (TextView) view.findViewById(R.id.clickMoreReviewText);
 
         if (photo != null)
             Picasso.with(getActivity().getApplicationContext()).load(photo).fit().centerInside().into(detailPhoto);
@@ -415,7 +401,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
         detailRcmn.setText(String.valueOf(rcmn));
         detailInfo.setText(info);
 
-        if(pride != null) detailPride.setText(pride);
+        if (pride != null) detailPride.setText(pride);
         else detailPride.setText("자랑거리 데이터가 없습니다.");
 
         detailPhone.setText(phone);
@@ -434,13 +420,19 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
         }
         detailPrice.setText(String.valueOf(temp));
 
-
         clickLikeButton.setOnClickListener(this);
         clickLikeText.setOnClickListener(this);
 
+        clickReviewWriteButton.setOnClickListener(this);
+        clickReviewWriteText.setOnClickListener(this);
+        clickMoreReviewButton.setOnClickListener(this);
+        clickMoreReviewText.setOnClickListener(this);
 
-        //좋아요 했는지 체크
+        //스토어 좋아요 했는지 체크
         likeCheck();
+
+        //리뷰 좋아요 했는지 체크
+        if(reviewNum!=0) reviewLikeCheck();
         //다음 지도 초기화
         settingMap();
     }
@@ -448,13 +440,26 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     private void likeCheck() {
         if (User.userStoreLike != null) {
             for (int i = 0; i < User.userStoreLike.size(); ++i) {
-                Log.v("userlike", "" + User.userStoreLike.get(i));
                 if (User.userStoreLike.get(i).equals(String.valueOf(position))) {
                     Drawable drawable = getResources().getDrawable(R.drawable.likestar);
                     if (clickLikeButton == null)
                         clickLikeButton = (ImageButton) view.findViewById(R.id.clickLikeButton);
                     clickLikeButton.setBackgroundDrawable(drawable);
                     likeFlag = 1;
+                }
+            }
+        }
+    }
+
+    private void reviewLikeCheck(){
+        if (User.userReviewLike != null) {
+            for (int i = 0; i < User.userReviewLike.size(); ++i) {
+                if (User.userReviewLike.get(i).equals(String.valueOf(reviewId))) {
+                    Drawable drawable = getResources().getDrawable(R.drawable.heart);
+                    if (likeImage == null)
+                        likeImage = (ImageButton) view.findViewById(R.id.like_image);
+                    likeImage.setBackgroundDrawable(drawable);
+                    reviewLikeFlag = 1;
                 }
             }
         }
@@ -489,9 +494,89 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
             case R.id.clickLikeText:
                 likeClickCheck();
                 break;
+            case R.id.clickReviewWriteButton:
+                reviewWriteClick();
+                break;
+            case R.id.clickReviewWriteText:
+                reviewWriteClick();
+                break;
+            case R.id.clickMoreReviewText:
+                reviewMoreClick();
+                break;
+            case R.id.clickMoreReviewButton:
+                reviewMoreClick();
+                break;
+            case R.id.like_image:
+                reviewLikeClick();
+                break;
         }
     }
 
+    private void reviewLikeClick(){
+        if (User.user == null)
+            Toast.makeText(getActivity().getApplicationContext(), "로그인을 해주세요.", Toast.LENGTH_SHORT).show();
+        else{
+            if (reviewLikeFlag == 1)
+                Toast.makeText(getActivity().getApplicationContext(), "이미 좋아요 하셨습니다.", Toast.LENGTH_SHORT).show();
+            else {
+                //서버로 좋아요 +1
+                String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEWLIKE + "?mkey=" + User.user.get(3) + "&rkey=" + reviewId, "GET"};
+                Server server = new Server(getActivity(), this);
+                server.execute(gets);
+
+                if (User.userReviewLike.size() > 0)
+                    User.userReviewLike.put(User.userReviewLike.size(), String.valueOf(reviewId));
+                else
+                    User.userReviewLike.put(0, String.valueOf(reviewId));
+
+                //내가 좋아요한 스토어에 데이터 저장.
+                MyPageFragment_review myPageFragment_review = new MyPageFragment_review();
+                myPageFragment_review.setMyReviewLikeData(mname, rdate, reLike, rcontent);
+
+                Drawable drawable = getResources().getDrawable(
+                        R.drawable.heart);
+                likeImage.setBackgroundDrawable(drawable);
+                reviewCount.setText(String.valueOf(++like));
+                reviewLikeFlag = 1;
+            }
+        }
+    }
+
+    private void reviewMoreClick() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        Fragment fragment = new ReviewFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("sh_id", position);
+        bundle.putString("sh_name", name);
+        bundle.putString("sh_addr", addr);
+        fragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.llContents, fragment);
+        fragmentTransaction.addToBackStack(fm.findFragmentById(R.id.llContents).toString());
+        fragmentTransaction.commit();
+
+    }
+
+    private void reviewWriteClick() {
+        if (User.user == null)
+            Toast.makeText(getActivity().getApplicationContext(), "로그인을 해주세요.", Toast.LENGTH_SHORT).show();
+        else {
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+            Fragment fragment = new ReviewWriteFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putInt("sh_id", position);
+            bundle.putString("sh_name", name);
+            fragment.setArguments(bundle);
+
+            fragmentTransaction.replace(R.id.llContents, fragment);
+            fragmentTransaction.addToBackStack(fm.findFragmentById(R.id.llContents).toString());
+            fragmentTransaction.commit();
+        }
+    }
 
     private void likeClickCheck() {
         if (User.user == null)
@@ -512,7 +597,7 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
 
                 //내가 좋아요한 스토어에 데이터 저장.
                 MyPageFragment_store myPageFragment_store = new MyPageFragment_store();
-                myPageFragment_store.setMyStoreLikeData(position,name,addr,photo);
+                myPageFragment_store.setMyStoreLikeData(position, name, addr, photo);
 
                 Drawable drawable = getResources().getDrawable(
                         R.drawable.likestar);
@@ -543,34 +628,28 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     public void onMapViewInitialized(MapView mapView) {
         // TODO Auto-generated method stub
         // Move and Zoom to
-        Log.v("test", "@2 " + loc.getLatitude() + " / " + loc.getLongitude());
-        Log.v("test", "@3 " + pointX + " / " + pointY);
-
         settingZoomMarkMap(mapView);
     }
 
-    private void settingZoomMarkMap(MapView mapView){
-        if(loc.getLatitude()!=0) {
+    private void settingZoomMarkMap(MapView mapView) {
+        if (loc.getLatitude() != 0) {
             mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(loc.getLatitude(), loc.getLongitude()), 1, true);
-            Log.v("locTEst","22");
-        }else if(pointX!=null) {
+        } else if (pointX != null) {
             mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(pointY, pointX), 1, true);
-            Log.v("locTEst","33");
-        }else{
-            mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(0,0), 10, true);
-            Toast.makeText(getActivity().getApplicationContext(),"주소 데이터 오류",Toast.LENGTH_SHORT).show();
-            Log.v("locTEst","44");
+        } else {
+            mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(0, 0), 10, true);
+            Toast.makeText(getActivity().getApplicationContext(), "주소 데이터 오류", Toast.LENGTH_SHORT).show();
         }
 
         //marker
         marker = new MapPOIItem();
         marker.setItemName(name);
         marker.setTag(0);
-        if(loc.getLatitude()!=0)
+        if (loc.getLatitude() != 0)
             marker.setMapPoint(MapPoint.mapPointWithGeoCoord(loc.getLatitude(), loc.getLongitude()));
-        else if(pointX!=null)
+        else if (pointX != null)
             marker.setMapPoint(MapPoint.mapPointWithGeoCoord(pointY, pointX));
-        else{
+        else {
             marker.setMapPoint(MapPoint.mapPointWithGeoCoord(loc.getLatitude(), loc.getLongitude()));
         }
 
@@ -588,7 +667,6 @@ public class DetailFragment extends Fragment implements Server.ILoadResult, View
     @Override
     public void onMapViewSingleTapped(MapView mapView, MapPoint MapPoint) {
         // TODO Auto-generated method stub
-        Log.v("test", "@3");
         settingZoomMarkMap(mapView);
     }
 

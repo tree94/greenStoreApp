@@ -27,11 +27,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.seoul.greenstore.greenstore.Commons.Constants;
+import com.seoul.greenstore.greenstore.Mypage.MyPageFragment_review;
 import com.seoul.greenstore.greenstore.R;
 import com.seoul.greenstore.greenstore.Server.Server;
-import com.squareup.picasso.Picasso;
+import com.seoul.greenstore.greenstore.User.User;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +51,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     private ViewHolder holder;
     private View v;
     private Button btnSetting;
+
+    //리뷰 좋아요 중복 방지 리스트
+    private static List<Integer> likeList = new ArrayList<>(Arrays.asList(0));
 
     public ReviewAdapter() {
     }
@@ -80,7 +86,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
             btnSetting = (Button) itemView.findViewById(R.id.review_setting);
             storeName = (TextView) itemView.findViewById(R.id.storeName_review);
-            profile = (ImageView) itemView.findViewById(R.id.profileImage_review);
+//            profile = (ImageView) itemView.findViewById(R.id.profileImage_review);
             userId = (TextView) itemView.findViewById(R.id.userId_review);
             date_review = (TextView) itemView.findViewById(R.id.date_review);
             review_setting = (Button) itemView.findViewById(R.id.review_setting);
@@ -102,7 +108,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final Review_item review_item = items.get(position);
         Date from = review_item.getRdate();
         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -112,12 +118,29 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         holder.storeName.setText(review_item.getStoreName());
         holder.content_review.setText(review_item.getRcontents());
         holder.like_number.setText(String.valueOf(review_item.getRelike()));
+        holder.userId.setText(review_item.getMname());
 
-        if(review_item.getSh_addr()!=null) {
+//        if (review_item.getImage()!=null){
+//            Log.v("imageTest",""+review_item.getImage());
+//            Picasso.with(context).load(review_item.getImage()).fit().centerInside().into(holder.profile);
+//        }
+
+        if (User.user != null) {
+            if (User.userReviewLike != null) {
+                for (int i = 0; i < User.userReviewLike.size(); ++i) {
+                    Log.v("userlike", "" + User.userReviewLike.get(i) + " / " + review_item.getRkey());
+                    if (User.userReviewLike.get(i).equals(String.valueOf(review_item.getRkey()))) {
+                        holder.like_image.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.heart));
+                    }
+                }
+            }
+        }
+
+        if (review_item.getSh_addr() != null) {
             String addr = review_item.getSh_addr();
             String res = "";
             boolean flag = false;
-            for (int i=0; i < addr.length(); i++) {
+            for (int i = 0; i < addr.length(); i++) {
                 char c = addr.charAt(i);
                 if (flag == true) {
                     res += c;   //String으로 변환필요하면 해주기
@@ -129,14 +152,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                     flag = true;
                 }
 
-                Log.d("min",addr);
+//                Log.d("min", addr);
 
             }
             //res = res.substring(0, res.length() - 2);   // 맨 뒤 글자 잘라내기
-            System.out.println(res);
+//            System.out.println(res);
         }
 
-        Picasso.with(context).load(review_item.getImage()).fit().centerInside().into(holder.profile);
+//        Picasso.with(context).load(review_item.getImage()).fit().centerInside().into(holder.profile);
 
         holder.review_setting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +178,38 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         });
         */
 
+        holder.like_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (User.user == null) {
+                    Toast.makeText(context.getApplicationContext(), "로그인을 해주세요.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.v("likeListTest", "" + likeList.size());
+                    if(likeList.contains(review_item.getRkey())){
+                        Toast.makeText(acti, "이미 좋아요 하셨습니다.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        //서버로 좋아요 +1
+                        String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEWLIKE + "?mkey=" + User.user.get(3) + "&rkey=" + review_item.getRkey(), "GET"};
+                        Server server = new Server(acti, ReviewAdapter.this);
+                        server.execute(gets);
+
+                        if (User.userReviewLike.size() > 0)
+                            User.userReviewLike.put(User.userReviewLike.size(), String.valueOf(review_item.getRkey()));
+                        else
+                            User.userReviewLike.put(0, String.valueOf(review_item.getRkey()));
+
+                        //내가 좋아요한 스토어에 데이터 저장.
+                        MyPageFragment_review myPageFragment_review = new MyPageFragment_review();
+                        myPageFragment_review.setMyReviewLikeData(review_item.getMname(), review_item.getDateTime(), review_item.getRelike(), review_item.getRcontents());
+
+                        holder.like_image.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.heart));
+                        review_item.setRelike(review_item.getRelike()+1);
+                        holder.like_number.setText(String.valueOf(review_item.getRelike()));
+                        likeList.add(review_item.getRkey());
+                    }
+                }
+            }
+        });
 
     }
 
@@ -180,37 +235,43 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             public void onClick(View v) {
                 Toast.makeText(context, "업데이트를 클릭함", Toast.LENGTH_SHORT).show();
 
-
-                FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                Fragment fragment = new ReviewUpdateFragment();
-
-
-                Bundle bundle = new Bundle();
-                bundle.putString("review_Rcontents", review_item.getRcontents().toString());
-                bundle.putString("review_Rkey", String.valueOf(review_item.getRkey()));
-                bundle.putString("review_StoreName", review_item.getStoreName().toString());
+                if(User.user!=null && review_item.getMkey()==Integer.parseInt(User.user.get(3))) {
+                    FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                    Fragment fragment = new ReviewUpdateFragment();
 
 
-                fragment.setArguments(bundle);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("review_Rcontents", review_item.getRcontents().toString());
+                    bundle.putString("review_Rkey", String.valueOf(review_item.getRkey()));
+                    bundle.putString("review_StoreName", review_item.getStoreName().toString());
 
-                fragmentTransaction.replace(R.id.llContents, fragment);
-                fragmentTransaction.addToBackStack(fm.findFragmentById(R.id.llContents).toString());
-                fragmentTransaction.commit();
-                myDialog.cancel();
 
+                    fragment.setArguments(bundle);
+
+                    fragmentTransaction.replace(R.id.llContents, fragment);
+                    fragmentTransaction.addToBackStack(fm.findFragmentById(R.id.llContents).toString());
+                    fragmentTransaction.commit();
+                    myDialog.cancel();
+                }else{
+                    Toast.makeText(context, "자신의 리뷰만 수정할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_DELETE + "?rkey=" + review_item.getRkey(), "GET"};
-                Log.d("review_item", review_item.getRkey() + "");
-                Server server = new Server(acti, ReviewAdapter.this);
-                server.execute(gets);
-                Toast.makeText(acti, "리뷰가 삭제되었습니다", Toast.LENGTH_SHORT).show();
-                myDialog.cancel();
+                if(User.user != null && Integer.parseInt(User.user.get(3))==review_item.getMkey()) {
+                    String[] gets = {Constants.GREEN_STORE_URL_APP_REVIEW_DELETE + "?rkey=" + review_item.getRkey(), "GET"};
+                    Log.d("review_item", review_item.getRkey() + "");
+                    Server server = new Server(acti, ReviewAdapter.this);
+                    server.execute(gets);
+                    Toast.makeText(acti, "리뷰가 삭제되었습니다", Toast.LENGTH_SHORT).show();
+                    myDialog.cancel();
+                }else{
+                    Toast.makeText(context, "자신의 리뷰만 삭제할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

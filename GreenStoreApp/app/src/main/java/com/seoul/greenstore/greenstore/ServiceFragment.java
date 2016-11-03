@@ -27,7 +27,6 @@ public class ServiceFragment extends Fragment {
 
 
     public ServiceFragment() {
-
 // Required empty public constructor
     }
 

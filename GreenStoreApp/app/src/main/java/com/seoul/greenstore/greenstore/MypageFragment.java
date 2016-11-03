@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +18,6 @@ public class MypageFragment extends Fragment {
     private static ViewPager viewPager;
     private static TabLayout tabLayout;
     private static PagerAdapter adapter;
-
-//    public MypageFragment newInstance() {
-//        MypageFragment fragment = new MypageFragment();
-//        return fragment;
-//    }
 
     public MypageFragment() {
     }
@@ -75,13 +69,6 @@ public class MypageFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.v("pauseddddd", "11111");
-//        FragmentManager fm = getFragmentManager();
-//        Fragment f = fm.findFragmentById(R.id.pager);
-//        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-//        fragmentTransaction.remove(f);
-//        fragmentTransaction.commit();
-
     }
 
 
